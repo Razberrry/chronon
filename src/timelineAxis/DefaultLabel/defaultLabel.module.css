@@ -1,0 +1,8 @@
+.label {
+  padding-left: 3px;
+  align-self: flex-start;
+  font-size: 14px;
+  line-height: 1;
+  user-select: none;
+  white-space: nowrap;
+}

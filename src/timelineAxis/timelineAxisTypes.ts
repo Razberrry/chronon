@@ -1,17 +1,21 @@
+import React from "react";
 
-/** Render-time tick instance */
-export interface SpectimeMarkerRender {
+export type LabelComponent = React.ComponentType<React.PropsWithChildren<{}>>;
+
+export interface MarkerDefinition {
+  value: number;
+  maxRangeSize?: number;
+  minRangeSize?: number;
+  getLabel?: (time: Date) => string;
+  overrideComponent?: LabelComponent; // children-only component
+}
+
+export interface Marker {
   label?: string;
-  offsetPx: number;     // px from visible range start
-  heightRatio: number;  // 0..1, shorter = finer level
+  sideDelta: number;
+  Override?: LabelComponent;
 }
 
-/** Configuration for a tick level */
-export interface SpectimeMarker {
-  intervalMs: number;                                // step size in ms
-  maxVisibleRangeMs?: number;                        // show only if zoomed in enough
-  minVisibleRangeMs?: number;                        // show only if zoomed out enough
-  formatLabel?: (time: Date) => string;              // optional label formatter
+export interface TimeAxisProps {
+  markers: MarkerDefinition[];
 }
-
-/** Back-compat alias (optional) */

@@ -1,4 +1,4 @@
-import { format, hoursToMilliseconds, minutesToMilliseconds } from "date-fns";
+import { format, hoursToMilliseconds, minutesToMilliseconds, setHours, setMilliseconds, setMinutes, setSeconds } from "date-fns";
 import type { ItemDefinition, RowDefinition } from "dnd-timeline";
 import { groupItemsToSubrows, useTimelineContext, useWheelStrategy } from "dnd-timeline";
 import React, { useMemo } from "react";
@@ -6,54 +6,22 @@ import Item from "./Item";
 import Row from "./Row";
 import Sidebar from "./Sidebar";
 import Subrow from "./Subrow";
-import TimeAxis, { MarkerDefinition } from "./timelineAxis/TimeAxis";
 import TimeCursor from "./TimeCursor";
-import { SpectimeMarker } from "./timelineAxis/timelineAxisTypes";
+import { MarkerDefinition } from "./timelineAxis/timelineAxisTypes";
+import TimeAxis from "./timelineAxis/timeAxis/TimeAxis";
+import TickWithLineLabel from "./timelineAxis/tickWithLineLabel/tickWithLineLabel";
 
 const timeAxisMarkers: MarkerDefinition[] = [
 	{
-		value: hoursToMilliseconds(24),
-		getLabel: (date: Date) => format(date, "E"),
-	},
-	{
-		value: hoursToMilliseconds(2),
-		minRangeSize: hoursToMilliseconds(24),
-		getLabel: (date: Date) => format(date, "k")
-	},
-	{
-		value: hoursToMilliseconds(1),
-		minRangeSize: hoursToMilliseconds(24),
-		maxRangeSize: hoursToMilliseconds(24),
-
-	},
-	{
-		value: hoursToMilliseconds(1),
-		maxRangeSize: hoursToMilliseconds(24),
-		getLabel: (date: Date) => format(date, "k"),
-	},
-	{
-		value: minutesToMilliseconds(30),
-		maxRangeSize: hoursToMilliseconds(24),
-		minRangeSize: hoursToMilliseconds(12),
-	},
-	{
-		value: minutesToMilliseconds(15),
-		maxRangeSize: hoursToMilliseconds(12),
-		getLabel: (date: Date) => format(date, "m"),
-	},
-	{
 		value: minutesToMilliseconds(5),
-		maxRangeSize: hoursToMilliseconds(6),
-		minRangeSize: hoursToMilliseconds(3),
-	},
-	{
-		value: minutesToMilliseconds(5),
-		maxRangeSize: hoursToMilliseconds(3),
+		maxRangeSize: hoursToMilliseconds(1),
+    minRangeSize:hoursToMilliseconds(1),
 		getLabel: (date: Date) => format(date, "m"),
+    overrideComponent:TickWithLineLabel
 	},
 	{
 		value: minutesToMilliseconds(1),
-		maxRangeSize: hoursToMilliseconds(2),
+		maxRangeSize: hoursToMilliseconds(1),
 	},
 ];
 
@@ -81,15 +49,13 @@ function Timeline(props: TimelineProps) {
     [props.items, range]
   );
 
+  const now = new Date();
+ 
+
   return (
     <div ref={setTimelineRef} style={style} dir="rtl">
-      <TimeCursor at={new Date()} />
+      <TimeCursor at={now} />
       <TimeAxis markers={timeAxisMarkers} />
-      {/* <TimeTickTicsAxis ticDefinitions={[
-
-
-      ]}
-       /> */}
       {props.rows.map((row) => (
         <Row id={row.id} key={row.id} sidebar={<Sidebar row={row} />}>
           {groupedSubrows[row.id]?.map((subrow, index) => (

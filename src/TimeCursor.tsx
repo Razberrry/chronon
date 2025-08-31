@@ -52,6 +52,8 @@ function TimeCursor({at}: TimeCursorProps) {
 				zIndex: 3,
 				backgroundColor: "white",
 				position: "absolute",
+  			transform:'translateX(50%)'
+
 			}}
 		/>
 	);
