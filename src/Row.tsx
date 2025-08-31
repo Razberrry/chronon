@@ -15,13 +15,22 @@ function Row(props: RowProps) {
 		rowStyle,
 		rowSidebarStyle,
 	} = useRow({ id: props.id });
-	
+
+
 	return (
-		<div style={{ ...rowWrapperStyle, height: 200 }}>
+		<div style={rowWrapperStyle}>
 			<div ref={setSidebarRef} style={rowSidebarStyle}>
 				{props.sidebar}
 			</div>
-			<div ref={setNodeRef} style={{ ...rowStyle, border: "1px solid grey" }}>
+			<div ref={setNodeRef} style={{
+				...rowStyle,
+				display: 'flex 0 0 auto',
+				height:'200px',
+				overflowY:'auto',
+				overflowX:'hidden',
+				border:'1px solid grey'
+			}}>
+
 				{props.children}
 			</div>
 		</div>

@@ -3,10 +3,11 @@ import React, { memo, useRef, useLayoutEffect } from "react";
 import { useTimelineContext } from "dnd-timeline";
 
 interface TimeCursorProps {
-	interval?: number;
+	at?: Date;
+
 }
 
-function TimeCursor(props: TimeCursorProps) {
+function TimeCursor({at}: TimeCursorProps) {
 	const timeCursorRef = useRef<HTMLDivElement>(null);
 
 	const { range, direction, sidebarWidth, valueToPixels } =
@@ -15,14 +16,14 @@ function TimeCursor(props: TimeCursorProps) {
 	const side = direction === "rtl" ? "right" : "left";
 
 	const isVisible =
-		new Date().getTime() > range.start && new Date().getTime() < range.end;
+		at.getTime() > range.start && at.getTime() < range.end;
 
 	useLayoutEffect(() => {
 		if (!isVisible) return;
 
 		const offsetCursor = () => {
 			if (!timeCursorRef.current) return;
-			const timeDelta = new Date().getTime() - range.start;
+			const timeDelta = at.getTime() - range.start;
 			const timeDeltaInPixels = valueToPixels(timeDelta);
 
 			const sideDelta = sidebarWidth + timeDeltaInPixels;
@@ -31,15 +32,10 @@ function TimeCursor(props: TimeCursorProps) {
 
 		offsetCursor();
 
-		const interval = setInterval(offsetCursor, props.interval || 1000);
-
-		return () => {
-			clearInterval(interval);
-		};
 	}, [
 		side,
 		sidebarWidth,
-		props.interval,
+		at,
 		range.start,
 		valueToPixels,
 		isVisible,
@@ -52,9 +48,9 @@ function TimeCursor(props: TimeCursorProps) {
 			ref={timeCursorRef}
 			style={{
 				height: "100%",
-				width: "1px",
+				width: "2px",
 				zIndex: 3,
-				backgroundColor: "red",
+				backgroundColor: "white",
 				position: "absolute",
 			}}
 		/>

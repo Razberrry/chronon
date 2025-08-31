@@ -1,80 +1,70 @@
 import "./index.css";
-import { endOfDay, startOfDay } from "date-fns";
-import type { DragEndEvent, Range, ResizeEndEvent } from "dnd-timeline";
+import { addDays, addHours, addMinutes, endOfDay, startOfDay, subDays, subHours, subMinutes } from "date-fns";
+import type { Range } from "dnd-timeline";
 import { TimelineContext } from "dnd-timeline";
 import React, { useCallback, useState } from "react";
 import Timeline from "./Timeline";
 import { generateItems, generateRows } from "./utils";
 import { useHorizontalDragScroll } from "./usePanStrategy";
 
-const daysAgo = (n) => new Date(Date.now() - n * 86400000);
+const daysAgo = (n: number) => new Date(Date.now() - n * 86400000);
 
-const DEFAULT_RANGE: Range = {
-	start: startOfDay(new Date()).getTime(),
-	end: endOfDay(new Date()).getTime(),
-};
+// Builders that center the range around "now" each time they're called
+const makeHourRange = (): Range => ({
+  start: subMinutes(new Date(),30).getTime(),
+  end: addMinutes(new Date(), 30).getTime(),
+});
+
+const makeDayRange = (): Range => ({
+  start: subHours(new Date(), 12).getTime(),
+  end: addHours(new Date(),12).getTime(),
+});
+
+const makeWeekRange = (): Range => ({
+  start: subDays(new Date(), 3).getTime(),
+  end: addDays(new Date(), 4).getTime(),
+});
+
+// Use a concrete default; hour view is fine
+const DEFAULT_RANGE_HOUR: Range = makeHourRange();
 
 function App() {
-	const [range, setRange] = useState(DEFAULT_RANGE);
+  const [range, setRange] = useState<Range>(DEFAULT_RANGE_HOUR);
 
-	const [rows] = useState(generateRows(3));
-	const [items, setItems] = useState(generateItems(500, {
-		start: startOfDay(daysAgo(10)).getTime(),
-		end: endOfDay(new Date()).getTime(),
-	}, rows));
+  const [rows] = useState(generateRows(3));
+  const [items, setItems] = useState(
+    generateItems(
+      500,
+      {
+        start: startOfDay(daysAgo(10)).getTime(),
+        end: endOfDay(daysAgo(-20)).getTime(),
+      },
+      rows
+    )
+  );
 
-	// const onResizeEnd = useCallback((event: ResizeEndEvent) => {
-	// 	const updatedSpan =
-	// 		event.active.data.current.getSpanFromResizeEvent?.(event);
+  const setHour = useCallback(() => setRange(makeHourRange()), []);
+  const setDay = useCallback(() => setRange(makeDayRange()), []);
+  const setWeek = useCallback(() => setRange(makeWeekRange()), []);
 
-	// 	if (!updatedSpan) return;
+  return (
+    <>
+      <div className="range-toolbar" style={{ display: "flex", gap: 8, margin: "8px 0" }}>
+        <button type="button" onClick={setHour}>Hour</button>
+        <button type="button" onClick={setDay}>Day</button>
+        <button type="button" onClick={setWeek}>Week</button>
+      </div>
 
-	// 	const activeItemId = event.active.id;
-
-	// 	setItems((prev) =>
-	// 		prev.map((item) => {
-	// 			if (item.id !== activeItemId) return item;
-
-	// 			return {
-	// 				...item,
-	// 				span: updatedSpan,
-	// 			};
-	// 		}),
-	// 	);
-	// }, []);
-	
-	// const onDragEnd = useCallback((event: DragEndEvent) => {
-	// 	const activeRowId = event.over?.id as string;
-	// 	const updatedSpan = event.active.data.current.getSpanFromDragEvent?.(event);
-
-	// 	if (!updatedSpan || !activeRowId) return;
-
-	// 	const activeItemId = event.active.id;
-
-	// 	setItems((prev) =>
-	// 		prev.map((item) => {
-	// 			if (item.id !== activeItemId) return item;
-
-	// 			return {
-	// 				...item,
-	// 				rowId: activeRowId,
-	// 				span: updatedSpan,
-	// 			};
-	// 		}),
-	// 	);
-	// }, []);
-
-	
-	return (
-		<TimelineContext
-			range={range}
-			onResizeEnd={()=>{}}
-			onRangeChanged={setRange}
-			usePanStrategy={useHorizontalDragScroll}
-		>
-			<Timeline items={items} rows={rows} />
-		</TimelineContext>
-	);
+      <TimelineContext
+        range={range}
+        onResizeEnd={() => {}}
+        onRangeChanged={setRange}
+        usePanStrategy={useHorizontalDragScroll}
+      >
+        <Timeline items={items} rows={rows} />
+      </TimelineContext>
+    </>
+  );
 }
 
 export default App;

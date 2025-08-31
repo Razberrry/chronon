@@ -5,12 +5,10 @@ export const useHorizontalDragScroll: UsePanStrategy = (timelineBag, onPanEnd) =
   useLayoutEffect(() => {
     const el = timelineBag.timelineRef.current;
     if (!el) return;
-
     let isDragging = false;
     let lastX = 0;
 
     const onMouseDown = (e: MouseEvent) => {
-      // Only react to left button
       if (e.button !== 0) return;
       isDragging = true;
       lastX = e.clientX;
