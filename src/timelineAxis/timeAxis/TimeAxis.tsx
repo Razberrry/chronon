@@ -1,46 +1,42 @@
 import React, { memo, useMemo } from "react";
 import { useTimelineContext } from "dnd-timeline";
 import styles from "./TimeAxis.module.css";
-import { Marker, TimeAxisProps } from "../timelineAxisTypes";
-import { sortMarkerDefinitionsByValueDescending, getSmallestStepFromDefinitions, floorTimestampToStep, getTimezoneOffsetMilliseconds, generateTimestampsBetweenRangeInclusive, findActiveMarkerDefinitionForTime, createMarkerFromDefinition } from "../timelineAxisHelpers";
+import { Marker, MarkerDefinition, TimeAxisProps } from "../timelineAxisTypes";
 import AxisLabel from "../axisLabel/AxisLabel";
+import { format, hoursToMilliseconds, minutesToMilliseconds } from "date-fns";
+import TickWithLineLabel from "../tickWithLineLabel/tickWithLineLabel";
+import SimpleTickLabel from "../justTick/SimpleTickLabel";
+import { computeMarkers } from "../timelineAxisHelpers";
+
+const TIME_AXIS_MARKERS: MarkerDefinition[] = [
+	{
+		value: minutesToMilliseconds(5),
+		maxRangeSize: hoursToMilliseconds(1),
+		getLabel: (date: Date) => format(date, "m"),
+    overrideComponent:TickWithLineLabel
+	},
+	{
+		value: minutesToMilliseconds(1),
+		maxRangeSize: hoursToMilliseconds(1),
+    overrideComponent:SimpleTickLabel
+	},
+];
 
 
-
-const TimeAxis: React.FC<TimeAxisProps> = ({ markers: definitions }) => {
+const TimeAxis: React.FC = () => {
   const { range, direction, sidebarWidth, valueToPixels } = useTimelineContext();
   const side: "left" | "right" = direction === "rtl" ? "right" : "left";
 
-  const markers = useMemo<Marker[]>(() => {
-    const sorted = sortMarkerDefinitionsByValueDescending(definitions);
-    if (!sorted.length) return [];
-
-    const smallestStep = getSmallestStepFromDefinitions(sorted);
-    if (!smallestStep) return [];
-
-    const rangeSizeMs = range.end - range.start;
-    const startAligned = floorTimestampToStep(range.start, smallestStep);
-    const timezoneOffsetMs = getTimezoneOffsetMilliseconds();
-
-    const timestamps = generateTimestampsBetweenRangeInclusive(
-      startAligned,
-      range.end,
-      smallestStep,
-    );
-
-    const out: Marker[] = [];
-    for (const t of timestamps) {
-      const active = findActiveMarkerDefinitionForTime(
-        sorted,
-        t,
-        rangeSizeMs,
-        timezoneOffsetMs,
-      );
-      if (!active) continue;
-      out.push(createMarkerFromDefinition(active, t, range.start, valueToPixels));
-    }
-    return out;
-  }, [definitions, range, valueToPixels]);
+  const markers: Marker[] = useMemo(
+  () =>
+    computeMarkers(
+      TIME_AXIS_MARKERS,         
+      range.start,                
+      range.end,                 
+      valueToPixels,           
+    ),
+  [range.start, range.end, valueToPixels]
+  );
 
   return (
     <div

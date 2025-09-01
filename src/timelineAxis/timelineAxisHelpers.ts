@@ -1,95 +1,147 @@
 import { minutesToMilliseconds } from "date-fns";
-import {orderBy,last,range,find}  from 'lodash'
+import orderBy from "lodash/orderBy";
+import find from "lodash/find";
+import last from "lodash/last";
+import range from "lodash/range";
 import { Marker, MarkerDefinition } from "./timelineAxisTypes";
-/** Return marker definitions sorted by interval value, largest → smallest. */
-export const sortMarkerDefinitionsByValueDescending = (
-  definitions: MarkerDefinition[],
-): MarkerDefinition[] => {
-  if (!definitions?.length) return [];
-  return orderBy(definitions, ["value"], ["desc"]);
-};
 
-/** Get the smallest interval value from a list already sorted descending. */
-export const getSmallestStepFromDefinitions = (
-  sortedDefinitions: MarkerDefinition[],
-): number => {
-  if (!sortedDefinitions?.length) return 0;
-  return last(sortedDefinitions)!.value;
-};
-
-/** Current timezone offset in milliseconds. */
-export const getTimezoneOffsetMilliseconds = (): number =>
-  minutesToMilliseconds(new Date().getTimezoneOffset());
-
-/** Is a definition active at timestampMs, given the visible range and timezone offset. */
-export const isMarkerDefinitionActiveAtTime = (
-  definition: MarkerDefinition,
-  timestampMs: number,
-  rangeSizeMs: number,
-  timezoneOffsetMs: number,
+const isScaleFunctionReady = (
+  visibleRangeStartMilliseconds: number,
+  visibleRangeEndMilliseconds: number,
+  convertMillisecondsToPixels: (milliseconds: number) => number,
 ): boolean => {
-  if (!definition || typeof definition.value !== "number" || definition.value <= 0) {
-    return false;
-  }
-
-  const alignedToInterval = ((timestampMs - timezoneOffsetMs) % definition.value) === 0;
-
-  const withinMax = definition.maxRangeSize
-    ? rangeSizeMs <= definition.maxRangeSize
-    : true;
-
-  const withinMin = definition.minRangeSize
-    ? rangeSizeMs >= definition.minRangeSize
-    : true;
-
-  return alignedToInterval && withinMax && withinMin;
+  const rangeSpanMilliseconds = visibleRangeEndMilliseconds - visibleRangeStartMilliseconds;
+  if (!Number.isFinite(rangeSpanMilliseconds) || rangeSpanMilliseconds <= 0) return false;
+  const rangeSpanPixels = convertMillisecondsToPixels(rangeSpanMilliseconds);
+  return Number.isFinite(rangeSpanPixels) && rangeSpanPixels > 0;
 };
 
-/** Find the first active definition at timestampMs from a list sorted by value desc. */
-export const findActiveMarkerDefinitionForTime = (
-  sortedDefinitions: MarkerDefinition[],
-  timestampMs: number,
-  rangeSizeMs: number,
-  timezoneOffsetMs: number,
-): MarkerDefinition | undefined =>
-  find(sortedDefinitions, (def) =>
-    isMarkerDefinitionActiveAtTime(def, timestampMs, rangeSizeMs, timezoneOffsetMs),
+const getApplicableDefinitionsSortedForVisibleRange = (
+  markerDefinitions: MarkerDefinition[],
+  visibleRangeStartMilliseconds: number,
+  visibleRangeEndMilliseconds: number,
+): MarkerDefinition[] => {
+
+  const visibleRangeMilliseconds = visibleRangeEndMilliseconds - visibleRangeStartMilliseconds;
+
+  const sortedDefinitions = orderBy(markerDefinitions, ["value"], ["desc"]);
+  return sortedDefinitions.filter((definition: MarkerDefinition) => {
+    const withinMaximumRange =
+      definition.maxRangeSize == null || visibleRangeMilliseconds <= definition.maxRangeSize;
+    const withinMinimumRange =
+      definition.minRangeSize == null || visibleRangeMilliseconds >= definition.minRangeSize;
+    return withinMaximumRange && withinMinimumRange;
+  });
+};
+
+const getStepAndAlignedStartFromDefinitions = (
+  applicableDefinitions: MarkerDefinition[],
+  visibleRangeStartMilliseconds: number,
+): { stepMilliseconds: number; alignedStartMilliseconds: number } | null => {
+  const stepMilliseconds = last(applicableDefinitions)?.value ?? 0;
+  if (stepMilliseconds <= 0) return null;
+  const alignedStartMilliseconds =
+    Math.floor(visibleRangeStartMilliseconds / stepMilliseconds) * stepMilliseconds;
+  return { stepMilliseconds, alignedStartMilliseconds };
+};
+
+const buildTimestampSequence = (
+  alignedStartMilliseconds: number,
+  visibleRangeEndMilliseconds: number,
+  stepMilliseconds: number,
+): number[] =>
+  range(
+    alignedStartMilliseconds,
+    visibleRangeEndMilliseconds + stepMilliseconds,
+    stepMilliseconds,
   );
 
-/** Floor a timestamp to the nearest step size. */
-export const floorTimestampToStep = (timestampMs: number, stepMs: number): number => {
-  if (!stepMs || stepMs <= 0) return timestampMs;
-  return Math.floor(timestampMs / stepMs) * stepMs;
+const selectActiveMarkerDefinition = (
+  applicableDefinitions: MarkerDefinition[],
+  timestampMilliseconds: number,
+  timezoneOffsetMilliseconds: number,
+): MarkerDefinition | undefined =>
+  find(
+    applicableDefinitions,
+    (definition:MarkerDefinition) =>
+      ((timestampMilliseconds - timezoneOffsetMilliseconds) % definition.value) === 0,
+  );
+
+const createTimestampToMarkerMapper = (
+  applicableDefinitions: MarkerDefinition[],
+  visibleRangeStartMilliseconds: number,
+  convertMillisecondsToPixels: (milliseconds: number) => number,
+  timezoneOffsetMilliseconds: number,
+) => {
+  return (timestampMilliseconds: number): Marker | null => {
+    const activeDefinition = selectActiveMarkerDefinition(
+      applicableDefinitions,
+      timestampMilliseconds,
+      timezoneOffsetMilliseconds,
+    );
+    if (!activeDefinition) return null;
+
+    const labelText = activeDefinition.getLabel?.(new Date(timestampMilliseconds));
+    const pixelOffsetFromRangeStart = convertMillisecondsToPixels(
+      timestampMilliseconds - visibleRangeStartMilliseconds,
+    );
+
+    return {
+      label: labelText,
+      sideDelta: pixelOffsetFromRangeStart,
+      Override: activeDefinition.overrideComponent,
+    };
+  };
 };
 
-/** Generate timestamps from start to end (inclusive), spaced by stepMs. */
-export const generateTimestampsBetweenRangeInclusive = (
-  startMs: number,
-  endMs: number,
-  stepMs: number,
-): number[] => {
-  if (stepMs <= 0) return [];
-  if (endMs < startMs) return [];
+export const computeMarkers = (
+  markerDefinitions: MarkerDefinition[],
+  visibleRangeStartMilliseconds: number,
+  visibleRangeEndMilliseconds: number,
+  convertMillisecondsToPixels: (milliseconds: number) => number,
+): Marker[] => {
+  if (
+    !isScaleFunctionReady(
+      visibleRangeStartMilliseconds,
+      visibleRangeEndMilliseconds,
+      convertMillisecondsToPixels,
+    )
+  ) {
+    return [];
+  }
 
-  // lodash.range is end-exclusive; extend by one step and then ensure end inclusion.
-  const values = range(startMs, endMs + stepMs, stepMs);
-  const lastValue = last(values);
+  if (!markerDefinitions?.length) return [];
 
-  const endIsAligned = (endMs - startMs) % stepMs === 0;
-  const endMissing = lastValue !== endMs;
+  const applicableDefinitions = getApplicableDefinitionsSortedForVisibleRange(
+    markerDefinitions,
+    visibleRangeStartMilliseconds,
+    visibleRangeEndMilliseconds,
+  );
+  if (!applicableDefinitions.length) return [];
 
-  if (endIsAligned && endMissing) values.push(endMs);
-  return values;
+  const stepAndAlignedStart = getStepAndAlignedStartFromDefinitions(
+    applicableDefinitions,
+    visibleRangeStartMilliseconds,
+  );
+  if (!stepAndAlignedStart) return [];
+
+  const { stepMilliseconds, alignedStartMilliseconds } = stepAndAlignedStart;
+
+  const timestampsMilliseconds = buildTimestampSequence(
+    alignedStartMilliseconds,
+    visibleRangeEndMilliseconds,
+    stepMilliseconds,
+  );
+
+  const timezoneOffsetMilliseconds = minutesToMilliseconds(new Date().getTimezoneOffset());
+
+  const mapTimestampToMarker = createTimestampToMarkerMapper(
+    applicableDefinitions,
+    visibleRangeStartMilliseconds,
+    convertMillisecondsToPixels,
+    timezoneOffsetMilliseconds,
+  );
+  const markersOrNull = timestampsMilliseconds.map(mapTimestampToMarker);
+  const markers = markersOrNull.filter(Boolean) as Marker[];
+  return markers;
 };
-
-/** Convert a marker definition at timestampMs into a renderable marker. */
-export const createMarkerFromDefinition = (
-  definition: MarkerDefinition,
-  timestampMs: number,
-  rangeStartMs: number,
-  valueToPixels: (valueMs: number) => number,
-): Marker => ({
-  label: definition.getLabel?.(new Date(timestampMs)),
-  sideDelta: valueToPixels(timestampMs - rangeStartMs),
-  Override: definition.overrideComponent,
-});

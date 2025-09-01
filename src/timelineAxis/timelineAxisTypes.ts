@@ -7,7 +7,7 @@ export interface MarkerDefinition {
   maxRangeSize?: number;
   minRangeSize?: number;
   getLabel?: (time: Date) => string;
-  overrideComponent?: LabelComponent; // children-only component
+  overrideComponent?: LabelComponent; 
 }
 
 export interface Marker {
