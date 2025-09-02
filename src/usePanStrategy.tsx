@@ -1,49 +1,96 @@
 import { PanEndEvent, UsePanStrategy } from "dnd-timeline";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useRef } from "react";
+import { hoursToMilliseconds, minutesToMilliseconds } from "date-fns";
 
-export const useHorizontalDragScroll: UsePanStrategy = (timelineBag, onPanEnd) => {
+const buildPanEndEvent = (
+  sourceEvent: { clientX: number; clientY: number },
+  deltaX: number,
+  deltaY: number
+): PanEndEvent => ({
+  clientX: sourceEvent.clientX,
+  clientY: sourceEvent.clientY,
+  deltaX,
+  deltaY,
+});
+
+const isZoomGesture = (event: WheelEvent): boolean => event.ctrlKey || event.metaKey;
+const isZoomInAttempt = (event: WheelEvent): boolean => event.deltaY < 0;
+const MINIMUM_RANGE_MILLISECONDS = minutesToMilliseconds(60);
+
+export const usePanStrategy: UsePanStrategy = (timelineBag, onPanEnd) => {
+  const onPanEndRef = useRef(onPanEnd);
+  const rangeRef = useRef({ start: timelineBag.range.start, end: timelineBag.range.end });
+
   useLayoutEffect(() => {
-    const el = timelineBag.timelineRef.current;
-    if (!el) return;
+    onPanEndRef.current = onPanEnd;
+  }, [onPanEnd]);
+
+  useLayoutEffect(() => {
+    rangeRef.current = { start: timelineBag.range.start, end: timelineBag.range.end };
+  }, [timelineBag.range.start, timelineBag.range.end]);
+
+  useLayoutEffect(() => {
+    const timelineElement = timelineBag.timelineRef.current;
+    if (!timelineElement) return;
+
     let isDragging = false;
-    let lastX = 0;
+    let lastKnownClientX = 0;
+    let activePointerId: number | null = null;
 
-    const onMouseDown = (e: MouseEvent) => {
-      if (e.button !== 0) return;
+    const handlePointerDown = (event: PointerEvent): void => {
+      if (event.button !== 0) return;
+      timelineElement.setPointerCapture?.(event.pointerId);
+      activePointerId = event.pointerId;
       isDragging = true;
-      lastX = e.clientX;
-      el.style.cursor = "grabbing";
-      e.preventDefault();
+      lastKnownClientX = event.clientX;
+      timelineElement.style.cursor = "grabbing";
+      timelineElement.style.userSelect = "none";
+      event.preventDefault();
     };
 
-    const onMouseMove = (e: MouseEvent) => {
+    const handlePointerMove = (event: PointerEvent): void => {
       if (!isDragging) return;
-      const dx = e.clientX - lastX;
-      lastX = e.clientX;
-
-      const panEvent: PanEndEvent = {
-        clientX: e.clientX,
-        clientY: e.clientY,
-        deltaX: -dx, // Invert so drag direction feels natural
-        deltaY: 0,
-      };
-      onPanEnd(panEvent);
+      if (activePointerId !== null && event.pointerId !== activePointerId) return;
+      const horizontalClientMovement = event.clientX - lastKnownClientX;
+      lastKnownClientX = event.clientX;
+      onPanEndRef.current(buildPanEndEvent(event, -horizontalClientMovement, 0));
+      event.preventDefault();
     };
 
-    const onMouseUp = () => {
+    const handlePointerEnd = (): void => {
       if (!isDragging) return;
       isDragging = false;
-      el.style.cursor = "";
+      if (activePointerId !== null) {
+        timelineElement.releasePointerCapture?.(activePointerId);
+      }
+      activePointerId = null;
+      timelineElement.style.cursor = "";
+      timelineElement.style.userSelect = "";
     };
 
-    el.addEventListener("mousedown", onMouseDown);
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
+    const handleWheel = (event: WheelEvent): void => {
+      if (!isZoomGesture(event)) return;
+      event.preventDefault();
+      const { start, end } = rangeRef.current;
+      const currentRangeSizeMilliseconds = end - start;
+      if (isZoomInAttempt(event) && currentRangeSizeMilliseconds < MINIMUM_RANGE_MILLISECONDS) return;
+      onPanEndRef.current(buildPanEndEvent(event, 0, -event.deltaY*SCROLL_SENSITIVITY));
+    };
+
+    timelineElement.addEventListener("pointerdown", handlePointerDown, { passive: false });
+    timelineElement.addEventListener("pointermove", handlePointerMove, { passive: false });
+    timelineElement.addEventListener("pointerup", handlePointerEnd, { passive: false });
+    timelineElement.addEventListener("pointercancel", handlePointerEnd, { passive: false });
+    timelineElement.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
-      el.removeEventListener("mousedown", onMouseDown);
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
+      timelineElement.removeEventListener("pointerdown", handlePointerDown);
+      timelineElement.removeEventListener("pointermove", handlePointerMove);
+      timelineElement.removeEventListener("pointerup", handlePointerEnd);
+      timelineElement.removeEventListener("pointercancel", handlePointerEnd);
+      timelineElement.removeEventListener("wheel", handleWheel);
+      timelineElement.style.cursor = "";
+      timelineElement.style.userSelect = "";
     };
-  }, [onPanEnd, timelineBag.timelineRef]);
+  }, [timelineBag.timelineRef]);
 };
