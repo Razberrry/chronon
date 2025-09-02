@@ -1,0 +1,11 @@
+.toolbar {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.active {
+  background: #7c3aed;   /* purple */
+  color: white;
+  border-color: #7c3aed;
+}
