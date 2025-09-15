@@ -7,7 +7,7 @@ interface RowProps extends RowDefinition {
 	sidebar: React.ReactNode;
 }
 
-function Row(props: RowProps) {
+const Row = (props: RowProps) => {
 	const {
 		setSidebarRef,
 		rowWrapperStyle,
@@ -34,6 +34,6 @@ function Row(props: RowProps) {
 			</div>
 		</div>
 	);
-}
+};
 
 export default Row;
