@@ -9,12 +9,11 @@ interface RowProps extends RowDefinition {
 
 function Row(props: RowProps) {
 	const {
-		setNodeRef,
 		setSidebarRef,
 		rowWrapperStyle,
 		rowStyle,
 		rowSidebarStyle,
-	} = useRow({ id: props.id });
+	} = useRow();
 
 
 	return (
@@ -22,7 +21,7 @@ function Row(props: RowProps) {
 			<div ref={setSidebarRef} style={rowSidebarStyle}>
 				{props.sidebar}
 			</div>
-			<div ref={setNodeRef} style={{
+			<div  style={{
 				...rowStyle,
 				display: 'flex 0 0 auto',
 				height:'200px',
