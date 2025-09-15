@@ -4,5 +4,12 @@
   height: 100%;
   display: flex;
   align-items: center;
-  transform:translateX(50%);
+}
+
+.AxisLabel:dir(ltr) {
+  transform: translateX(-50%);
+}
+
+.AxisLabel:dir(rtl) {
+  transform: translateX(50%);
 }

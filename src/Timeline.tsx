@@ -15,15 +15,14 @@ interface TimelineProps {
   items: ItemDefinition[];
 }
 
-function Timeline(props: TimelineProps) {
+const Timeline = (props: TimelineProps) => {
   const { setTimelineRef, style, range} = useTimelineContext();
   useTimelineBehavior();
-
+ 
   const groupedSubrows = useMemo(
     () => groupItemsToSubrows(props.items, range),
     [props.items, range]
   );
-
   const now = new Date();
 
   return (
@@ -46,6 +45,6 @@ function Timeline(props: TimelineProps) {
       ))}
     </div>
   );
-}
+};
 
 export default Timeline;

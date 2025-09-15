@@ -3,7 +3,8 @@
   width: 2px;
   height: calc(100% - 25px);   
   background: currentColor;
-  opacity: 0.7;
+  opacity: 0.3;
+  margin-top: 12px;
 }
 
 .labelContainer {

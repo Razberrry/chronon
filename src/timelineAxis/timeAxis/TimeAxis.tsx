@@ -1,41 +1,27 @@
 import React, { memo, useMemo } from "react";
 import { useTimelineContext } from "dnd-timeline";
 import styles from "./TimeAxis.module.css";
-import { Marker, MarkerDefinition, TimeAxisProps } from "../timelineAxisTypes";
+import { Marker, MarkerDefinition } from "../timelineAxisTypes";
 import AxisLabel from "../axisLabel/AxisLabel";
-import { format, hoursToMilliseconds, minutesToMilliseconds } from "date-fns";
-import TickWithLineLabel from "../tickWithLineLabel/tickWithLineLabel";
-import SimpleTickLabel from "../justTick/SimpleTickLabel";
 import { computeMarkers } from "../timelineAxisHelpers";
 
-const TIME_AXIS_MARKERS: MarkerDefinition[] = [
-	{
-		value: minutesToMilliseconds(5),
-		maxRangeSize: hoursToMilliseconds(1),
-		getLabel: (date: Date) => format(date, "m"),
-    overrideComponent:TickWithLineLabel
-	},
-	{
-		value: minutesToMilliseconds(1),
-		maxRangeSize: hoursToMilliseconds(1),
-    overrideComponent:SimpleTickLabel
-	},
-];
+interface TimeAxisProps{
+  timeAxisMarkers: MarkerDefinition[];
+};
 
-
-const TimeAxis: React.FC = () => {
+const TimeAxis: React.FC<TimeAxisProps> = ({ timeAxisMarkers }) => {
   const { range, direction, sidebarWidth, valueToPixels } = useTimelineContext();
   const side: "left" | "right" = direction === "rtl" ? "right" : "left";
 
   const markers: Marker[] = useMemo(
-  () =>
-    computeMarkers(
-      TIME_AXIS_MARKERS,         
-      range.start,                
-      range.end,                 
-      valueToPixels,           
-    ),
-  [range.start, range.end, valueToPixels]
+    () =>
+      computeMarkers(
+        timeAxisMarkers,
+        range.start,
+        range.end,
+        valueToPixels,
+      ),
+    [timeAxisMarkers, range.start, range.end, valueToPixels]
   );
 
   return (
