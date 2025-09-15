@@ -1,12 +1,14 @@
-import type { ItemDefinition, RowDefinition } from "dnd-timeline";
+import type { ItemDefinition, OnPanEnd, RowDefinition } from "dnd-timeline";
 import { groupItemsToSubrows, useTimelineContext, useWheelStrategy } from "dnd-timeline";
-import React, { useMemo } from "react";
-import Item from "./Item";
+import React, { useEffect, useMemo } from "react";
 import Row from "./Row";
 import Sidebar from "./Sidebar";
 import Subrow from "./Subrow";
 import TimeCursor from "./TimeCursor";
 import TimeAxis from "./timelineAxis/timeAxis/TimeAxis";
+import { HOUR_AXIS_MARKERS, TIME_AXIS_MARKERS } from "./timelineAxis/timelineAxisMarkerDefinitions";
+import Item from "./item/item";
+import { useTimelineBehavior } from "./useTimelineBehavior";
 
 interface TimelineProps {
   rows: RowDefinition[];
@@ -14,8 +16,9 @@ interface TimelineProps {
 }
 
 function Timeline(props: TimelineProps) {
-  const { setTimelineRef, style, range } = useTimelineContext();
-	
+  const { setTimelineRef, style, range} = useTimelineContext();
+  useTimelineBehavior();
+
   const groupedSubrows = useMemo(
     () => groupItemsToSubrows(props.items, range),
     [props.items, range]
@@ -26,7 +29,8 @@ function Timeline(props: TimelineProps) {
   return (
     <div ref={setTimelineRef} style={style} dir="rtl">
       <TimeCursor at={now} />
-      <TimeAxis />
+      <TimeAxis timeAxisMarkers={HOUR_AXIS_MARKERS} />
+      <TimeAxis timeAxisMarkers={TIME_AXIS_MARKERS} />
       {props.rows.map((row) => (
         <Row id={row.id} key={row.id} sidebar={<Sidebar row={row} />}>
           {groupedSubrows[row.id]?.map((subrow, index) => (
