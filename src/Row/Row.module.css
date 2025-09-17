@@ -1,0 +1,23 @@
+.rowWrapper {
+  	display: "inline-flex",
+}
+
+.sidebar {
+  left: 0;
+  z-index: 3;
+  display: flex;
+}
+
+.content {
+  display: flex;
+  flex: 0 0 auto;
+  height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid grey;
+  flex: 1;
+	display: flex;
+	position: relative;
+	align-items: stretch;
+	flex-direction: column;
+}

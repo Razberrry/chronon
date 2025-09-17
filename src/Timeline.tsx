@@ -1,7 +1,6 @@
 import type { ItemDefinition, OnPanEnd, RowDefinition } from "dnd-timeline";
 import { groupItemsToSubrows, useTimelineContext, useWheelStrategy } from "dnd-timeline";
 import React, { useEffect, useMemo } from "react";
-import Row from "./Row";
 import Sidebar from "./Sidebar";
 import Subrow from "./Subrow";
 import TimeCursor from "./TimeCursor";
@@ -9,6 +8,7 @@ import TimeAxis from "./timelineAxis/timeAxis/TimeAxis";
 import { HOUR_AXIS_MARKERS, TIME_AXIS_MARKERS } from "./timelineAxis/timelineAxisMarkerDefinitions";
 import Item from "./item/item";
 import { useTimelineBehavior } from "./useTimelineBehavior";
+import Row from "./Row/Row";
 
 interface TimelineProps {
   rows: RowDefinition[];

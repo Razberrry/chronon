@@ -14,6 +14,7 @@ const Item: React.FC<ItemProps> = ({ id, span, children }) => {
     id,
     span,
   });
+
   return (
     <div style={itemStyle}>
       <div style={itemContentStyle}>
