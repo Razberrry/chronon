@@ -19,7 +19,7 @@ function App() {
   const [rows] = useState(generateRows(3));
   const [items, setItems] = useState(
     generateItems(
-      1000,
+      5000,
       {
         start: startOfDay(new Date(Date.now() - 10 * 86400000)).getTime(),
         end: endOfDay(new Date(Date.now() + 20 * 86400000)).getTime(),
