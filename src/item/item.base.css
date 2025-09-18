@@ -1,0 +1,20 @@
+:where(.TlTimeline-item) {
+  position: absolute;
+  inset-block-start: 0;
+  height: 100%;
+  touch-action: none;
+
+  width: attr(data-tl-item-width px);
+  inset-inline-start: attr(data-tl-item-inset-start px);
+  inset-inline-end: attr(data-tl-item-inset-end px);
+}
+
+:where(.TlTimeline-itemContent) {
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  align-items: stretch;
+
+  padding-inline-start: attr(data-tl-item-pad-start px);
+  padding-inline-end: attr(data-tl-item-pad-end px);
+}
