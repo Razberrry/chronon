@@ -7,9 +7,11 @@ export const isZoomOutAttempt = (event: WheelEvent): boolean => event.deltaY > 0
 const MIN_ZOOM_RANGE_MILLISECONDS = hoursToMilliseconds(1);
 const MAX_ZOOM_RANGE_MILLISECONDS = hoursToMilliseconds(24 * 7);
 
-export const isHitZoomLimitation = (
+export const isHitZoomLimitationRTL = (
   event: WheelEvent,
-  currentRangeSizeMilliseconds: number) => {
+  currentRangeSizeMilliseconds: number
+
+) => {
   if (isZoomInAttempt(event) && currentRangeSizeMilliseconds < MIN_ZOOM_RANGE_MILLISECONDS) {
     return true;
   }

@@ -36,7 +36,7 @@ const Timeline = (props: TimelineProps) => {
             <Subrow key={`${row.id}-${index}`}>
               {subrow.map((item) => (
                 <Item id={item.id} key={item.id} span={item.span}>
-                 גזרת שדרה
+                 גזרת שדרה {item.id}
                 </Item>
               ))}
             </Subrow>

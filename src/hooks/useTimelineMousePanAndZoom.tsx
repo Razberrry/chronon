@@ -1,7 +1,7 @@
 import { PanEndEvent, useTimelineContext } from "dnd-timeline";
 import { useRef, useLayoutEffect } from "react";
 import { minutesToMilliseconds } from "date-fns";
-import { isHitZoomLimitation, isZoomGesture } from "./zoomUtils";
+import { isHitZoomLimitationRTL, isHitZoomLimitationLTR, isZoomGesture } from "./zoomUtils";
 
  const buildPanEndEvent = (
   sourceEvent: { clientX: number; clientY: number },
@@ -20,7 +20,7 @@ const SCROLL_SENSITIVITY = 1;
 
 
 export const useTimelineMousePanAndZoom = (): void => {
-  const { timelineRef, range, onPanEnd } = useTimelineContext();
+  const { timelineRef, range, onPanEnd, direction } = useTimelineContext();
 
   const onPanEndRef = useRef(onPanEnd);
   const rangeRef = useRef({ start: range.start, end: range.end });
@@ -78,7 +78,7 @@ export const useTimelineMousePanAndZoom = (): void => {
 
       const { start, end } = rangeRef.current;
       const currentRangeSizeMilliseconds = end - start;
-      if (isHitZoomLimitation(event, currentRangeSizeMilliseconds)) return;
+      if (direction==='rtl' ? isHitZoomLimitationRTL(event, currentRangeSizeMilliseconds) : isHitZoomLimitationLTR(event, currentRangeSizeMilliseconds)) return;
 
       onPanEndRef.current(buildPanEndEvent(event, 0, -event.deltaY * SCROLL_SENSITIVITY));
     };
