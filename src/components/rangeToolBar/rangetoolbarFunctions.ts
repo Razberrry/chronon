@@ -1,5 +1,5 @@
 import { addMilliseconds, differenceInMilliseconds, hoursToMilliseconds, subMilliseconds } from "date-fns";
-import type { Range } from "dnd-timeline";
+import type { Range } from '../../types'
 
 export type PresetKey = "hour" | "day" | "week";
 

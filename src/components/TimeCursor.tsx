@@ -1,6 +1,6 @@
 import React, { memo, useRef, useLayoutEffect } from "react";
+import useTimelineContext from "../hooks/useTimelineContext";
 
-import { useTimelineContext } from "dnd-timeline";
 
 interface TimeCursorProps {
 	at?: Date;

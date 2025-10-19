@@ -1,6 +1,7 @@
 // useItem.ts — minimal and readable
 
-import {  Span, useTimelineContext } from "dnd-timeline";
+import useTimelineContext from '../../hooks/useTimelineContext';
+import type { Span } from '../../types'
 
 export type UseItemProps= {
   span: Span

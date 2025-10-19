@@ -1,5 +1,5 @@
-import type { RowDefinition } from "dnd-timeline";
 import React from "react";
+import { RowDefinition } from "../types";
 
 interface SidebarProps {
 	row: RowDefinition;

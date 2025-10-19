@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
-import { useTimelineContext, type Range } from "dnd-timeline";
 import styles from "./rangetoolbar.module.css";
 import { buildPresetRange, getClosestPresetKey, getRangeDurationMilliseconds, PresetKey } from "./rangetoolbarFunctions";
+import useTimelineContext from "../../hooks/useTimelineContext";
+import type { Range } from '../../types'
 
 type RangeToolbarProps = {
   setRange: (range: Range) => void;

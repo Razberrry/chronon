@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
-import { useTimelineContext, type PanEndEvent } from "dnd-timeline";
 import { isZoomGesture} from "./zoomUtils";
+import useTimelineContext from "./useTimelineContext";
+import { PanEndEvent } from "../types";
 
 
 export const buildPanEndEvent = (

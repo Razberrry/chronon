@@ -1,0 +1,19 @@
+:where(.TlTimeline-rowWrapper) {
+  display: inline-flex;
+}
+
+:where(.TlTimeline-rowSidebar) {
+  position: relative;
+  left: 0;
+  z-index: 3;
+  display: flex;
+}
+
+:where(.TlTimeline-rowContent) {
+  align-items: stretch;
+  position: relative;
+  flex:1;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

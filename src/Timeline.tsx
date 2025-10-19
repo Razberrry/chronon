@@ -1,14 +1,15 @@
-import type { ItemDefinition, OnPanEnd, RowDefinition } from "dnd-timeline";
-import { groupItemsToSubrows, useTimelineContext, useWheelStrategy } from "dnd-timeline";
 import React, { useEffect, useMemo } from "react";
-import Sidebar from "./Sidebar";
-import Subrow from "./Subrow";
-import TimeCursor from "./TimeCursor";
-import TimeAxis from "./timelineAxis/timeAxis/TimeAxis";
-import { HOUR_AXIS_MARKERS, TIME_AXIS_MARKERS } from "./timelineAxis/timelineAxisMarkerDefinitions";
-import Item from "./item/item";
-import { useTimelineBehavior } from "./useTimelineBehavior";
-import Row from "./Row/Row";
+import Sidebar from "./components/Sidebar";
+import Subrow from "./components/Subrow";
+import TimeCursor from "./components/TimeCursor";
+import TimeAxis from "./components/timelineAxis/timeAxis/TimeAxis";
+import { HOUR_AXIS_MARKERS, TIME_AXIS_MARKERS } from "./components/timelineAxis/timelineAxisMarkerDefinitions";
+import Item from "./components/item/item";
+import { useTimelineBehavior } from "./hooks/useTimelineBehavior";
+import Row from "./components/Row/row";
+import { ItemDefinition, RowDefinition } from "./types";
+import useTimelineContext from "./hooks/useTimelineContext";
+import { groupItemsToSubrows } from "./utils";
 
 interface TimelineProps {
   rows: RowDefinition[];

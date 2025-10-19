@@ -3,17 +3,10 @@ import clsx from "clsx";
 
 import "./item.base.css";
 import styles from "./item.module.css";
-import { Span } from "dnd-timeline";
+import type { Span } from '../../types'
 import { useItem } from "./useItem";
+import { TimelineItemClasses, TL_ITEM_CLASS, TL_ITEM_CONTENT_CLASS } from "./itemClasses";
 
-export type TimelineItemClasses = {
-  item?: string;
-  content?: string;
-  innerContainer?: string;
-};
-
-export const TL_ITEM_CLASS = "TlTimeline-item";
-export const TL_ITEM_CONTENT_CLASS = "TlTimeline-itemContent";
 
 type ItemProps = {
   id: string;

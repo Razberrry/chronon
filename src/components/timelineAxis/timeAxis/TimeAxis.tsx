@@ -1,9 +1,9 @@
 import React, { memo, useMemo } from "react";
-import { useTimelineContext } from "dnd-timeline";
 import styles from "./TimeAxis.module.css";
 import { Marker, MarkerDefinition } from "../timelineAxisTypes";
 import AxisLabel from "../axisLabel/AxisLabel";
 import { computeMarkers } from "../timelineAxisHelpers";
+import useTimelineContext from "../../../hooks/useTimelineContext";
 
 interface TimeAxisProps{
   timeAxisMarkers: MarkerDefinition[];
@@ -12,7 +12,6 @@ interface TimeAxisProps{
 const TimeAxis: React.FC<TimeAxisProps> = ({ timeAxisMarkers }) => {
   const { range, direction, sidebarWidth, valueToPixels } = useTimelineContext();
   const side: "left" | "right" = direction === "rtl" ? "right" : "left";
-
   const markers: Marker[] = useMemo(
     () =>
       computeMarkers(

@@ -1,12 +1,12 @@
 import "./index.css";
-import { addDays, addHours, addMinutes, endOfDay, startOfDay, subMinutes } from "date-fns";
-import type { Range } from "dnd-timeline";
-import { TimelineContext } from "dnd-timeline";
+import { addMinutes, endOfDay, startOfDay, subMinutes } from "date-fns";
 import React, { useState } from "react";
 import Timeline from "./Timeline";
 import { generateItems, generateRows } from "./utils";
-import RangeToolbar from "./rangeToolBar/rangeToolbar";
+import RangeToolbar from "./components/rangeToolBar/rangeToolbar";
+import { TimelineContext } from "./store/Timeline";
 
+import type { Range } from './types'
 
 const DEFAULT_RANGE_HOUR: Range = {
   start: subMinutes(new Date(), 30).getTime(),
