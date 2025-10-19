@@ -1,5 +1,5 @@
 import { useRef, useLayoutEffect } from "react";
-import { isHitZoomLimitationRTL, isHitZoomLimitationLTR, isZoomGesture } from "./zoomUtils";
+import {isHitZoomLimitation, isZoomGesture } from "./zoomUtils";
 import useTimelineContext from "./useTimelineContext";
 import { PanEndEvent } from "../types";
 
@@ -21,7 +21,6 @@ const SCROLL_SENSITIVITY = 1;
 
 export const useTimelineMousePanAndZoom = (): void => {
   const { timelineRef, range, onPanEnd, direction } = useTimelineContext();
-  console.log(direction)
   const onPanEndRef = useRef(onPanEnd);
   const rangeRef = useRef({ start: range.start, end: range.end });
 
@@ -41,6 +40,7 @@ export const useTimelineMousePanAndZoom = (): void => {
     let lastKnownClientX = 0;
     let activePointerId: number | null = null;
 
+    // pointer down when drag starts
     const handlePointerDown = (event: PointerEvent): void => {
       if (event.button !== 0) return;
       timelineElement.setPointerCapture?.(event.pointerId);
@@ -52,6 +52,8 @@ export const useTimelineMousePanAndZoom = (): void => {
       event.preventDefault();
     };
 
+
+    // pointer moves when dragging , move left/right
     const handlePointerMove = (event: PointerEvent): void => {
       if (!isDragging) return;
       if (activePointerId !== null && event.pointerId !== activePointerId) return;
@@ -61,6 +63,7 @@ export const useTimelineMousePanAndZoom = (): void => {
       event.preventDefault();
     };
 
+    // when finish dragging
     const handlePointerEnd = (): void => {
       if (!isDragging) return;
       isDragging = false;
@@ -72,15 +75,14 @@ export const useTimelineMousePanAndZoom = (): void => {
       timelineElement.style.userSelect = "";
     };
 
+    // when zooming in/out
     const handleWheel = (event: WheelEvent): void => {
       if (!isZoomGesture(event)) return;
       event.preventDefault();
 
       const { start, end } = rangeRef.current;
       const currentRangeSizeMilliseconds = end - start;
-      console.log(direction)
-      if (direction==='rtl' ? isHitZoomLimitationRTL(event, currentRangeSizeMilliseconds) : isHitZoomLimitationLTR(event, currentRangeSizeMilliseconds)) return;
-
+      if (isHitZoomLimitation(event, currentRangeSizeMilliseconds, direction )) return;
       onPanEndRef.current(buildPanEndEvent(event, 0, -event.deltaY * SCROLL_SENSITIVITY));
     };
 
@@ -99,6 +101,6 @@ export const useTimelineMousePanAndZoom = (): void => {
       timelineElement.style.cursor = "";
       timelineElement.style.userSelect = "";
     };
-  }, [timelineRef]);
+  }, [timelineRef,direction]);
 };
 

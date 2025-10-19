@@ -38,7 +38,6 @@ const useTimeline = (
 		width: timelineWidth,
 		direction,
 	} = useElementRef();
-
 	const {
 		ref: sidebarRef,
 		setRef: setSidebarRef,
