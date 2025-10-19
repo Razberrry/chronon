@@ -1,20 +1,24 @@
 import React from "react";
-import styles from "./AxisLabel.module.css";
+import clsx from "clsx";
+import "./axisLabel.base.css";
 import { Marker } from "../timelineAxisTypes";
 import DefaultLabel from "../DefaultLabel/defaultLabel";
+import { TimelineAxisLabelClasses, TL_AXIS_LABEL_CLASS } from "./axisLabelClasses";
 
 type AxisLabelProps = {
   side: "left" | "right";
   marker: Marker;
+  classes?: TimelineAxisLabelClasses;
 };
 
-const AxisLabel: React.FC<AxisLabelProps> = ({ side, marker }) => {
+const AxisLabel: React.FC<AxisLabelProps> = ({ side, marker, classes }) => {
   const Label = marker.Override ?? DefaultLabel;
 
   return (
     <div
-      className={styles.AxisLabel}
-      style={{ [side]: `${marker.sideDelta}px` } as React.CSSProperties}
+      className={clsx(TL_AXIS_LABEL_CLASS, classes?.axisLabel)}
+      data-tl-axis-left={side === "left" ? marker.sideDelta : undefined}
+      data-tl-axis-right={side === "right" ? marker.sideDelta : undefined}
     >
       {marker.label ? <Label>{marker.label}</Label> : <Label/>}
     </div>

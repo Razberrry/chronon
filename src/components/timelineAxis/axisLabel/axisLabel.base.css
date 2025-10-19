@@ -1,0 +1,18 @@
+:where(.TlTimeline-axisLabel) {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  left: attr(data-tl-axis-left px);
+  right: attr(data-tl-axis-right px);
+}
+
+:where(.TlTimeline-axisLabel):dir(ltr) {
+  transform: translateX(-50%);
+}
+
+:where(.TlTimeline-axisLabel):dir(rtl) {
+  transform: translateX(50%);
+}

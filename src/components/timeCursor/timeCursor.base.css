@@ -1,0 +1,11 @@
+:where(.TlTimeline-cursor) {
+  position: absolute;
+  height: 100%;
+  width: 2px;
+  z-index: 3;
+  background-color: white;
+  transform: translateX(50%);
+  
+  left: attr(data-tl-cursor-offset px);
+  right: attr(data-tl-cursor-offset px);
+}
