@@ -1,9 +1,8 @@
+import { useTimelineContext } from "../../hooks/useTimelineContext";
+import type { Span } from "../../types";
 
-import useTimelineContext from '../../hooks/useTimelineContext';
-import type { Span } from '../../types'
-
-export type UseItemProps= {
-  span: Span
+export type UseItemProps = {
+  span: Span;
 };
 
 export type UseItemComputed = {

@@ -12,7 +12,7 @@ import type {
 	ValueToPixels,
 } from "../types";
 
-import useElementRef from "./useElementRef";
+import { useElementRef } from "./useElementRef";
 
 const style: CSSProperties = {
 	display: "flex",
@@ -22,7 +22,7 @@ const style: CSSProperties = {
 };
 
 
-const useTimeline = (
+export const useTimeline = (
 	{
 		range,
 		onRangeChanged,
@@ -220,6 +220,3 @@ const useTimeline = (
 
 	return value;
 };
-
-
-export default useTimeline;

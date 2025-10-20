@@ -1,9 +1,12 @@
 import { useRef, useLayoutEffect } from "react";
 import {isHitZoomLimitation, isZoomGesture } from "./zoomUtils";
-import useTimelineContext from "./useTimelineContext";
+import { useTimelineContext } from "./useTimelineContext";
 import { PanEndEvent } from "../types";
 
- const buildPanEndEvent = (
+const SCROLL_SENSITIVITY = 1;
+
+
+export const buildPanEndEvent = (
   sourceEvent: { clientX: number; clientY: number },
   deltaX: number,
   deltaY: number
@@ -13,11 +16,6 @@ import { PanEndEvent } from "../types";
   deltaX,
   deltaY,
 });
-
-const SCROLL_SENSITIVITY = 1;
-
-
-
 
 export const useTimelineMousePanAndZoom = (): void => {
   const { timelineRef, range, onPanEnd, direction } = useTimelineContext();
@@ -103,4 +101,3 @@ export const useTimelineMousePanAndZoom = (): void => {
     };
   }, [timelineRef,direction]);
 };
-

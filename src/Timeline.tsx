@@ -1,22 +1,23 @@
-import React, { useEffect, useMemo } from "react";
-import TimeCursor from "./components/TimeCursor";
-import TimeAxis from "./components/timelineAxis/timeAxis/TimeAxis";
-import { HOUR_AXIS_MARKERS, TIME_AXIS_MARKERS } from "./components/timelineAxis/timelineAxisMarkerDefinitions";
-import Item from "./components/item/item";
-import { useTimelineBehavior } from "./hooks/useTimelineBehavior";
-import Row from "./components/Row/row";
-import { ItemDefinition, RowDefinition } from "./types";
-import useTimelineContext from "./hooks/useTimelineContext";
-import { groupItemsToSubrows } from "./utils";
-import Sidebar from "./components/sidebar/Sidebar";
-import Subrow from "./components/subrow/Subrow";
+import React, { useMemo } from "react";
 
-interface TimelineProps {
+import { TimeCursor } from "./components/timeCursor/TimeCursor";
+import { TimeAxis } from "./components/timelineAxis/timeAxis/TimeAxis";
+import { HOUR_AXIS_MARKERS, TIME_AXIS_MARKERS } from "./components/timelineAxis/timelineAxisMarkerDefinitions";
+import { Item } from "./components/item/item";
+import { Row } from "./components/Row/row";
+import { Sidebar } from "./components/sidebar/sidebar";
+import { Subrow } from "./components/subrow/subrow";
+import { useTimelineBehavior } from "./hooks/useTimelineBehavior";
+import { useTimelineContext } from "./hooks/useTimelineContext";
+import { groupItemsToSubrows } from "./utils";
+import type { ItemDefinition, RowDefinition } from "./types";
+
+export interface TimelineProps {
   rows: RowDefinition[];
   items: ItemDefinition[];
 }
 
-const Timeline = (props: TimelineProps) => {
+export const Timeline = (props: TimelineProps) => {
   const { setTimelineRef, style, range} = useTimelineContext();
   useTimelineBehavior();
  
@@ -47,5 +48,3 @@ const Timeline = (props: TimelineProps) => {
     </div>
   );
 };
-
-export default Timeline;

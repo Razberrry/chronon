@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-import useTimeline from "../hooks/useTimeline";
+import { useTimeline } from "../hooks/useTimeline";
 import type { TimelineBag, TimelineContextProps } from "../types";
 import React from "react";
 

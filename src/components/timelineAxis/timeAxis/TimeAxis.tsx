@@ -3,13 +3,13 @@ import styles from "./TimeAxis.module.css";
 import { Marker, MarkerDefinition } from "../timelineAxisTypes";
 import AxisLabel from "../axisLabel/AxisLabel";
 import { computeMarkers } from "../timelineAxisHelpers";
-import useTimelineContext from "../../../hooks/useTimelineContext";
+import { useTimelineContext } from "../../../hooks/useTimelineContext";
 
-interface TimeAxisProps{
+export interface TimeAxisProps{
   timeAxisMarkers: MarkerDefinition[];
 };
 
-const TimeAxis: React.FC<TimeAxisProps> = ({ timeAxisMarkers }) => {
+export const TimeAxis: React.FC<TimeAxisProps> = ({ timeAxisMarkers }) => {
   const { range, direction, sidebarWidth, valueToPixels } = useTimelineContext();
   const side: "left" | "right" = direction === "rtl" ? "right" : "left";
   const markers: Marker[] = useMemo(
@@ -36,5 +36,3 @@ const TimeAxis: React.FC<TimeAxisProps> = ({ timeAxisMarkers }) => {
     </div>
   );
 };
-
-export default memo(TimeAxis);

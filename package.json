@@ -1,9 +1,23 @@
 {
-  "name": "timeaxis",
-  "version": "0.0.1",
-  "private": true,
+  "name": "dnd-timeline",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "main": "./dist/dnd-timeline.cjs.js",
+  "module": "./dist/dnd-timeline.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/dnd-timeline.es.js",
+      "require": "./dist/dnd-timeline.cjs.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "vite build",
+    "build": "npm run clean && vite build && tsc --emitDeclarationOnly --project tsconfig.json",
     "clean": "rm -rf dist",
     "dev": "vite --clearScreen false",
     "typecheck": "tsc --noEmit",
@@ -12,14 +26,16 @@
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
     "date-fns": "^2.30.0",
-    "dnd-timeline": "file:../chronon/packages/dnd-timeline",
-    "jotai": "^2.13.1",
     "lodash": "^4.17.21",
-    "nanoid": "^5.0.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "nanoid": "^5.0.4"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "@types/react": "^18.2.38",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.0",

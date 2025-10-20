@@ -4,8 +4,11 @@
 		"jsx": "react",
 		"rootDir": "src",
 		"outDir": "dist",
+		"declaration": true,
+		"declarationDir": "dist",
 		"esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true
 	},
-	"include": ["src"]
+	"include": ["src", "src/hooks/useTimelineMousePanAndZoom.tsx"]
 }

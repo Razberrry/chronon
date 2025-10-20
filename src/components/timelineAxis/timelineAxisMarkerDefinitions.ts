@@ -24,11 +24,11 @@ interface MarkerPairOptions {
   minimumRangeSizeMilliseconds?: number;
   maximumRangeSizeMilliseconds?: number;
   majorLabel?: DateLabelFormatter;
-  minorToMajorRatio: number; // e.g. 5 means minor = major/5
+  minorToMajorRatio: number;
 }
 
 
-const createMarkerDefinitionPair = (options: MarkerPairOptions): MarkerDefinition[] => {
+export const createMarkerDefinitionPair = (options: MarkerPairOptions): MarkerDefinition[] => {
   const {
     majorValueMilliseconds,
     minimumRangeSizeMilliseconds,
@@ -69,16 +69,6 @@ const TIME_AXIS_MARKERS: MarkerDefinition[] = [
     majorLabel: formatMinutes,
     minorToMajorRatio: 5,
   }),
-
-  // ...createMarkerDefinitionPair({
-  //   majorValueMilliseconds: minutesToMilliseconds(10),
-  //   minimumRangeSizeMilliseconds: hoursToMilliseconds(3),
-  //   maximumRangeSizeMilliseconds: hoursToMilliseconds(5),
-  //   majorLabel: formatMinutes,
-  //   minorToMajorRatio: 2,
-  // }),
-
-
   ...createMarkerDefinitionPair({
     majorValueMilliseconds: minutesToMilliseconds(30),
     minimumRangeSizeMilliseconds: hoursToMilliseconds(3),
@@ -86,7 +76,6 @@ const TIME_AXIS_MARKERS: MarkerDefinition[] = [
     majorLabel: formatHourMinute,
     minorToMajorRatio: 2,
   }),
-
   ...createMarkerDefinitionPair({
     majorValueMilliseconds: hoursToMilliseconds(1),
     minimumRangeSizeMilliseconds: hoursToMilliseconds(12),
@@ -94,8 +83,6 @@ const TIME_AXIS_MARKERS: MarkerDefinition[] = [
     majorLabel: formatHourMinute,
     minorToMajorRatio: 2,
   }),
-
-
   ...createMarkerDefinitionPair({
     majorValueMilliseconds: hoursToMilliseconds(2),
     minimumRangeSizeMilliseconds: hoursToMilliseconds(30),

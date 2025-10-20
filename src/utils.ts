@@ -70,7 +70,7 @@ export const generateItems = (
 				range,
 				options?.minDuration,
 				options?.maxDuration,
-			);
+		);
 
 			let id = `item-${nanoid(4)}`;
 			if (disabled) id += " (disabled)";

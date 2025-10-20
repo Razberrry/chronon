@@ -37,5 +37,3 @@ export const useElementRef = () => {
 
   return { ref: elementRef, setRef, width: widthInPixels, direction: textDirection };
 };
-
-export default useElementRef;

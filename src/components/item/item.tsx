@@ -3,15 +3,15 @@ import clsx from "clsx";
 
 import "./item.base.css";
 import styles from "./item.module.css";
-import type { Span } from '../../types'
+import type { Span } from "../../types";
 import { useItem } from "./useItem";
 import { TimelineItemClasses } from "../../types/TimelineClasses";
 
 
-export const TL_ITEM_CLASS = "TlTimeline-item";
-export const TL_ITEM_CONTENT_CLASS = "TlTimeline-itemContent";
+const TL_ITEM_CLASS = "TlTimeline-item";
+const TL_ITEM_CONTENT_CLASS = "TlTimeline-itemContent";
 
-interface ItemProps {
+export interface ItemProps {
   id: string;
   span: Span;
   children: React.ReactNode;
@@ -46,5 +46,3 @@ export const Item: React.FC<ItemProps> = ({  span, children, classes }) => {
     </div>
   );
 };
-
-export default Item;

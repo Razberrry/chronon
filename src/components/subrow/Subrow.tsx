@@ -5,17 +5,15 @@ import { TimelineSubrowClasses } from "../../types/TimelineClasses";
 
 const TL_SUBROW_CLASS = "TlTimeline-subrow";
 
-interface SubrowProps {
+export interface SubrowProps {
   children: React.ReactNode;
   classes?: TimelineSubrowClasses;
 }
 
-const Subrow = ({ children, classes }: SubrowProps) => {
+export const Subrow = ({ children, classes }: SubrowProps) => {
   return (
     <div className={clsx(TL_SUBROW_CLASS, classes?.subrow)}>
       {children}
     </div>
   );
 };
-
-export default Subrow;

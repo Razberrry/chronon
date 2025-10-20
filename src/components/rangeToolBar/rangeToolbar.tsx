@@ -3,24 +3,24 @@ import clsx from "clsx";
 
 import "./rangeToolbar.base.css";
 import { buildPresetRange, getClosestPresetKey, getRangeDurationMilliseconds, PresetKey } from "./rangetoolbarFunctions";
-import useTimelineContext from "../../hooks/useTimelineContext";
-import type { Range } from '../../types'
+import { useTimelineContext } from "../../hooks/useTimelineContext";
+import type { Range } from "../../types";
 import type { TimelineRangeToolbarClasses } from "../../types/TimelineClasses";
 
-export type RangeToolbarProps = {
-  setRange: (range: Range) => void;
-  classes?: TimelineRangeToolbarClasses;
-};
-
-export const TL_RANGE_TOOLBAR_CLASS = "TlTimeline-rangeToolbar";
-export const TL_RANGE_TOOLBAR_BUTTON_CLASS = "TlTimeline-rangeToolbarButton";
-export const TL_RANGE_TOOLBAR_BUTTON_ACTIVE_CLASS = "TlTimeline-rangeToolbarButton--active";
+const TL_RANGE_TOOLBAR_CLASS = "TlTimeline-rangeToolbar";
+const TL_RANGE_TOOLBAR_BUTTON_CLASS = "TlTimeline-rangeToolbarButton";
+const TL_RANGE_TOOLBAR_BUTTON_ACTIVE_CLASS = "TlTimeline-rangeToolbarButton--active";
 
 const PRESETS: Array<{ key: PresetKey; label: string }> = [
   { key: "hour", label: "Hour" },
   { key: "day", label: "Day" },
   { key: "week", label: "Week" },
 ];
+
+export interface RangeToolbarProps {
+  setRange: (range: Range) => void;
+  classes?: TimelineRangeToolbarClasses;
+};
 
 export const RangeToolbar: React.FC<RangeToolbarProps> = ({ setRange, classes }) => {
   const { range: timelineRange } = useTimelineContext();
@@ -62,5 +62,3 @@ export const RangeToolbar: React.FC<RangeToolbarProps> = ({ setRange, classes })
     </div>
   );
 };
-
-export default RangeToolbar;

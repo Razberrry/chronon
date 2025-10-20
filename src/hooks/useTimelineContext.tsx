@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import { timelineContext } from "../store/Timeline";
 
-const useTimelineContext = () => {
+export const useTimelineContext = () => {
 	const contextValue = useContext(timelineContext);
 
 	if (contextValue === undefined) {
@@ -13,5 +13,3 @@ const useTimelineContext = () => {
 
 	return contextValue;
 };
-
-export default useTimelineContext;

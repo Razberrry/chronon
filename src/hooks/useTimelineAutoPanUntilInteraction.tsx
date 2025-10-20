@@ -1,19 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { isZoomGesture} from "./zoomUtils";
-import useTimelineContext from "./useTimelineContext";
-import { PanEndEvent } from "../types";
+import { useTimelineContext } from "./useTimelineContext";
 
-
-export const buildPanEndEvent = (
-  sourceEvent: { clientX: number; clientY: number },
-  deltaX: number,
-  deltaY: number
-): PanEndEvent => ({
-  clientX: sourceEvent.clientX,
-  clientY: sourceEvent.clientY,
-  deltaX,
-  deltaY,
-});
 
 
 
