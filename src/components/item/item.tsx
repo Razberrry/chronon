@@ -5,10 +5,13 @@ import "./item.base.css";
 import styles from "./item.module.css";
 import type { Span } from '../../types'
 import { useItem } from "./useItem";
-import { TimelineItemClasses, TL_ITEM_CLASS, TL_ITEM_CONTENT_CLASS } from "./itemClasses";
+import { TimelineItemClasses } from "../../types/TimelineClasses";
 
 
-type ItemProps = {
+export const TL_ITEM_CLASS = "TlTimeline-item";
+export const TL_ITEM_CONTENT_CLASS = "TlTimeline-itemContent";
+
+interface ItemProps {
   id: string;
   span: Span;
   children: React.ReactNode;

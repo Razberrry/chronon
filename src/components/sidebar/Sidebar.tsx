@@ -1,13 +1,15 @@
 import React from "react";
 import clsx from "clsx";
 import "./sidebar.base.css";
-import { TimelineSidebarClasses, TL_SIDEBAR_CLASS } from "./sidebarClasses";
 import { RowDefinition } from "../../types";
+import { TimelineSidebarClasses } from "../../types/TimelineClasses";
+
+export const TL_SIDEBAR_CLASS = "TlTimeline-sidebar";
 
 interface SidebarProps {
   row: RowDefinition;
   classes?: TimelineSidebarClasses;
-}
+};
 
 const Sidebar = ({ row, classes }: SidebarProps) => {
   return (

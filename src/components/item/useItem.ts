@@ -1,4 +1,3 @@
-// useItem.ts — minimal and readable
 
 import useTimelineContext from '../../hooks/useTimelineContext';
 import type { Span } from '../../types'

@@ -1,14 +1,28 @@
 import React, { useMemo } from "react";
-import styles from "./rangetoolbar.module.css";
+import clsx from "clsx";
+
+import "./rangeToolbar.base.css";
 import { buildPresetRange, getClosestPresetKey, getRangeDurationMilliseconds, PresetKey } from "./rangetoolbarFunctions";
 import useTimelineContext from "../../hooks/useTimelineContext";
 import type { Range } from '../../types'
+import type { TimelineRangeToolbarClasses } from "../../types/TimelineClasses";
 
-type RangeToolbarProps = {
+export type RangeToolbarProps = {
   setRange: (range: Range) => void;
+  classes?: TimelineRangeToolbarClasses;
 };
 
-const RangeToolbar: React.FC<RangeToolbarProps> = ({ setRange }) => {
+export const TL_RANGE_TOOLBAR_CLASS = "TlTimeline-rangeToolbar";
+export const TL_RANGE_TOOLBAR_BUTTON_CLASS = "TlTimeline-rangeToolbarButton";
+export const TL_RANGE_TOOLBAR_BUTTON_ACTIVE_CLASS = "TlTimeline-rangeToolbarButton--active";
+
+const PRESETS: Array<{ key: PresetKey; label: string }> = [
+  { key: "hour", label: "Hour" },
+  { key: "day", label: "Day" },
+  { key: "week", label: "Week" },
+];
+
+export const RangeToolbar: React.FC<RangeToolbarProps> = ({ setRange, classes }) => {
   const { range: timelineRange } = useTimelineContext();
 
   const currentDurationMilliseconds = useMemo(
@@ -21,45 +35,30 @@ const RangeToolbar: React.FC<RangeToolbarProps> = ({ setRange }) => {
     [currentDurationMilliseconds],
   );
 
-  const handleHourClick = (): void => {
-    setRange(buildPresetRange("hour"));
-  };
-  const handleDayClick = (): void => {
-    setRange(buildPresetRange("day"));
-  };
-  const handleWeekClick = (): void => {
-    setRange(buildPresetRange("week"));
-  };
-
-  const isHourActive = activePresetKey === "hour";
-  const isDayActive = activePresetKey === "day";
-  const isWeekActive = activePresetKey === "week";
-
   return (
-    <div className={styles.toolbar}>
-      <button
-        type="button"
-        className={isHourActive ? styles.active : undefined}
-        onClick={handleHourClick}
-      >
-        Hour
-      </button>
+    <div
+      className={clsx(TL_RANGE_TOOLBAR_CLASS, classes?.toolbar)}
+    >
+      {PRESETS.map(({ key, label }) => {
+        const isActive = activePresetKey === key;
 
-      <button
-        type="button"
-        className={isDayActive ? styles.active : undefined}
-        onClick={handleDayClick}
-      >
-        Day
-      </button>
-
-      <button
-        type="button"
-        className={isWeekActive ? styles.active : undefined}
-        onClick={handleWeekClick}
-      >
-        Week
-      </button>
+        return (
+          <button
+            key={key}
+            type="button"
+            className={clsx(
+              TL_RANGE_TOOLBAR_BUTTON_CLASS,
+              isActive && TL_RANGE_TOOLBAR_BUTTON_ACTIVE_CLASS,
+              classes?.button,
+              isActive && classes?.activeButton,
+            )}
+            onClick={() => setRange(buildPresetRange(key))}
+            aria-pressed={isActive}
+          >
+            {label}
+          </button>
+        );
+      })}
     </div>
   );
 };

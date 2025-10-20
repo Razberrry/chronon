@@ -1,6 +1,4 @@
 import React, { useEffect, useMemo } from "react";
-import Sidebar from "./components/Sidebar";
-import Subrow from "./components/Subrow";
 import TimeCursor from "./components/TimeCursor";
 import TimeAxis from "./components/timelineAxis/timeAxis/TimeAxis";
 import { HOUR_AXIS_MARKERS, TIME_AXIS_MARKERS } from "./components/timelineAxis/timelineAxisMarkerDefinitions";
@@ -10,6 +8,8 @@ import Row from "./components/Row/row";
 import { ItemDefinition, RowDefinition } from "./types";
 import useTimelineContext from "./hooks/useTimelineContext";
 import { groupItemsToSubrows } from "./utils";
+import Sidebar from "./components/sidebar/Sidebar";
+import Subrow from "./components/subrow/Subrow";
 
 interface TimelineProps {
   rows: RowDefinition[];

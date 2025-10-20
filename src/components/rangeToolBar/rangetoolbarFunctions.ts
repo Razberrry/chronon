@@ -13,11 +13,10 @@ export const PRESET_DURATIONS_MILLISECONDS: Record<PresetKey, number> = {
   week: DURATION_FIFTY_HOURS_MILLISECONDS,
 };
 
-const HALF_DIVISOR = 2;
 
 export const createRangeCenteredOnNow = (durationMilliseconds: number): Range => {
   const now = new Date();
-  const halfMilliseconds = Math.floor(durationMilliseconds / HALF_DIVISOR);
+  const halfMilliseconds = Math.floor(durationMilliseconds / 2);
   return {
     start: subMilliseconds(now, halfMilliseconds).getTime(),
     end: addMilliseconds(now, durationMilliseconds - halfMilliseconds).getTime(),

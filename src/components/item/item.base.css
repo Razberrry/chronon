@@ -14,7 +14,7 @@
   display: flex;
   overflow: hidden;
   align-items: stretch;
-
+  
   padding-inline-start: attr(data-tl-item-pad-start px);
   padding-inline-end: attr(data-tl-item-pad-end px);
 }

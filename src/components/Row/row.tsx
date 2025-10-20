@@ -3,9 +3,13 @@ import clsx from "clsx";
 
 import "./row.base.css";
 import styles from "./row.module.css";
-import { TimelineRowClasses, TL_ROW_CONTENT_CLASS, TL_ROW_SIDEBAR_CLASS, TL_ROW_WRAPPER_CLASS } from "./rowClasses";
 import { RowDefinition } from "../../types";
 import useTimelineContext from "../../hooks/useTimelineContext";
+import { TimelineRowClasses } from "../../types/TimelineClasses";
+
+const TL_ROW_WRAPPER_CLASS = "TlTimeline-rowWrapper";
+const TL_ROW_SIDEBAR_CLASS = "TlTimeline-rowSidebar";
+const TL_ROW_CONTENT_CLASS = "TlTimeline-rowContent";
 
 interface RowProps extends RowDefinition {
   children: React.ReactNode;
