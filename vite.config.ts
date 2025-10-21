@@ -7,8 +7,8 @@ export default defineConfig({
 	build: {
 		lib: {
 			entry: resolve(__dirname, "src/index.ts"),
-			name: "DndTimeline",
-			fileName: (format) => `dnd-timeline.${format}.js`,
+			name: "ChrononTimeline",
+			fileName: (format) => `chronon-timeline.${format}.js`,
 			formats: ["es", "cjs"],
 		},
 		rollupOptions: {
