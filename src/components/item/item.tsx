@@ -39,7 +39,7 @@ export const Item: React.FC<ItemProps> = ({  span, children, classes }) => {
         data-tl-item-pad-start={paddingStartPixels}
         data-tl-item-pad-end={paddingEndPixels}
       >
-        <div className={clsx(styles.itemInnerContainer, classes?.innerContainer)}>
+        <div className={clsx(classes?.innerContainer ?? styles.itemInnerContainer)}>
           {children}
         </div>
       </div>

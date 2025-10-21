@@ -1,10 +1,10 @@
-import type { Data } from "@dnd-kit/core";
 
 import type {
 	Span,
 } from ".";
 
-export type DragDirection = "start" | "end";
+type AnyData = Record<string, any>;
+type Data<T = AnyData> = T & AnyData;
 
 export interface ItemDefinition {
 	id: string;
@@ -14,7 +14,7 @@ export interface ItemDefinition {
 }
 
 export interface UseItemProps
-	extends Pick<ItemDefinition, "id" | "span" | "disabled"> {
+	extends Pick<ItemDefinition, "id" | "span" > {
 	data?: object;
 }
 
