@@ -1,5 +1,6 @@
 import { minutesToMilliseconds } from "date-fns";
-import { orderBy, find, last, range } from "lodash";
+import { orderBy, last } from "es-toolkit/array";
+import { range } from "es-toolkit/math";
 import { Marker, MarkerDefinition } from "./timelineAxisTypes";
 
 const isTimestampWithinVisibleRange = (
@@ -18,6 +19,7 @@ export const computeMarkers = (
 ): Marker[] => {
   const visibleRangeMilliseconds =
     visibleRangeEndMilliseconds - visibleRangeStartMilliseconds;
+
   if (
     !markerDefinitions?.length ||
     !Number.isFinite(visibleRangeMilliseconds) ||
@@ -49,11 +51,11 @@ export const computeMarkers = (
   if (!stepMilliseconds || stepMilliseconds <= 0) return [];
 
   const timezoneOffsetMilliseconds = minutesToMilliseconds(new Date().getTimezoneOffset());
+
   const alignedStartMilliseconds =
     Math.floor(
       (visibleRangeStartMilliseconds - timezoneOffsetMilliseconds) / stepMilliseconds
-    ) *
-      stepMilliseconds +
+    ) * stepMilliseconds +
     timezoneOffsetMilliseconds;
 
   const timestamps = range(
@@ -62,7 +64,7 @@ export const computeMarkers = (
     stepMilliseconds
   );
 
-  return timestamps.reduce<Marker[]>((markers:Marker[], timestamp:number) => {
+  return timestamps.reduce<Marker[]>((markers: Marker[], timestamp: number) => {
     if (
       !isTimestampWithinVisibleRange(
         timestamp,
@@ -73,8 +75,7 @@ export const computeMarkers = (
       return markers;
     }
 
-    const activeDefinition = find(
-      applicableDefinitions,
+    const activeDefinition = applicableDefinitions.find(
       (markerDefinition: MarkerDefinition) =>
         ((timestamp - timezoneOffsetMilliseconds) % markerDefinition.value) === 0
     );
