@@ -4,9 +4,10 @@ import { TimeCursor } from "./components/timeCursor/timeCursor";
 import { TimeAxis } from "./components/timelineAxis/timeAxis/TimeAxis";
 import { HOUR_AXIS_MARKERS, TIME_AXIS_MARKERS } from "./components/timelineAxis/timelineAxisMarkerDefinitions";
 import { Item } from "./components/item/item";
+import { Timeline } from "./components/timeline/Timeline";
 import { Row } from "./components/Row/row";
-import { Sidebar } from "./components/sidebar/sidebar";
-import { Subrow } from "./components/subrow/subrow";
+import { Sidebar } from "./components/sidebar/Sidebar";
+import { Subrow } from "./components/subrow/Subrow";
 import { useTimelineBehavior } from "./hooks/useTimelineBehavior";
 import { groupItemsToSubrows } from "./utils";
 import type { ItemDefinition, RowDefinition } from "./types";
@@ -17,8 +18,8 @@ export interface TimelineProps {
   items: ItemDefinition[];
 }
 
-export const Timeline = (props: TimelineProps) => {
-  const { setTimelineRef, style, range} = useTimelineContext();
+export const TimelineExample = (props: TimelineProps) => {
+  const { range } = useTimelineContext();
   useTimelineBehavior();
  
   const groupedSubrows = useMemo(
@@ -28,7 +29,7 @@ export const Timeline = (props: TimelineProps) => {
   const now = new Date();
 
   return (
-    <div ref={setTimelineRef} style={style} dir="rtl">
+    <Timeline>
       <TimeCursor at={now} />
       <TimeAxis timeAxisMarkers={HOUR_AXIS_MARKERS} />
       <TimeAxis timeAxisMarkers={TIME_AXIS_MARKERS} />
@@ -45,6 +46,6 @@ export const Timeline = (props: TimelineProps) => {
           ))}
         </Row>
       ))}
-    </div>
+    </Timeline>
   );
 };

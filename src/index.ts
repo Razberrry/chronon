@@ -8,21 +8,23 @@ export { useItem } from "./components/item/useItem";
 
 export { Row } from "./components/Row/row";
 export type { RowProps } from "./components/Row/row";
-export { Sidebar } from "./components/sidebar/sidebar";
-export type { SidebarProps } from "./components/sidebar/sidebar";
-export { Subrow } from "./components/subrow/subrow";
-export type { SubrowProps } from "./components/subrow/subrow";
+export { Sidebar } from "./components/sidebar/Sidebar";
+export type { SidebarProps } from "./components/sidebar/Sidebar";
+export { Subrow } from "./components/subrow/Subrow";
+export type { SubrowProps } from "./components/subrow/Subrow";
 
 export { TimeCursor } from "./components/timeCursor/timeCursor";
 export type { TimeCursorProps } from "./components/timeCursor/timeCursor";
-export type { TimelineCursorClasses } from "./components/timeCursor/timeCursorClasses";
 export { TimeAxis } from "./components/timelineAxis/timeAxis/TimeAxis";
 export type { TimeAxisProps } from "./components/timelineAxis/timeAxis/TimeAxis";
 export * from "./components/timelineAxis/timelineAxisTypes";
 export * from "./components/timelineAxis/timelineAxisHelpers";
 export * from "./components/timelineAxis/timelineAxisMarkerDefinitions";
 
-export { Timeline } from "./TimelineExample";
+export { Timeline } from "./components/timeline/Timeline";
+export type { TimelineContainerProps } from "./components/timeline/Timeline";
+
+export { TimelineExample } from "./TimelineExample";
 export type { TimelineProps } from "./TimelineExample";
 
 export { useTimeline } from "./hooks/useTimeline";

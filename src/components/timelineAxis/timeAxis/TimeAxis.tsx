@@ -10,7 +10,7 @@ export interface TimeAxisProps{
 };
 
 export const TimeAxis: React.FC<TimeAxisProps> = ({ timeAxisMarkers }) => {
-  const { range, direction, sidebarWidth, valueToPixels } = useTimelineContext();
+  const { range, direction, sidebarWidth, spanToPixels } = useTimelineContext();
   const side: "left" | "right" = direction === "rtl" ? "right" : "left";
   const markers: Marker[] = useMemo(
     () =>
@@ -18,9 +18,9 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({ timeAxisMarkers }) => {
         timeAxisMarkers,
         range.start,
         range.end,
-        valueToPixels,
+        spanToPixels,
       ),
-    [timeAxisMarkers, range.start, range.end, valueToPixels]
+    [timeAxisMarkers, range.start, range.end, spanToPixels]
   );
 
   return (

@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { Range } from ".";
 
 export interface PanEndEvent {
@@ -8,17 +7,16 @@ export interface PanEndEvent {
 	deltaY: number;
 }
 
-export type GetValueFromScreenX = (screenX: number) => number;
+export type GetSpanFromScreenX = (screenX: number) => number;
 
 export type GetDeltaXFromScreenX = (screenX: number) => number;
 
 export type OnPanEnd = (event: PanEndEvent) => void;
 
-export type PixelsToValue = (pixels: number, range?: Range) => number;
-export type ValueToPixels = (value: number, range?: Range) => number;
+export type PixelsToSpan = (pixels: number, range?: Range) => number;
+export type SpanToPixels = (span: number, range?: Range) => number;
 
 export interface TimelineContext {
-	style: CSSProperties;
 	range: Range;
 	direction: CanvasDirection;
 	timelineRef: React.MutableRefObject<HTMLElement | null>;
@@ -26,9 +24,9 @@ export interface TimelineContext {
 	sidebarWidth: number;
 	sidebarRef: React.MutableRefObject<HTMLElement | null>;
 	setSidebarRef: (element: HTMLElement | null) => void;
-	valueToPixels: ValueToPixels;
-	pixelsToValue: PixelsToValue;
-	getValueFromScreenX: GetValueFromScreenX;
+	spanToPixels: SpanToPixels;
+	pixelsToSpan: PixelsToSpan;
+	getSpanFromScreenX: GetSpanFromScreenX;
 	getDeltaXFromScreenX: GetDeltaXFromScreenX;
 	onPanEnd: OnPanEnd
 	onRangeChanged: OnRangeChanged;

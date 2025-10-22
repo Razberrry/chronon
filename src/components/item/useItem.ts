@@ -14,14 +14,14 @@ export type UseItemComputed = {
 };
 
 export const useItem = ({ span }: UseItemProps): UseItemComputed => {
-  const { range, valueToPixels } = useTimelineContext();
+  const { range, spanToPixels } = useTimelineContext();
 
   // Offsets in pixels relative to the visible range
-  const insetStartPixels = valueToPixels(span.start - range.start);
-  const insetEndPixels = valueToPixels(range.end - span.end);
+  const insetStartPixels = spanToPixels(span.start - range.start);
+  const insetEndPixels = spanToPixels(range.end - span.end);
 
   // Item width in pixels
-  const widthPixels = valueToPixels(span.end - span.start);
+  const widthPixels = spanToPixels(span.end - span.start);
 
   // Clamp padding to keep content visible when partially out of range
   const paddingStartPixels = insetStartPixels < 0 ? -insetStartPixels : 0;
