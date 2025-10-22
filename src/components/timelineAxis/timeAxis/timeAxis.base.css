@@ -1,0 +1,3 @@
+:where(.TlTimeline-timeAxis) {
+  position: relative;
+}

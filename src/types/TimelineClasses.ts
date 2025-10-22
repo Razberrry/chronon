@@ -27,3 +27,7 @@ export type TimelineRangeToolbarClasses = {
 export type TimelineCursorClasses = {
   cursor?: string;
 };
+
+export type TimelineAxisClasses = {
+  timeAxis?: string;
+};
