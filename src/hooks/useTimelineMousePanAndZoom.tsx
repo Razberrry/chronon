@@ -1,7 +1,7 @@
 import { useRef, useLayoutEffect } from "react";
 import {isHitZoomLimitation, isZoomGesture } from "./zoomUtils";
-import { useTimelineContext } from "./useTimelineContext";
 import { PanEndEvent } from "../types";
+import { useTimelineContext } from "../context/timelineContext";
 
 const SCROLL_SENSITIVITY = 1;
 

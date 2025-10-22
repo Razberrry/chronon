@@ -1,8 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
 import { isZoomGesture} from "./zoomUtils";
-import { useTimelineContext } from "./useTimelineContext";
-
-
+import { useTimelineContext } from "../context/timelineContext";
 
 
 const AUTOPAN_INTERVAL_MILLISECONDS = 1000;

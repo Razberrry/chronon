@@ -3,7 +3,7 @@ import styles from "./TimeAxis.module.css";
 import { Marker, MarkerDefinition } from "../timelineAxisTypes";
 import AxisLabel from "../axisLabel/AxisLabel";
 import { computeMarkers } from "../timelineAxisHelpers";
-import { useTimelineContext } from "../../../hooks/useTimelineContext";
+import { useTimelineContext } from "../../../context/timelineContext";
 
 export interface TimeAxisProps{
   timeAxisMarkers: MarkerDefinition[];

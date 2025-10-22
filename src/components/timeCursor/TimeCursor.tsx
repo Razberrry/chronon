@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 import "./timeCursor.base.css";
 import { TimelineCursorClasses, TL_CURSOR_CLASS } from "./timeCursorClasses";
-import { useTimelineContext } from "../../hooks/useTimelineContext";
+import { useTimelineContext } from "../../context/timelineContext";
 
 export interface TimeCursorProps {
 	at?: Date;
@@ -12,8 +12,7 @@ export interface TimeCursorProps {
 
 export const TimeCursor = ({ at, classes }: TimeCursorProps) => {
 	const timeCursorRef = useRef<HTMLDivElement>(null);
-	const { range, direction, sidebarWidth, valueToPixels } =
-		useTimelineContext();
+	const { range, direction, sidebarWidth, valueToPixels } = useTimelineContext();
 
 
 	const isVisible = at.getTime() > range.start && at.getTime() < range.end;

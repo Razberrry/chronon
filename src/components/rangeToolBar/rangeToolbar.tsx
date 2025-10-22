@@ -3,9 +3,9 @@ import clsx from "clsx";
 
 import "./rangeToolbar.base.css";
 import { buildPresetRange, getClosestPresetKey, getRangeDurationMilliseconds, PresetKey } from "./rangetoolbarFunctions";
-import { useTimelineContext } from "../../hooks/useTimelineContext";
 import type { Range } from "../../types";
 import type { TimelineRangeToolbarClasses } from "../../types/TimelineClasses";
+import { useTimelineContext } from "../../context/timelineContext";
 
 const TL_RANGE_TOOLBAR_CLASS = "TlTimeline-rangeToolbar";
 const TL_RANGE_TOOLBAR_BUTTON_CLASS = "TlTimeline-rangeToolbarButton";

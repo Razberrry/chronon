@@ -7,7 +7,7 @@ import type {
 	OnPanEnd,
 	PixelsToValue,
 	Range,
-	TimelineBag,
+	TimelineContext,
 	UseTimelineProps,
 	ValueToPixels,
 } from "../types";
@@ -22,12 +22,10 @@ const style: CSSProperties = {
 };
 
 
-export const useTimeline = (
-	{
+export const useTimeline = ({
 		range,
 		onRangeChanged,
-	}: UseTimelineProps
-): TimelineBag => {
+}: UseTimelineProps): TimelineContext => {
 
 	const {
 		ref: timelineRef,
@@ -35,6 +33,7 @@ export const useTimeline = (
 		width: timelineWidth,
 		direction,
 	} = useElementRef();
+
 	const {
 		ref: sidebarRef,
 		setRef: setSidebarRef,
@@ -152,7 +151,7 @@ export const useTimeline = (
 		],
 	);
 
-	const value = useMemo<TimelineBag>(
+	const value = useMemo<TimelineContext>(
 		() => ({
 			style,
 			range,

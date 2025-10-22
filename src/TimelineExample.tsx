@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 
-import { TimeCursor } from "./components/timeCursor/TimeCursor";
+import { TimeCursor } from "./components/timeCursor/timeCursor";
 import { TimeAxis } from "./components/timelineAxis/timeAxis/TimeAxis";
 import { HOUR_AXIS_MARKERS, TIME_AXIS_MARKERS } from "./components/timelineAxis/timelineAxisMarkerDefinitions";
 import { Item } from "./components/item/item";
@@ -8,9 +8,9 @@ import { Row } from "./components/Row/row";
 import { Sidebar } from "./components/sidebar/sidebar";
 import { Subrow } from "./components/subrow/subrow";
 import { useTimelineBehavior } from "./hooks/useTimelineBehavior";
-import { useTimelineContext } from "./hooks/useTimelineContext";
 import { groupItemsToSubrows } from "./utils";
 import type { ItemDefinition, RowDefinition } from "./types";
+import { useTimelineContext } from "./context/timelineContext";
 
 export interface TimelineProps {
   rows: RowDefinition[];

@@ -13,8 +13,8 @@ export type { SidebarProps } from "./components/sidebar/sidebar";
 export { Subrow } from "./components/subrow/subrow";
 export type { SubrowProps } from "./components/subrow/subrow";
 
-export { TimeCursor } from "./components/timeCursor/TimeCursor";
-export type { TimeCursorProps } from "./components/timeCursor/TimeCursor";
+export { TimeCursor } from "./components/timeCursor/timeCursor";
+export type { TimeCursorProps } from "./components/timeCursor/timeCursor";
 export type { TimelineCursorClasses } from "./components/timeCursor/timeCursorClasses";
 export { TimeAxis } from "./components/timelineAxis/timeAxis/TimeAxis";
 export type { TimeAxisProps } from "./components/timelineAxis/timeAxis/TimeAxis";
@@ -22,22 +22,19 @@ export * from "./components/timelineAxis/timelineAxisTypes";
 export * from "./components/timelineAxis/timelineAxisHelpers";
 export * from "./components/timelineAxis/timelineAxisMarkerDefinitions";
 
-export { Timeline } from "./Timeline";
-export type { TimelineProps } from "./Timeline";
+export { Timeline } from "./TimelineExample";
+export type { TimelineProps } from "./TimelineExample";
 
 export { useTimeline } from "./hooks/useTimeline";
 export { useTimelineBehavior } from "./hooks/useTimelineBehavior";
-export { useTimelineContext } from "./hooks/useTimelineContext";
 export { useTimelineAutoPanUntilInteraction } from "./hooks/useTimelineAutoPanUntilInteraction";
 export { useTimelineMousePanAndZoom } from "./hooks/useTimelineMousePanAndZoom";
 export { useElementRef } from "./hooks/useElementRef";
 export * from "./hooks/zoomUtils";
 
 export {
-  TimelineContext,
-  TimelineProvider,
-  timelineContext,
-} from "./store/Timeline";
+  TimelineContextProvider,
+} from "./context/timelineContext";
 
 export * from "./types";
 export * from "./types/TimelineClasses";

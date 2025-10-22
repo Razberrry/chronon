@@ -1,7 +1,7 @@
 import "./index.css";
 import { addMinutes, endOfDay, startOfDay, subMinutes } from "date-fns";
 import React, { useState } from "react";
-import { RangeToolbar, Timeline, TimelineContext, generateItems, generateRows } from ".";
+import { RangeToolbar, Timeline, TimelineContext, TimelineContextProvider, generateItems, generateRows, useTimeline } from ".";
 import type { Range } from ".";
 
 const DEFAULT_RANGE_HOUR: Range = {
@@ -23,15 +23,14 @@ function App() {
       rows
     )
   );
-
+  const methods = useTimeline({range, onRangeChanged: setRange});
   return (
-      <TimelineContext
-        range={range}
-        onRangeChanged={setRange}
+      <TimelineContextProvider
+        {...methods}
       >
         <RangeToolbar setRange={setRange} />
         <Timeline items={items} rows={rows} />
-      </TimelineContext>
+      </TimelineContextProvider>
   );
 }
 
