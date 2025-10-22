@@ -1,21 +1,13 @@
 import { useCallback } from "react";
 
-import type { OnPanEnd, PixelsToSpan, UseTimelineProps } from "../types";
-import type { GetSpanFromScreenXForRange } from "./useTimelineConversions";
-
-interface UseTimelinePanParams {
-  directionSign: number;
-  pixelsToSpan: PixelsToSpan;
-  getSpanFromScreenXForRange: GetSpanFromScreenXForRange;
-  onRangeChanged: UseTimelineProps["onRangeChanged"];
-}
+import type { OnPanEnd, TimelinePanOptions } from "../types";
 
 export const useTimelinePan = ({
   directionSign,
   pixelsToSpan,
   getSpanFromScreenXForRange,
   onRangeChanged,
-}: UseTimelinePanParams): OnPanEnd =>
+}: TimelinePanOptions): OnPanEnd =>
   useCallback<OnPanEnd>(
     (event) => {
       onRangeChanged((prevRange) => {

@@ -1,0 +1,6 @@
+.TlTimeline-timeline {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  flex-direction: column;
+}

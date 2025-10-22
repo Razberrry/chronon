@@ -23,3 +23,7 @@ export type TimelineRangeToolbarClasses = {
   button?: string;
   activeButton?: string;
 };
+
+export type TimelineCursorClasses = {
+  cursor?: string;
+};

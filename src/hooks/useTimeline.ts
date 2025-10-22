@@ -43,17 +43,17 @@ export const useTimeline = ({
 
   return {
     range,
-    onPanEnd,
+    direction,
+    timelineRef,
+    setTimelineRef,
     sidebarRef,
     setSidebarRef,
     sidebarWidth,
-    pixelsToSpan,
     spanToPixels,
-    timelineRef,
-    setTimelineRef,
-    direction,
+    pixelsToSpan,
     getSpanFromScreenX,
     getDeltaXFromScreenX,
+    onPanEnd,
     onRangeChanged,
   };
 };

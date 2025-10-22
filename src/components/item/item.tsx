@@ -5,7 +5,7 @@ import "./item.base.css";
 import styles from "./item.module.css";
 import type { Span } from "../../types";
 import { useItem } from "./useItem";
-import { TimelineItemClasses } from "../../types/TimelineClasses";
+import type { TimelineItemClasses } from "../../types/TimelineClasses";
 
 
 const TL_ITEM_CLASS = "TlTimeline-item";

@@ -3,23 +3,13 @@ import type { MutableRefObject } from "react";
 
 import type {
   GetDeltaXFromScreenX,
+  GetSpanFromScreenX,
+  GetSpanFromScreenXForRange,
   PixelsToSpan,
   Range,
   SpanToPixels,
+  TimelineConversions,
 } from "../types";
-
-export type GetSpanFromScreenXForRange = (
-  screenX: number,
-  customRange: Range,
-) => number;
-
-export interface TimelineConversions {
-  spanToPixels: SpanToPixels;
-  pixelsToSpan: PixelsToSpan;
-  getDeltaXFromScreenX: GetDeltaXFromScreenX;
-  getSpanFromScreenX: (screenX: number) => number;
-  getSpanFromScreenXForRange: GetSpanFromScreenXForRange;
-}
 
 interface UseTimelineConversionsParams {
   range: Range;
@@ -38,7 +28,7 @@ export const useTimelineConversions = ({
   sidebarWidth,
   viewportWidth,
 }: UseTimelineConversionsParams): TimelineConversions =>
-  useMemo(() => {
+  useMemo<TimelineConversions>(() => {
     const safeViewport = Math.max(1, viewportWidth);
     const sideName = direction === "rtl" ? "right" : "left";
     const sidebarOffset = sidebarWidth * directionSign;
@@ -67,7 +57,7 @@ export const useTimelineConversions = ({
       return customRange.start + delta;
     };
 
-    const getSpanFromScreenX = (screenX: number) =>
+    const getSpanFromScreenX: GetSpanFromScreenX = (screenX: number) =>
       getSpanFromScreenXForRange(screenX, range);
 
     return {

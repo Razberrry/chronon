@@ -4,7 +4,7 @@ import clsx from "clsx";
 import "./row.base.css";
 import styles from "./row.module.css";
 import { RowDefinition } from "../../types";
-import { TimelineRowClasses } from "../../types/TimelineClasses";
+import type { TimelineRowClasses } from "../../types/TimelineClasses";
 import { useTimelineContext } from "../../context/timelineContext";
 
 const TL_ROW_WRAPPER_CLASS = "TlTimeline-rowWrapper";

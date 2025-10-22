@@ -18,13 +18,13 @@ export interface TimelineProps {
   items: ItemDefinition[];
 }
 
-export const TimelineExample = (props: TimelineProps) => {
+export const TimelineExample = ({ rows, items }: TimelineProps) => {
   const { range } = useTimelineContext();
   useTimelineBehavior();
  
   const groupedSubrows = useMemo(
-    () => groupItemsToSubrows(props.items, range),
-    [props.items, range]
+    () => groupItemsToSubrows(items, range),
+    [items, range]
   );
   const now = new Date();
 
@@ -33,13 +33,13 @@ export const TimelineExample = (props: TimelineProps) => {
       <TimeCursor at={now} />
       <TimeAxis timeAxisMarkers={HOUR_AXIS_MARKERS} />
       <TimeAxis timeAxisMarkers={TIME_AXIS_MARKERS} />
-      {props.rows.map((row) => (
+      {rows.map((row) => (
         <Row id={row.id} key={row.id} sidebar={<Sidebar row={row} />}>
           {groupedSubrows[row.id]?.map((subrow, index) => (
             <Subrow key={`${row.id}-${index}`}>
               {subrow.map((item) => (
                 <Item id={item.id} key={item.id} span={item.span}>
-                 גזרת שדרה {item.id}
+                  גזרת שדרה {item.id}
                 </Item>
               ))}
             </Subrow>

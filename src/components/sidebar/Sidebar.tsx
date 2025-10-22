@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import "./sidebar.base.css";
 import { RowDefinition } from "../../types";
-import { TimelineSidebarClasses } from "../../types/TimelineClasses";
+import type { TimelineSidebarClasses } from "../../types/TimelineClasses";
 
 const TL_SIDEBAR_CLASS = "TlTimeline-sidebar";
 

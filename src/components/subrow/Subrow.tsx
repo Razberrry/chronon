@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import "./subrow.base.css";
-import { TimelineSubrowClasses } from "../../types/TimelineClasses";
+import type { TimelineSubrowClasses } from "../../types/TimelineClasses";
 
 const TL_SUBROW_CLASS = "TlTimeline-subrow";
 

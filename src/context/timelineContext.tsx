@@ -21,10 +21,8 @@ export const useTimelineContext = (): TimelineContext => {
 }
 
 export const TimelineContextProvider = ({children, ...props}: React.PropsWithChildren<TimelineContext>) => {
-	const timeline = useTimeline(props);
-
 	return (
-		<timelineContext.Provider value={timeline}>
+		<timelineContext.Provider value={props}>
 			{children}
 		</timelineContext.Provider>
 	);

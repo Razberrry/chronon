@@ -2,8 +2,10 @@ import React, { memo, useLayoutEffect, useRef } from "react";
 import clsx from "clsx";
 
 import "./timeCursor.base.css";
-import { TimelineCursorClasses, TL_CURSOR_CLASS } from "./timeCursorClasses";
 import { useTimelineContext } from "../../context/timelineContext";
+import type { TimelineCursorClasses } from "../../types/TimelineClasses";
+export const TL_CURSOR_CLASS = "TlTimeline-cursor";
+
 
 export interface TimeCursorProps {
 	at?: Date;
@@ -12,7 +14,7 @@ export interface TimeCursorProps {
 
 export const TimeCursor = ({ at, classes }: TimeCursorProps) => {
 	const timeCursorRef = useRef<HTMLDivElement>(null);
-	const { range, direction, sidebarWidth, valueToPixels } = useTimelineContext();
+	const { range, direction, sidebarWidth, spanToPixels } = useTimelineContext();
 
 
 	const isVisible = at.getTime() > range.start && at.getTime() < range.end;
@@ -24,7 +26,7 @@ export const TimeCursor = ({ at, classes }: TimeCursorProps) => {
 		if (!element) return;
 
 		const timeDelta = at.getTime() - range.start;
-		const timeDeltaInPixels = valueToPixels(timeDelta);
+		const timeDeltaInPixels = spanToPixels(timeDelta);
 		const sideDelta = sidebarWidth + timeDeltaInPixels;
 		element.style[side] = `${sideDelta}px`;
 		element.style[side === "left" ? "right" : "left"] = "";
@@ -33,7 +35,7 @@ export const TimeCursor = ({ at, classes }: TimeCursorProps) => {
 		sidebarWidth,
 		at,
 		range.start,
-		valueToPixels,
+		spanToPixels,
 	]);
 
 	return isVisible && at ? (
@@ -43,5 +45,3 @@ export const TimeCursor = ({ at, classes }: TimeCursorProps) => {
   />
 ) : null
 };
-
-

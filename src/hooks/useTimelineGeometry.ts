@@ -1,17 +1,5 @@
-import type { MutableRefObject } from "react";
-
 import { useElementRef } from "./useElementRef";
-
-export interface TimelineGeometry {
-  timelineRef: MutableRefObject<HTMLElement | null>;
-  setTimelineRef: (element: HTMLElement | null) => void;
-  sidebarRef: MutableRefObject<HTMLElement | null>;
-  setSidebarRef: (element: HTMLElement | null) => void;
-  sidebarWidth: number;
-  direction: CanvasDirection;
-  directionSign: number;
-  viewportWidth: number;
-}
+import type { TimelineGeometry } from "../types";
 
 export const useTimelineGeometry = (): TimelineGeometry => {
   const {
