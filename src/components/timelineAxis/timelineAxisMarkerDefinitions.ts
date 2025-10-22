@@ -15,7 +15,7 @@ export const formatHebrewDate = (date: Date): string => {
   const timePart = format(date, "H:mm", { locale: he });  
   const dayMonthPart = format(date, "d/M", { locale: he }); 
   const weekdayPart = format(date, "EEEE", { locale: he });
-  return `${timePart}  • ${dayMonthPart} ${weekdayPart} `;
+  return `${timePart} • ${dayMonthPart} ${weekdayPart} `;
 };
 
 
@@ -108,8 +108,7 @@ const HOUR_AXIS_MARKERS = [
       maxRangeSize:hoursToMilliseconds(2),
       getLabel: formatHebrewDate
     }
-
-]
+];
   
 
 

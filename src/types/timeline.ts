@@ -1,4 +1,3 @@
-import type { DndContextProps, DragCancelEvent } from "@dnd-kit/core";
 import type { CSSProperties, PropsWithChildren } from "react";
 import { Range } from ".";
 export interface PanEndEvent {
@@ -53,5 +52,5 @@ export interface UseTimelineProps {
 
 export interface TimelineContextProps
 	extends PropsWithChildren,
-		UseTimelineProps,
-		DndContextProps {}
+		UseTimelineProps {}
+	

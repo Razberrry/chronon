@@ -7,7 +7,7 @@ export default defineConfig({
 	build: {
 		lib: {
 			entry: resolve(__dirname, "src/index.ts"),
-			name: "ChrononTimeline",
+			name: "chronon-timeline",
 			fileName: (format) => `chronon-timeline.${format}.js`,
 			formats: ["es", "cjs"],
 		},

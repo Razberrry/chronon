@@ -26,11 +26,8 @@ export const useTimeline = (
 	{
 		range,
 		onRangeChanged,
-		rangeGridSizeDefinition,
 	}: UseTimelineProps
 ): TimelineBag => {
-	const rangeStart = range.start;
-	const rangeEnd = range.end;
 
 	const {
 		ref: timelineRef,
@@ -45,23 +42,6 @@ export const useTimeline = (
 	} = useElementRef();
 
 	const timelineViewportWidth = timelineWidth - sidebarWidth;
-
-	const rangeGridSize = useMemo(() => {
-		if (Array.isArray(rangeGridSizeDefinition)) {
-			const gridSizes = rangeGridSizeDefinition;
-
-			const rangeSize = rangeEnd - rangeStart;
-
-			const sortedRangeGridSizes = [...gridSizes];
-			sortedRangeGridSizes.sort((a, b) => a.value - b.value);
-
-			return sortedRangeGridSizes.find(
-				(curr) => !curr.maxRangeSize || rangeSize < curr.maxRangeSize,
-			)?.value;
-		}
-
-		return rangeGridSizeDefinition;
-	}, [rangeStart, rangeEnd, rangeGridSizeDefinition]);
 
 	const valueToPixelsInternal = useCallback(
 		(value: number, range: Range) => {
@@ -112,28 +92,18 @@ export const useTimeline = (
 		[timelineRef, sidebarWidth, direction],
 	);
 
-	const snapValueToRangeGrid = useCallback(
-		(value: number) => {
-			if (!rangeGridSize) return value;
-
-			return Math.round(value / rangeGridSize) * rangeGridSize;
-		},
-		[rangeGridSize],
-	);
-
 	const getValueFromScreenXInternal = useCallback(
 		(screenX: number, range: Range) => {
 			const deltaX = getDeltaXFromScreenX(screenX);
 			const delta =
 				pixelsToValueInternal(deltaX, range) * (direction === "rtl" ? -1 : 1);
 
-			return snapValueToRangeGrid(range.start + delta);
+			return range.start + delta;
 		},
 		[
 			direction,
 			pixelsToValueInternal,
 			getDeltaXFromScreenX,
-			snapValueToRangeGrid,
 		],
 	);
 
@@ -195,10 +165,9 @@ export const useTimeline = (
 			timelineRef,
 			setTimelineRef,
 			direction,
-			rangeGridSize,
 			getValueFromScreenX,
 			getDeltaXFromScreenX,
-			onRangeChanged
+			onRangeChanged,
 		}),
 		[
 			range,
@@ -211,7 +180,6 @@ export const useTimeline = (
 			timelineRef,
 			setTimelineRef,
 			direction,
-			rangeGridSize,
 			getValueFromScreenX,
 			getDeltaXFromScreenX,
 			onRangeChanged
