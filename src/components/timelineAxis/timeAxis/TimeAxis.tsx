@@ -11,14 +11,23 @@ import type { TimelineAxisClasses } from "../../../types/TimelineClasses";
 
 export const TL_TIME_AXIS_CLASS = "TlTimeline-timeAxis";
 
-export interface TimeAxisProps{
+export interface TimeAxisProps {
   timeAxisMarkers: MarkerDefinition[];
   classes?: TimelineAxisClasses;
-};
+}
 
 export const TimeAxis: React.FC<TimeAxisProps> = ({ timeAxisMarkers, classes }) => {
   const { range, direction, sidebarWidth, spanToPixels } = useTimelineContext();
   const side: "left" | "right" = direction === "rtl" ? "right" : "left";
+  const marginAttributeKey =
+    side === "right"
+      ? "data-tl-time-axis-margin-right"
+      : "data-tl-time-axis-margin-left";
+      
+  const marginAttribute = {
+    [marginAttributeKey]: `${sidebarWidth}`,
+  };
+
   const markers: Marker[] = useMemo(
     () =>
       computeMarkers(
@@ -32,10 +41,8 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({ timeAxisMarkers, classes }) 
 
   return (
     <div
-      className={clsx(TL_TIME_AXIS_CLASS,  classes?.timeAxis ?? styles.timeAxis )}
-      style={{
-        [side === "right" ? "marginRight" : "marginLeft"]: `${sidebarWidth}px`,
-      } as React.CSSProperties}
+      className={clsx(TL_TIME_AXIS_CLASS, styles.timeAxis, classes?.timeAxis)}
+      {...marginAttribute}
     >
       {markers.map((marker, i) => (
         <AxisLabel side={side} marker={marker} key={`${marker.sideDelta}-${i}`} />

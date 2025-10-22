@@ -1,16 +1,15 @@
-
-.line {
-  width: 2px;
-  height: calc(100% - 25px);   
-  background: currentColor;
-  opacity: 0.3;
-  margin-top: 12px;
-}
-
 .labelContainer {
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  justify-content: center;   
+  align-items: center;
+  justify-content: center;
   height: 100%;
+}
+
+.line {
+  width: 2px;
+  height: calc(100% - 25px);
+  background: currentColor;
+  opacity: 0.3;
+  margin-top: 12px;
 }

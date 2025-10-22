@@ -1,3 +1,11 @@
 :where(.TlTimeline-timeAxis) {
   position: relative;
 }
+
+:where(.TlTimeline-timeAxis)[data-tl-time-axis-margin-left] {
+  margin-left: attr(data-tl-time-axis-margin-left px);
+}
+
+:where(.TlTimeline-timeAxis)[data-tl-time-axis-margin-right] {
+  margin-right: attr(data-tl-time-axis-margin-right px);
+}
