@@ -1,4 +1,4 @@
-import { minutesToMilliseconds } from "date-fns";
+import { hoursToMilliseconds, minutesToMilliseconds } from "date-fns";
 import { nanoid } from "nanoid";
 import { Span,Range, RowDefinition, ItemDefinition } from "./types";
 
@@ -26,8 +26,8 @@ const getRandomInRange = (min: number, max: number) => {
 	return Math.random() * (max - min) + min;
 };
 
-const DEFAULT_MIN_DURATION = minutesToMilliseconds(60);
-const DEFAULT_MAX_DURATION = minutesToMilliseconds(360);
+const DEFAULT_MIN_DURATION = hoursToMilliseconds(10);
+const DEFAULT_MAX_DURATION = hoursToMilliseconds(168);
 
 export const generateRandomSpan = (
 	range: Range,

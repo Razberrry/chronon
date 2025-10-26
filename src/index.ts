@@ -12,6 +12,7 @@ export { Sidebar } from "./components/sidebar/Sidebar";
 export type { SidebarProps } from "./components/sidebar/Sidebar";
 export { Subrow } from "./components/subrow/Subrow";
 export type { SubrowProps } from "./components/subrow/Subrow";
+export { Timeline } from "./components/timeline/timeline";
 
 export { TimeCursor } from "./components/timeCursor/timeCursor";
 export type { TimeCursorProps } from "./components/timeCursor/timeCursor";
@@ -21,17 +22,14 @@ export * from "./components/timelineAxis/timelineAxisTypes";
 export * from "./components/timelineAxis/timelineAxisHelpers";
 export * from "./components/timelineAxis/timelineAxisMarkerDefinitions";
 
-export { Timeline } from "./components/timeline/Timeline";
-export type { TimelineContainerProps } from "./components/timeline/Timeline";
 
-export { TimelineExample } from "./TimelineExample";
-export type { TimelineProps } from "./TimelineExample";
 
 export { useTimeline } from "./hooks/useTimeline";
 export { useTimelineBehavior } from "./hooks/useTimelineBehavior";
 export { useTimelineAutoPanUntilInteraction } from "./hooks/useTimelineAutoPanUntilInteraction";
 export { useTimelineMousePanAndZoom } from "./hooks/useTimelineMousePanAndZoom";
 export { useElementRef } from "./hooks/useElementRef";
+export {useTimelineContext} from './context/timelineContext' 
 export * from "./hooks/zoomUtils";
 
 export {
@@ -48,3 +46,4 @@ export {
   groupItemsToRows,
   groupItemsToSubrows,
 } from "./utils";
+  
