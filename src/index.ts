@@ -23,7 +23,6 @@ export * from "./components/timelineAxis/timelineAxisHelpers";
 export * from "./components/timelineAxis/timelineAxisMarkerDefinitions";
 
 
-
 export { useTimeline } from "./hooks/useTimeline";
 export { useTimelineBehavior } from "./hooks/useTimelineBehavior";
 export { useTimelineAutoPanUntilInteraction } from "./hooks/useTimelineAutoPanUntilInteraction";
@@ -45,5 +44,10 @@ export {
   generateRandomSpan,
   groupItemsToRows,
   groupItemsToSubrows,
+  groupSortedItemsToSubrows,
+  groupItemsByRowSorted,
+  buildVisibleSubrowsForRow,
+  buildVisibleRowSubrows,
+  sortItemsByStart,
 } from "./utils";
   

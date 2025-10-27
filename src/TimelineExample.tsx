@@ -8,7 +8,7 @@ import { Row } from "./components/Row/row";
 import { Sidebar } from "./components/sidebar/Sidebar";
 import { Subrow } from "./components/subrow/Subrow";
 import { useTimelineBehavior } from "./hooks/useTimelineBehavior";
-import { groupItemsToSubrows } from "./utils";
+import { buildVisibleRowSubrows, groupItemsByRowSorted } from "./utils";
 import type { ItemDefinition, RowDefinition } from "./types";
 import { useTimelineContext } from "./context/timelineContext";
 import { Timeline } from "./components/timeline/timeline";
@@ -22,9 +22,14 @@ export const TimelineExample = ({ rows, items }: TimelineProps) => {
   const { range } = useTimelineContext();
   useTimelineBehavior();
  
+  const sortedItemsByRow = useMemo(
+    () => groupItemsByRowSorted(items),
+    [items],
+  );
+
   const groupedSubrows = useMemo(
-    () => groupItemsToSubrows(items, range),
-    [items, range]
+    () => buildVisibleRowSubrows(sortedItemsByRow, range),
+    [sortedItemsByRow, range]
   );
   const now = new Date();
 
@@ -38,7 +43,7 @@ export const TimelineExample = ({ rows, items }: TimelineProps) => {
           {groupedSubrows[row.id]?.map((subrow, index) => (
             <Subrow key={`${row.id}-${index}`}>
               {subrow.map((item) => (
-                <Item id={item.id} key={item.id} span={item.span}>
+                <Item id={item.id} key={item.id}  span={item.span}>
                   גזרת שדרה {item.id}
                 </Item>
               ))}

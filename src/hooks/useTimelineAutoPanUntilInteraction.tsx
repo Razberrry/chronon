@@ -16,6 +16,9 @@ export const useTimelineAutoPanUntilInteraction = (): void => {
     const timelineElement = timelineRef.current;
     if (!timelineElement) return;
 
+    const isDocumentVisible = (): boolean =>
+      typeof document === "undefined" || document.visibilityState === "visible";
+
     const stopAutopan = (): void => {
       if (autopanTimerIdRef.current !== null) {
         window.clearInterval(autopanTimerIdRef.current);
@@ -27,6 +30,7 @@ export const useTimelineAutoPanUntilInteraction = (): void => {
     const startAutopanIfNeeded = (): void => {
       if (hasUserInteractedRef.current) return;
       if (autopanTimerIdRef.current !== null) return;
+      if (!isDocumentVisible()) return;
 
       autopanTimerIdRef.current = window.setInterval(() => {
         onRangeChanged((previousRange) => {
@@ -41,6 +45,14 @@ export const useTimelineAutoPanUntilInteraction = (): void => {
 
     startAutopanIfNeeded();
 
+    const handleVisibilityChange = (): void => {
+      if (isDocumentVisible()) {
+        startAutopanIfNeeded();
+      } else {
+        stopAutopan();
+      }
+    };
+
     const handlePointerDown = (): void => {
       stopAutopan();
     };
@@ -52,10 +64,16 @@ export const useTimelineAutoPanUntilInteraction = (): void => {
 
     timelineElement.addEventListener("pointerdown", handlePointerDown, { passive: true });
     timelineElement.addEventListener("wheel", handleWheelToStopOnZoomOut, { passive: true });
+    if (typeof document !== "undefined") {
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+    }
 
     return () => {
       timelineElement.removeEventListener("pointerdown", handlePointerDown);
       timelineElement.removeEventListener("wheel", handleWheelToStopOnZoomOut);
+      if (typeof document !== "undefined") {
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
+      }
       if (autopanTimerIdRef.current !== null) {
         window.clearInterval(autopanTimerIdRef.current);
         autopanTimerIdRef.current = null;
