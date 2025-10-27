@@ -1,4 +1,4 @@
-:where(.TlTimeline-axisLabel) {
+.TlTimeline-axisLabel {
   position: absolute;
   top: 0;
   height: 100%;
@@ -9,10 +9,10 @@
   right: attr(data-tl-axis-right px);
 }
 
-:where(.TlTimeline-axisLabel):dir(ltr) {
+.TlTimeline-axisLabel:dir(ltr) {
   transform: translateX(-50%);
 }
 
-:where(.TlTimeline-axisLabel):dir(rtl) {
+.TlTimeline-axisLabel:dir(rtl) {
   transform: translateX(50%);
 }

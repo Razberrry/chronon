@@ -9,8 +9,6 @@ import { computeMarkers } from "../timelineAxisHelpers";
 import { useTimelineContext } from "../../../context/timelineContext";
 import type { TimelineAxisClasses } from "../../../types/TimelineClasses";
 
-export const TL_TIME_AXIS_CLASS = "TlTimeline-timeAxis";
-
 export interface TimeAxisProps {
   timeAxisMarkers: MarkerDefinition[];
   classes?: TimelineAxisClasses;
@@ -41,7 +39,7 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({ timeAxisMarkers, classes }) 
 
   return (
     <div
-      className={clsx(TL_TIME_AXIS_CLASS, styles.timeAxis, classes?.timeAxis)}
+      className={clsx("TlTimeline-timeAxis", styles.timeAxis, classes?.timeAxis)}
       {...marginAttribute}
     >
       {markers.map((marker, i) => (

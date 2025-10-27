@@ -3,7 +3,7 @@ import clsx from "clsx";
 import "./axisLabel.base.css";
 import { Marker } from "../timelineAxisTypes";
 import DefaultLabel from "../DefaultLabel/defaultLabel";
-import { TimelineAxisLabelClasses, TL_AXIS_LABEL_CLASS } from "./axisLabelClasses";
+import type { TimelineAxisLabelClasses } from "./axisLabelClasses";
 
 type AxisLabelProps = {
   side: "left" | "right";
@@ -16,7 +16,7 @@ const AxisLabel: React.FC<AxisLabelProps> = ({ side, marker, classes }) => {
 
   return (
     <div
-      className={clsx(TL_AXIS_LABEL_CLASS, classes?.axisLabel)}
+      className={clsx("TlTimeline-axisLabel", classes?.axisLabel)}
       data-tl-axis-left={side === "left" ? marker.sideDelta : undefined}
       data-tl-axis-right={side === "right" ? marker.sideDelta : undefined}
     >

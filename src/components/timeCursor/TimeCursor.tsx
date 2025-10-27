@@ -4,7 +4,6 @@ import clsx from "clsx";
 import "./timeCursor.base.css";
 import { useTimelineContext } from "../../context/timelineContext";
 import type { TimelineCursorClasses } from "../../types/TimelineClasses";
-export const TL_CURSOR_CLASS = "TlTimeline-cursor";
 
 
 export interface TimeCursorProps {
@@ -41,7 +40,7 @@ export const TimeCursor = ({ at, classes }: TimeCursorProps) => {
 	return isVisible && at ? (
   <div
     ref={timeCursorRef}
-    className={clsx(TL_CURSOR_CLASS, classes?.cursor)}
+    className={clsx("TlTimeline-cursor", classes?.cursor)}
   />
 ) : null
 };

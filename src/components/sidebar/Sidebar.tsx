@@ -4,8 +4,6 @@ import "./sidebar.base.css";
 import { RowDefinition } from "../../types";
 import type { TimelineSidebarClasses } from "../../types/TimelineClasses";
 
-const TL_SIDEBAR_CLASS = "TlTimeline-sidebar";
-
 export interface SidebarProps {
   row: RowDefinition;
   classes?: TimelineSidebarClasses;
@@ -13,7 +11,7 @@ export interface SidebarProps {
 
 export const Sidebar = ({ row, classes }: SidebarProps) => {
   return (
-    <div className={clsx(TL_SIDEBAR_CLASS, classes?.sidebar)}>
+    <div className={clsx("TlTimeline-sidebar", classes?.sidebar)}>
       {`Row ${row.id}`}
     </div>
   );

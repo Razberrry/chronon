@@ -1,4 +1,4 @@
-:where(.TlTimeline-item) {
+.TlTimeline-item {
   position: absolute;
   inset-block-start: 0;
   height: 100%;
@@ -9,7 +9,7 @@
   inset-inline-end: attr(data-tl-item-inset-end px);
 }
 
-:where(.TlTimeline-itemContent) {
+.TlTimeline-itemContent {
   height: 100%; 
   overflow: hidden;
   padding-inline-start: attr(data-tl-item-pad-start px);

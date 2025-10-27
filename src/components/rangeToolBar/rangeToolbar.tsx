@@ -7,10 +7,6 @@ import type { Range } from "../../types";
 import type { TimelineRangeToolbarClasses } from "../../types/TimelineClasses";
 import { useTimelineContext } from "../../context/timelineContext";
 
-const TL_RANGE_TOOLBAR_CLASS = "TlTimeline-rangeToolbar";
-const TL_RANGE_TOOLBAR_BUTTON_CLASS = "TlTimeline-rangeToolbarButton";
-const TL_RANGE_TOOLBAR_BUTTON_ACTIVE_CLASS = "TlTimeline-rangeToolbarButton--active";
-
 const PRESETS: Array<{ key: PresetKey; label: string }> = [
   { key: "hour", label: "Hour" },
   { key: "day", label: "Day" },
@@ -37,7 +33,7 @@ export const RangeToolbar: React.FC<RangeToolbarProps> = ({ setRange, classes })
 
   return (
     <div
-      className={clsx(TL_RANGE_TOOLBAR_CLASS, classes?.toolbar)}
+      className={clsx("TlTimeline-rangeToolbar", classes?.toolbar)}
     >
       {PRESETS.map(({ key, label }) => {
         const isActive = activePresetKey === key;
@@ -47,8 +43,8 @@ export const RangeToolbar: React.FC<RangeToolbarProps> = ({ setRange, classes })
             key={key}
             type="button"
             className={clsx(
-              TL_RANGE_TOOLBAR_BUTTON_CLASS,
-              isActive && TL_RANGE_TOOLBAR_BUTTON_ACTIVE_CLASS,
+              "TlTimeline-rangeToolbarButton",
+              isActive && "TlTimeline-rangeToolbarButton--active",
               classes?.button,
               isActive && classes?.activeButton,
             )}

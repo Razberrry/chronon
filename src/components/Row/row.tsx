@@ -7,10 +7,6 @@ import { RowDefinition } from "../../types";
 import type { TimelineRowClasses } from "../../types/TimelineClasses";
 import { useTimelineContext } from "../../context/timelineContext";
 
-const TL_ROW_WRAPPER_CLASS = "TlTimeline-rowWrapper";
-const TL_ROW_SIDEBAR_CLASS = "TlTimeline-rowSidebar";
-const TL_ROW_CONTENT_CLASS = "TlTimeline-rowContent";
-
 export interface RowProps extends RowDefinition {
   children: React.ReactNode;
   sidebar: React.ReactNode;
@@ -22,13 +18,13 @@ export const Row = (props: RowProps): JSX.Element => {
   const { setSidebarRef } = useTimelineContext();
 
   return (
-    <div className={clsx(TL_ROW_WRAPPER_CLASS, props.classes?.wrapper)}>
-      <div ref={setSidebarRef} className={clsx(TL_ROW_SIDEBAR_CLASS, props.classes?.sidebar)}>
+    <div className={clsx("TlTimeline-rowWrapper", props.classes?.wrapper)}>
+      <div ref={setSidebarRef} className={clsx("TlTimeline-rowSidebar", props.classes?.sidebar)}>
         {props.sidebar}
       </div>
 
       <div
-        className={clsx(TL_ROW_CONTENT_CLASS, props.classes?.content ?? styles.rowContentBorder,)}
+        className={clsx("TlTimeline-rowContent", props.classes?.content ?? styles.rowContentBorder,)}
         data-tl-row-height={props.rowContentHeightPixels}
       >
         {props.children}
