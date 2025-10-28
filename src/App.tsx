@@ -1,5 +1,5 @@
 import "./index.css";
-import { addMinutes, endOfDay, parseISO, startOfDay, subMinutes } from "date-fns";
+import { addMinutes, endOfDay, millisecondsToMinutes, parseISO, startOfDay, subMinutes } from "date-fns";
 import React, { useState } from "react";
 import { RangeToolbar, TimelineContext, TimelineContextProvider, generateItems, generateRows, useTimeline } from ".";
 import type { Range } from ".";
@@ -23,7 +23,7 @@ function App() {
 
   const [rows] = useState(ROWS);
   const [items, setItems] = useState(ITEMS);
-
+  console.log(millisecondsToMinutes(range.end-range.start))
   const timelineAttributes = useTimeline({range, onRangeChanged: setRange});
   
   return (

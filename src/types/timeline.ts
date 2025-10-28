@@ -22,6 +22,13 @@ export type OnRangeChanged = (updateFunction: (prev: Range) => Range) => void;
 export type PixelsToSpan = (pixels: number, range?: Range) => number;
 export type SpanToPixels = (span: number, range?: Range) => number;
 
+export interface ZoomLimits {
+	minRangeMilliseconds: number;
+	maxRangeMilliseconds: number;
+}
+
+export type ZoomLimitsConfig = Partial<ZoomLimits>;
+
 export interface TimelineGeometry {
 	timelineRef: MutableRefObject<HTMLElement | null>;
 	setTimelineRef: (element: HTMLElement | null) => void;
@@ -46,6 +53,7 @@ export interface TimelinePanOptions {
 	pixelsToSpan: PixelsToSpan;
 	getSpanFromScreenXForRange: GetSpanFromScreenXForRange;
 	onRangeChanged: OnRangeChanged;
+	zoomLimits: ZoomLimits;
 }
 
 export interface TimelineContext {
@@ -62,9 +70,11 @@ export interface TimelineContext {
 	getDeltaXFromScreenX: GetDeltaXFromScreenX;
 	onPanEnd: OnPanEnd;
 	onRangeChanged: OnRangeChanged;
+	zoomLimits: ZoomLimits;
 }
 
 export interface UseTimelineProps {
 	range: Range;
 	onRangeChanged: OnRangeChanged;
+	zoomLimits?: ZoomLimitsConfig;
 }

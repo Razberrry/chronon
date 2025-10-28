@@ -1,12 +1,20 @@
-import type { TimelineContext, UseTimelineProps } from "../types";
+import { useMemo } from "react";
+
+import type {
+  TimelineContext,
+  UseTimelineProps,
+  ZoomLimits,
+} from "../types";
 
 import { useTimelineConversions } from "./useTimelineConversions";
 import { useTimelineGeometry } from "./useTimelineGeometry";
 import { useTimelinePan } from "./useTimelinePan";
+import { DEFAULT_ZOOM_LIMITS } from "./zoomUtils";
 
 export const useTimeline = ({
   range,
   onRangeChanged,
+  zoomLimits: zoomLimitsConfig,
 }: UseTimelineProps): TimelineContext => {
   const {
     timelineRef,
@@ -34,11 +42,32 @@ export const useTimeline = ({
     viewportWidth,
   });
 
+  const zoomLimits = useMemo<ZoomLimits>(() => {
+    const min =
+      zoomLimitsConfig?.minRangeMilliseconds ??
+      DEFAULT_ZOOM_LIMITS.minRangeMilliseconds;
+    const max =
+      zoomLimitsConfig?.maxRangeMilliseconds ??
+      DEFAULT_ZOOM_LIMITS.maxRangeMilliseconds;
+
+    const safeMin = Math.max(1, min);
+    const safeMax = Math.max(safeMin, max);
+
+    return {
+      minRangeMilliseconds: safeMin,
+      maxRangeMilliseconds: safeMax,
+    };
+  }, [
+    zoomLimitsConfig?.minRangeMilliseconds,
+    zoomLimitsConfig?.maxRangeMilliseconds,
+  ]);
+
   const onPanEnd = useTimelinePan({
     directionSign,
     pixelsToSpan,
     getSpanFromScreenXForRange,
     onRangeChanged,
+    zoomLimits,
   });
 
   return {
@@ -55,5 +84,6 @@ export const useTimeline = ({
     getDeltaXFromScreenX,
     onPanEnd,
     onRangeChanged,
+    zoomLimits,
   };
 };

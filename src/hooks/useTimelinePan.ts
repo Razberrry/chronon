@@ -7,6 +7,7 @@ export const useTimelinePan = ({
   pixelsToSpan,
   getSpanFromScreenXForRange,
   onRangeChanged,
+  zoomLimits,
 }: TimelinePanOptions): OnPanEnd =>
   useCallback<OnPanEnd>(
     (event) => {
@@ -15,9 +16,18 @@ export const useTimelinePan = ({
           pixelsToSpan(delta, prevRange) * directionSign;
 
         const deltaX = applyDirection(event.deltaX);
-        const deltaY = applyDirection(event.deltaY);
+        let deltaY = applyDirection(event.deltaY);
 
         const rangeDuration = Math.max(1, prevRange.end - prevRange.start);
+
+        if (event.deltaY !== 0) {
+          const unclampedDuration = rangeDuration + deltaY;
+          const clampedDuration = Math.min(
+            Math.max(unclampedDuration, zoomLimits.minRangeMilliseconds),
+            zoomLimits.maxRangeMilliseconds,
+          );
+          deltaY += clampedDuration - unclampedDuration;
+        }
 
         const pointerValue =
           event.clientX !== undefined
@@ -36,11 +46,48 @@ export const useTimelinePan = ({
         const startDelta = deltaY * startBias + deltaX;
         const endDelta = -deltaY * endBias + deltaX;
 
-        return {
+        const nextRange = {
           start: prevRange.start + startDelta,
           end: prevRange.end + endDelta,
         };
+
+        if (
+          nextRange.start === prevRange.start &&
+          nextRange.end === prevRange.end
+        ) {
+          return prevRange;
+        }
+
+        const nextDuration = nextRange.end - nextRange.start;
+
+        if (nextDuration < zoomLimits.minRangeMilliseconds) {
+          const adjustment =
+            zoomLimits.minRangeMilliseconds - nextDuration;
+          const halfAdjustment = adjustment / 2;
+          return {
+            start: nextRange.start - halfAdjustment,
+            end: nextRange.end + halfAdjustment,
+          };
+        }
+
+        if (nextDuration > zoomLimits.maxRangeMilliseconds) {
+          const adjustment =
+            nextDuration - zoomLimits.maxRangeMilliseconds;
+          const halfAdjustment = adjustment / 2;
+          return {
+            start: nextRange.start + halfAdjustment,
+            end: nextRange.end - halfAdjustment,
+          };
+        }
+
+        return nextRange;
       });
     },
-    [directionSign, pixelsToSpan, getSpanFromScreenXForRange, onRangeChanged],
+    [
+      directionSign,
+      pixelsToSpan,
+      getSpanFromScreenXForRange,
+      onRangeChanged,
+      zoomLimits,
+    ],
   );
