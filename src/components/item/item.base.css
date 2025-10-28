@@ -1,16 +1,15 @@
 .TlTimeline-item {
-  position: absolute;
+  position: relative;
   inset-block-start: 0;
-  height: 100%;
+  height: fit-content;
   touch-action: none;
-
   width: attr(data-tl-item-width px);
   inset-inline-start: attr(data-tl-item-inset-start px);
   inset-inline-end: attr(data-tl-item-inset-end px);
 }
 
 .TlTimeline-itemContent {
-  height: 100%; 
+  height: fit-content; 
   overflow: hidden;
   padding-inline-start: attr(data-tl-item-pad-start px);
   padding-inline-end: attr(data-tl-item-pad-end px);

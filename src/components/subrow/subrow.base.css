@@ -1,5 +1,4 @@
 .TlTimeline-subrow {
   position: relative;
-  height: 90px;
-  margin-block: 2px;
+  height: fit-content;
 }
