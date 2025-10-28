@@ -6,7 +6,7 @@ import { HOUR_AXIS_MARKERS, TIME_AXIS_MARKERS } from "./components/timelineAxis/
 import { Item } from "./components/item/item";
 import { Row } from "./components/Row/row";
 import { Sidebar } from "./components/sidebar/Sidebar";
-import { Subrow } from "./components/subrow/Subrow";
+import { Subrow } from "./components/subrow/subrow";
 import { useTimelineBehavior } from "./hooks/useTimelineBehavior";
 import { buildVisibleRowSubrows, groupItemsByRowSorted } from "./utils";
 import type { ItemDefinition, RowDefinition } from "./types";
