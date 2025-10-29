@@ -4,15 +4,12 @@
   height: 100%;
   display: flex;
   align-items: center;
-
-  left: attr(data-tl-axis-left px);
-  right: attr(data-tl-axis-right px);
 }
 
-.TlTimeline-axisLabel:dir(ltr) {
+.TlTimeline-axisLabel--left {
   transform: translateX(-50%);
 }
 
-.TlTimeline-axisLabel:dir(rtl) {
+.TlTimeline-axisLabel--right {
   transform: translateX(50%);
 }

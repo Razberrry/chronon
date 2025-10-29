@@ -3,14 +3,14 @@
   inset-block-start: 0;
   height: fit-content;
   touch-action: none;
-  width: attr(data-tl-item-width px);
-  inset-inline-start: attr(data-tl-item-inset-start px);
-  inset-inline-end: attr(data-tl-item-inset-end px);
+  width: var(--tl-item-width, auto);
+  inset-inline-start: var(--tl-item-inset-start, auto);
+  inset-inline-end: var(--tl-item-inset-end, auto);
 }
 
 .TlTimeline-itemContent {
-  height: fit-content; 
+  height: fit-content;
   overflow: hidden;
-  padding-inline-start: attr(data-tl-item-pad-start px);
-  padding-inline-end: attr(data-tl-item-pad-end px);
+  padding-inline-start: var(--tl-item-pad-start, 0px);
+  padding-inline-end: var(--tl-item-pad-end, 0px);
 }

@@ -23,9 +23,18 @@ export const Item: React.FC<ItemProps> = ({  span, children, classes }) => {
     paddingEndPixels,
   } = useItem({ span });
 
+  const itemStyle = {
+    "--tl-item-width": `${widthPixels}px`,
+    "--tl-item-inset-start": `${insetStartPixels}px`,
+    "--tl-item-inset-end": `${insetEndPixels}px`,
+    "--tl-item-pad-start": `${paddingStartPixels}px`,
+    "--tl-item-pad-end": `${paddingEndPixels}px`,
+  } as React.CSSProperties;
+
   return (
     <div
       className={clsx("TlTimeline-item", classes?.item)}
+      style={itemStyle}
       data-tl-item-width={widthPixels}
       data-tl-item-inset-start={insetStartPixels}
       data-tl-item-inset-end={insetEndPixels}

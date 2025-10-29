@@ -30,10 +30,6 @@ export {
 export {
   default as TickWithLineLabel,
 } from "./components/timelineAxis/tickWithLineLabel/tickWithLineLabel";
-export {
-  VirtualScroller,
-} from "./components/virtualScroller/virtualScroller";
-export type { VirtualScrollerProps } from "./components/virtualScroller/virtualScroller";
 
 
 export { useTimeline } from "./hooks/useTimeline";
