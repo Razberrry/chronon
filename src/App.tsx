@@ -11,7 +11,7 @@ const DEFAULT_RANGE_HOUR: Range = {
 };
 const ROWS = generateRows(3)
 const ITEMS =   generateItems(
-      100000,
+      10000,
       {
         start: parseISO("2020-10-26").getTime(),
         end: parseISO("2025-12-26").getTime(),
@@ -23,7 +23,6 @@ function App() {
 
   const [rows] = useState(ROWS);
   const [items, setItems] = useState(ITEMS);
-  console.log(millisecondsToMinutes(range.end-range.start))
   const timelineAttributes = useTimeline({range, onRangeChanged: setRange});
   
   return (

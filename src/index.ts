@@ -20,7 +20,6 @@ export { TimeAxis } from "./components/timelineAxis/timeAxis/TimeAxis";
 export type { TimeAxisProps } from "./components/timelineAxis/timeAxis/TimeAxis";
 export * from "./components/timelineAxis/timelineAxisTypes";
 export * from "./components/timelineAxis/timelineAxisHelpers";
-export * from "./components/timelineAxis/timelineAxisMarkerDefinitions";
 
 
 export { useTimeline } from "./hooks/useTimeline";
