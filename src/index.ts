@@ -20,6 +20,20 @@ export { TimeAxis } from "./components/timelineAxis/timeAxis/TimeAxis";
 export type { TimeAxisProps } from "./components/timelineAxis/timeAxis/TimeAxis";
 export * from "./components/timelineAxis/timelineAxisTypes";
 export * from "./components/timelineAxis/timelineAxisHelpers";
+export {
+  TIME_AXIS_MARKERS,
+  HOUR_AXIS_MARKERS,
+} from "./components/timelineAxis/timelineAxisMarkerDefinitions";
+export {
+  default as SimpleTickLabel,
+} from "./components/timelineAxis/justTick/simpleTickLabel";
+export {
+  default as TickWithLineLabel,
+} from "./components/timelineAxis/tickWithLineLabel/tickWithLineLabel";
+export {
+  VirtualScroller,
+} from "./components/virtualScroller/virtualScroller";
+export type { VirtualScrollerProps } from "./components/virtualScroller/virtualScroller";
 
 
 export { useTimeline } from "./hooks/useTimeline";
