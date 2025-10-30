@@ -15,16 +15,23 @@ export interface RowProps extends RowDefinition {
 }
 
 export const Row = (props: RowProps): JSX.Element => {
-  const { setSidebarRef } = useTimelineContext();
+  const { setSidebarRef, setViewportRef } = useTimelineContext();
 
   return (
     <div className={clsx("TlTimeline-rowWrapper", props.classes?.wrapper)}>
-      <div ref={setSidebarRef} className={clsx("TlTimeline-rowSidebar", props.classes?.sidebar)}>
+      <div
+        ref={setSidebarRef}
+        className={clsx("TlTimeline-rowSidebar", props.classes?.sidebar)}
+      >
         {props.sidebar}
       </div>
 
       <div
-        className={clsx("TlTimeline-rowContent", props.classes?.content ?? styles.rowContentBorder,)}
+        ref={setViewportRef}
+        className={clsx(
+          "TlTimeline-rowContent",
+          props.classes?.content ?? styles.rowContentBorder
+        )}
         data-tl-row-height={props.rowContentHeightPixels}
       >
         {props.children}

@@ -16,6 +16,7 @@ interface UseTimelineConversionsParams {
   direction: CanvasDirection;
   directionSign: number;
   timelineRef: MutableRefObject<HTMLElement | null>;
+  viewportRef: MutableRefObject<HTMLElement | null>;
   sidebarWidth: number;
   viewportWidth: number;
 }
@@ -25,6 +26,7 @@ export const useTimelineConversions = ({
   direction,
   directionSign,
   timelineRef,
+  viewportRef,
   sidebarWidth,
   viewportWidth,
 }: UseTimelineConversionsParams): TimelineConversions =>
@@ -43,6 +45,12 @@ export const useTimelineConversions = ({
       pixels * (duration(customRange) / safeViewport);
 
     const getDeltaXFromScreenX: GetDeltaXFromScreenX = (screenX) => {
+      const viewportElement = viewportRef.current;
+      if (viewportElement) {
+        const viewportRect = viewportElement.getBoundingClientRect();
+        return screenX - viewportRect[sideName];
+      }
+
       const base =
         timelineRef.current?.getBoundingClientRect()[sideName] ?? 0;
       return screenX - (base + sidebarOffset);
@@ -72,6 +80,7 @@ export const useTimelineConversions = ({
     direction,
     directionSign,
     timelineRef,
+    viewportRef,
     sidebarWidth,
     viewportWidth,
   ]);

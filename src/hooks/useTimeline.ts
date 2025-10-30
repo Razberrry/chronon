@@ -19,6 +19,8 @@ export const useTimeline = ({
   const {
     timelineRef,
     setTimelineRef,
+    viewportRef,
+    setViewportRef,
     sidebarRef,
     setSidebarRef,
     sidebarWidth,
@@ -38,6 +40,7 @@ export const useTimeline = ({
     direction,
     directionSign,
     timelineRef,
+    viewportRef,
     sidebarWidth,
     viewportWidth,
   });
@@ -75,6 +78,8 @@ export const useTimeline = ({
     direction,
     timelineRef,
     setTimelineRef,
+    viewportRef,
+    setViewportRef,
     sidebarRef,
     setSidebarRef,
     sidebarWidth,

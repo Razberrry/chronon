@@ -32,6 +32,8 @@ export type ZoomLimitsConfig = Partial<ZoomLimits>;
 export interface TimelineGeometry {
 	timelineRef: MutableRefObject<HTMLElement | null>;
 	setTimelineRef: (element: HTMLElement | null) => void;
+	viewportRef: MutableRefObject<HTMLElement | null>;
+	setViewportRef: (element: HTMLElement | null) => void;
 	sidebarRef: MutableRefObject<HTMLElement | null>;
 	setSidebarRef: (element: HTMLElement | null) => void;
 	sidebarWidth: number;
@@ -61,6 +63,8 @@ export interface TimelineContext {
 	direction: CanvasDirection;
 	timelineRef: MutableRefObject<HTMLElement | null>;
 	setTimelineRef: (element: HTMLElement | null) => void;
+	viewportRef: MutableRefObject<HTMLElement | null>;
+	setViewportRef: (element: HTMLElement | null) => void;
 	sidebarWidth: number;
 	sidebarRef: MutableRefObject<HTMLElement | null>;
 	setSidebarRef: (element: HTMLElement | null) => void;

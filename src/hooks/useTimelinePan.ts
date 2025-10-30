@@ -24,7 +24,7 @@ export const useTimelinePan = ({
           const unclampedDuration = rangeDuration + deltaY;
           const clampedDuration = Math.min(
             Math.max(unclampedDuration, zoomLimits.minRangeMilliseconds),
-            zoomLimits.maxRangeMilliseconds,
+            zoomLimits.maxRangeMilliseconds
           );
           deltaY += clampedDuration - unclampedDuration;
         }
@@ -61,8 +61,7 @@ export const useTimelinePan = ({
         const nextDuration = nextRange.end - nextRange.start;
 
         if (nextDuration < zoomLimits.minRangeMilliseconds) {
-          const adjustment =
-            zoomLimits.minRangeMilliseconds - nextDuration;
+          const adjustment = zoomLimits.minRangeMilliseconds - nextDuration;
           const halfAdjustment = adjustment / 2;
           return {
             start: nextRange.start - halfAdjustment,
@@ -71,8 +70,7 @@ export const useTimelinePan = ({
         }
 
         if (nextDuration > zoomLimits.maxRangeMilliseconds) {
-          const adjustment =
-            nextDuration - zoomLimits.maxRangeMilliseconds;
+          const adjustment = nextDuration - zoomLimits.maxRangeMilliseconds;
           const halfAdjustment = adjustment / 2;
           return {
             start: nextRange.start + halfAdjustment,
@@ -89,5 +87,5 @@ export const useTimelinePan = ({
       getSpanFromScreenXForRange,
       onRangeChanged,
       zoomLimits,
-    ],
+    ]
   );
