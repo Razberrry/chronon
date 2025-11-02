@@ -1,15 +1,14 @@
 import { useMemo } from "react";
 import type { MutableRefObject } from "react";
-
-import type {
+import {
+  TimelineConversions,
+  Range,
   GetDeltaXFromScreenX,
   GetSpanFromScreenX,
   GetSpanFromScreenXForRange,
   PixelsToSpan,
-  Range,
   SpanToPixels,
-  TimelineConversions,
-} from "../types";
+} from "../types/index";
 
 interface UseTimelineConversionsParams {
   range: Range;
@@ -51,14 +50,13 @@ export const useTimelineConversions = ({
         return screenX - viewportRect[sideName];
       }
 
-      const base =
-        timelineRef.current?.getBoundingClientRect()[sideName] ?? 0;
+      const base = timelineRef.current?.getBoundingClientRect()[sideName] ?? 0;
       return screenX - (base + sidebarOffset);
     };
 
     const getSpanFromScreenXForRange: GetSpanFromScreenXForRange = (
       screenX,
-      customRange,
+      customRange
     ) => {
       const deltaX = getDeltaXFromScreenX(screenX);
       const delta = pixelsToSpan(deltaX, customRange) * directionSign;

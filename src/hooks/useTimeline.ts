@@ -1,11 +1,14 @@
 import { useMemo } from "react";
 
-import type { TimelineContext, UseTimelineProps, ZoomLimits } from "../types";
-
 import { useTimelineConversions } from "./useTimelineConversions";
 import { useTimelineGeometry } from "./useTimelineGeometry";
 import { useTimelinePan } from "./useTimelinePan";
 import { DEFAULT_ZOOM_LIMITS } from "./zoomUtils";
+import {
+  TimelineContext,
+  UseTimelineProps,
+  ZoomLimits,
+} from "../types/timeline";
 
 export const useTimeline = ({
   range,

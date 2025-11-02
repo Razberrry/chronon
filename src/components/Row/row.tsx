@@ -3,9 +3,9 @@ import clsx from "clsx";
 
 import "./row.base.css";
 import styles from "./row.module.css";
-import { RowDefinition } from "../../types";
 import type { TimelineRowClasses } from "../../types/TimelineClasses";
 import { useTimelineContext } from "../../context/timelineContext";
+import { RowDefinition } from "../../types/row";
 
 export interface RowProps extends RowDefinition {
   children: React.ReactNode;

@@ -7,7 +7,7 @@ export const useElementRef = () => {
   const observerRef = useRef<ResizeObserver | null>(null);
 
   const lastWidthRef = useRef(0);
-  const [widthInPixels, setWidthInPixels] = useState(0);
+  const [widthInPixels, setWidthInPixels] = useState(undefined);
   const [textDirection, setTextDirection] = useState<TextDirection>("ltr");
 
   const setRef = useCallback((element: HTMLElement | null) => {
@@ -21,10 +21,13 @@ export const useElementRef = () => {
     const initialWidth = element.getBoundingClientRect().width;
     lastWidthRef.current = initialWidth;
     setWidthInPixels(initialWidth);
-    setTextDirection(getComputedStyle(element).direction === "rtl" ? "rtl" : "ltr");
+    setTextDirection(
+      getComputedStyle(element).direction === "rtl" ? "rtl" : "ltr"
+    );
 
     const observer = new ResizeObserver((entries) => {
-      const nextWidth = entries[0]?.contentRect?.width ?? element.getBoundingClientRect().width;
+      const nextWidth =
+        entries[0]?.contentRect?.width ?? element.getBoundingClientRect().width;
       if (nextWidth !== lastWidthRef.current) {
         lastWidthRef.current = nextWidth;
         setWidthInPixels(nextWidth);
@@ -35,5 +38,10 @@ export const useElementRef = () => {
     observerRef.current = observer;
   }, []);
 
-  return { ref: elementRef, setRef, width: widthInPixels, direction: textDirection };
+  return {
+    ref: elementRef,
+    setRef,
+    width: widthInPixels,
+    direction: textDirection,
+  };
 };
