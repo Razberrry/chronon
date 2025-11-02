@@ -1,10 +1,6 @@
 import { useMemo } from "react";
 
-import type {
-  TimelineContext,
-  UseTimelineProps,
-  ZoomLimits,
-} from "../types";
+import type { TimelineContext, UseTimelineProps, ZoomLimits } from "../types";
 
 import { useTimelineConversions } from "./useTimelineConversions";
 import { useTimelineGeometry } from "./useTimelineGeometry";
@@ -80,6 +76,7 @@ export const useTimeline = ({
     setTimelineRef,
     viewportRef,
     setViewportRef,
+    viewportWidth,
     sidebarRef,
     setSidebarRef,
     sidebarWidth,
