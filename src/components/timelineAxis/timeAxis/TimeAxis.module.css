@@ -1,3 +1,14 @@
+.timeAxisWrapper {
+  display: flex;
+}
+
+.timeAxisStartElement {
+  flex: 0 0 auto;
+  inline-size: var(--tl-time-axis-startElement-width, 0px);
+}
+
 .timeAxis {
+  position: relative;
+  flex: 1 1 auto;
   height: 35px;
 }

@@ -13,10 +13,9 @@ type AxisLabelProps = {
 
 const AxisLabel: React.FC<AxisLabelProps> = ({ side, marker, classes }) => {
   const Label = marker.Override ?? DefaultLabel;
-  const positionStyle =
-    side === "left"
-      ? { left: `${marker.sideDelta}px` }
-      : { right: `${marker.sideDelta}px` };
+  const labelStyle = {
+    "--tl-axis-label-side-delta": `${marker.sideDelta}px`,
+  } as React.CSSProperties;
 
   return (
     <div
@@ -27,7 +26,7 @@ const AxisLabel: React.FC<AxisLabelProps> = ({ side, marker, classes }) => {
           : "TlTimeline-axisLabel--right",
         classes?.axisLabel,
       )}
-      style={positionStyle}
+      style={labelStyle}
     >
       {marker.label ? <Label>{marker.label}</Label> : <Label/>}
     </div>

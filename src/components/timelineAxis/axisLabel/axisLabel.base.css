@@ -5,9 +5,11 @@
 }
 
 .TlTimeline-axisLabel--left {
+  left: var(--tl-axis-label-side-delta, 0px);
   transform: translateX(-50%);
 }
 
 .TlTimeline-axisLabel--right {
+  right: var(--tl-axis-label-side-delta, 0px);
   transform: translateX(50%);
 }

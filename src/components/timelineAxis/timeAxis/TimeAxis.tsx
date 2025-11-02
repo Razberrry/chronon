@@ -11,36 +11,53 @@ import type { TimelineAxisClasses } from "../../../types/TimelineClasses";
 
 export interface TimeAxisProps {
   timeAxisMarkers: MarkerDefinition[];
+  startElement?: React.ReactNode;
   classes?: TimelineAxisClasses;
 }
 
-export const TimeAxis: React.FC<TimeAxisProps> = ({ timeAxisMarkers, classes }) => {
+export const TimeAxis: React.FC<TimeAxisProps> = ({
+  timeAxisMarkers,
+  startElement,
+  classes,
+}) => {
   const { range, direction, sidebarWidth, spanToPixels } = useTimelineContext();
   const side: "left" | "right" = direction === "rtl" ? "right" : "left";
-  const axisStyle = {
-    "--tl-time-axis-margin-left": side === "left" ? `${sidebarWidth}px` : "0px",
-    "--tl-time-axis-margin-right": side === "right" ? `${sidebarWidth}px` : "0px",
-  } as React.CSSProperties;
 
   const markers: Marker[] = useMemo(
-    () =>
-      computeMarkers(
-        timeAxisMarkers,
-        range.start,
-        range.end,
-        spanToPixels,
-      ),
+    () => computeMarkers(timeAxisMarkers, range.start, range.end, spanToPixels),
     [timeAxisMarkers, range.start, range.end, spanToPixels]
   );
 
   return (
-    <div
-      className={clsx("TlTimeline-timeAxis", styles.timeAxis, classes?.timeAxis)}
-      style={axisStyle}
-    >
-      {markers.map((marker, i) => (
-        <AxisLabel side={side} marker={marker} key={`${marker.sideDelta}-${i}`} />
-      ))}
+    <div className={clsx("TlTimeline-timeAxisWrapper", styles.timeAxisWrapper)}>
+      <div
+        className={clsx(
+          "TlTimeline-timeAxisStartElement",
+          styles.timeAxisStartElement
+        )}
+        style={
+          {
+            "--tl-time-axis-startElement-width": `${sidebarWidth}px`,
+          } as React.CSSProperties
+        }
+      >
+        {startElement}
+      </div>
+      <div
+        className={clsx(
+          "TlTimeline-timeAxis",
+          styles.timeAxis,
+          classes?.timeAxis
+        )}
+      >
+        {markers.map((marker, i) => (
+          <AxisLabel
+            side={side}
+            marker={marker}
+            key={`${marker.sideDelta}-${i}`}
+          />
+        ))}
+      </div>
     </div>
   );
 };

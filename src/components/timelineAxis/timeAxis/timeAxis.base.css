@@ -1,5 +1,13 @@
+.TlTimeline-timeAxisWrapper {
+  display: flex;
+}
+
+.TlTimeline-timeAxisStartElement {
+  flex: 0 0 auto;
+  inline-size: var(--tl-time-axis-startElement-width, 0px);
+}
+
 .TlTimeline-timeAxis {
   position: relative;
-  margin-left: var(--tl-time-axis-margin-left, 0px);
-  margin-right: var(--tl-time-axis-margin-right, 0px);
+  flex: 1 1 auto;
 }

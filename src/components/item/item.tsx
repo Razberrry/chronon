@@ -11,10 +11,10 @@ export interface ItemProps {
   id: string;
   span: Span;
   children: React.ReactNode;
-  classes?: TimelineItemClasses; 
-};
+  classes?: TimelineItemClasses;
+}
 
-export const Item: React.FC<ItemProps> = ({  span, children, classes }) => {
+export const Item: React.FC<ItemProps> = ({ span, children, classes }) => {
   const {
     insetStartPixels,
     insetEndPixels,
@@ -32,19 +32,11 @@ export const Item: React.FC<ItemProps> = ({  span, children, classes }) => {
   } as React.CSSProperties;
 
   return (
-    <div
-      className={clsx("TlTimeline-item", classes?.item)}
-      style={itemStyle}
-      data-tl-item-width={widthPixels}
-      data-tl-item-inset-start={insetStartPixels}
-      data-tl-item-inset-end={insetEndPixels}
-    >
-      <div
-        className={clsx("TlTimeline-itemContent", classes?.content)}
-        data-tl-item-pad-start={paddingStartPixels}
-        data-tl-item-pad-end={paddingEndPixels}
-      >
-        <div className={clsx(classes?.innerContainer ?? styles.itemInnerContainer)}>
+    <div className={clsx("TlTimeline-item", classes?.item)} style={itemStyle}>
+      <div className={clsx("TlTimeline-itemContent", classes?.content)}>
+        <div
+          className={clsx(classes?.innerContainer ?? styles.itemInnerContainer)}
+        >
           {children}
         </div>
       </div>
