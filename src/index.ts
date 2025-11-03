@@ -23,7 +23,7 @@ export * from "./components/timelineAxis/timelineAxisHelpers";
 export {
   TIME_AXIS_MARKERS,
   HOUR_AXIS_MARKERS,
-} from "./components/timelineAxis/timelineAxisMarkerDefinitions";
+} from "./components/timelineAxis/timelineAxisMarkerDefinition";
 export {
   default as SimpleTickLabel,
 } from "./components/timelineAxis/justTick/simpleTickLabel";

@@ -1,23 +1,23 @@
-import { format, hoursToMilliseconds, min, minutesToMilliseconds } from "date-fns";
-import { MarkerDefinition } from "./timelineAxisTypes";
-import TickWithLineLabel from "./tickWithLineLabel/tickWithLineLabel";
-import SimpleTickLabel from "./justTick/simpleTickLabel";
+import React from "react";
+import { format, hoursToMilliseconds, minutesToMilliseconds } from "date-fns";
 import { he } from "date-fns/locale";
-
+import DefaultLabel from "./DefaultLabel/defaultLabel";
+import SimpleTickLabel from "./justTick/simpleTickLabel";
+import TickWithLineLabel from "./tickWithLineLabel/tickWithLineLabel";
+import { MarkerDefinition } from "./timelineAxisTypes";
 
 type DateLabelFormatter = (date: Date) => string;
 
 const formatMinutes: DateLabelFormatter = (date) => format(date, "m");
 const formatHourMinute: DateLabelFormatter = (date) => format(date, "H:mm");
-const formatWeek: DateLabelFormatter = (date) => format(date,'EEEE');
+const formatWeek: DateLabelFormatter = (date) => format(date, "EEEE");
 
 export const formatHebrewDate = (date: Date): string => {
-  const timePart = format(date, "H:mm", { locale: he });  
-  const dayMonthPart = format(date, "d/M", { locale: he }); 
+  const timePart = format(date, "H:mm", { locale: he });
+  const dayMonthPart = format(date, "d/M", { locale: he });
   const weekdayPart = format(date, "EEEE", { locale: he });
   return `${timePart} • ${dayMonthPart} ${weekdayPart} `;
 };
-
 
 interface MarkerPairOptions {
   majorValueMilliseconds: number;
@@ -27,8 +27,9 @@ interface MarkerPairOptions {
   minorToMajorRatio: number;
 }
 
-
-export const createMarkerDefinitionPair = (options: MarkerPairOptions): MarkerDefinition[] => {
+export const createMarkerDefinitionPair = (
+  options: MarkerPairOptions
+): MarkerDefinition[] => {
   const {
     majorValueMilliseconds,
     minimumRangeSizeMilliseconds,
@@ -48,20 +49,20 @@ export const createMarkerDefinitionPair = (options: MarkerPairOptions): MarkerDe
       value: minorValueMilliseconds,
       minRangeSize: minimumRangeSizeMilliseconds,
       maxRangeSize: maximumRangeSizeMilliseconds,
-      overrideComponent: SimpleTickLabel,
+      render: () => <SimpleTickLabel />,
     },
     {
       value: majorValueMilliseconds,
       minRangeSize: minimumRangeSizeMilliseconds,
       maxRangeSize: maximumRangeSizeMilliseconds,
-      getLabel: majorLabel,
-      overrideComponent: TickWithLineLabel,
+      render: (date: Date) => (
+        <TickWithLineLabel label={majorLabel?.(date)} />
+      ),
     },
   ];
 };
 
 const TIME_AXIS_MARKERS: MarkerDefinition[] = [
-
   ...createMarkerDefinitionPair({
     majorValueMilliseconds: minutesToMilliseconds(5),
     minimumRangeSizeMilliseconds: 0,
@@ -90,27 +91,22 @@ const TIME_AXIS_MARKERS: MarkerDefinition[] = [
     majorLabel: formatHourMinute,
     minorToMajorRatio: 2,
   }),
-  
   {
     value: hoursToMilliseconds(24),
-    minRangeSize:hoursToMilliseconds(50),
-    getLabel: formatWeek
-  }
-
-
+    minRangeSize: hoursToMilliseconds(50),
+    render: (date: Date) => <DefaultLabel label={formatWeek(date)} />,
+  },
 ];
 
-
-const HOUR_AXIS_MARKERS = [
-      {
-      value: hoursToMilliseconds(1),
-      minRangeSize:minutesToMilliseconds(30),
-      maxRangeSize:hoursToMilliseconds(2),
-      getLabel: formatHebrewDate
-    }
+const HOUR_AXIS_MARKERS: MarkerDefinition[] = [
+  {
+    value: hoursToMilliseconds(1),
+    minRangeSize: minutesToMilliseconds(30),
+    maxRangeSize: hoursToMilliseconds(2),
+    render: (date: Date) => (
+      <DefaultLabel label={formatHebrewDate(date)} />
+    ),
+  },
 ];
-  
 
-
-
-export {TIME_AXIS_MARKERS,HOUR_AXIS_MARKERS};
+export { TIME_AXIS_MARKERS, HOUR_AXIS_MARKERS };
