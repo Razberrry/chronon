@@ -24,11 +24,8 @@ export interface TimelineProps {
 export const TimelineExample = ({ rows, items }: TimelineProps) => {
   const { range } = useTimelineContext();
   useTimelineBehavior();
- 
-  const sortedItemsByRow = useMemo(
-    () => groupItemsByRowSorted(items),
-    [items],
-  );
+
+  const sortedItemsByRow = useMemo(() => groupItemsByRowSorted(items), [items]);
 
   const groupedSubrows = useMemo(
     () => buildVisibleRowSubrows(sortedItemsByRow, range),
@@ -42,12 +39,11 @@ export const TimelineExample = ({ rows, items }: TimelineProps) => {
       <TimeAxis timeAxisMarkers={HOUR_AXIS_MARKERS} />
       <TimeAxis timeAxisMarkers={TIME_AXIS_MARKERS} />
       {rows.map((row) => (
-        
         <Row id={row.id} key={row.id} sidebar={<Sidebar row={row} />}>
           {groupedSubrows[row.id]?.map((subrow, index) => (
             <Subrow key={`${row.id}-${index}`}>
               {subrow.map((item) => (
-                <Item id={item.id} key={item.id}  span={item.span}>
+                <Item id={item.id} key={item.id} span={item.span}>
                   גזרת שדרה {item.id}
                 </Item>
               ))}

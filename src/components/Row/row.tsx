@@ -9,21 +9,33 @@ import { RowDefinition } from "../../types/row";
 
 export interface RowProps extends RowDefinition {
   children: React.ReactNode;
-  sidebar: React.ReactNode;
-  rowContentHeightPixels?: number;
+  sidebar?: React.ReactNode;
   classes?: TimelineRowClasses;
 }
 
 export const Row = (props: RowProps): JSX.Element => {
-  const { setSidebarRef, setViewportRef } = useTimelineContext();
+  const { setSidebarRef, setViewportRef, sidebarWidth } = useTimelineContext();
+  const hasSidebar = props.sidebar !== undefined && props.sidebar !== null;
 
   return (
     <div className={clsx("TlTimeline-rowWrapper", props.classes?.wrapper)}>
       <div
         ref={setSidebarRef}
-        className={clsx("TlTimeline-rowSidebar", props.classes?.sidebar)}
+        className={clsx(
+          "TlTimeline-rowSidebar",
+          !hasSidebar && "TlTimeline-rowSidebarSpacer",
+          props.classes?.sidebar
+        )}
+        style={
+          !hasSidebar
+            ? ({
+                "--tl-row-sidebar-width": `${sidebarWidth ?? 0}px`,
+              } as React.CSSProperties)
+            : undefined
+        }
+        aria-hidden={hasSidebar ? undefined : true}
       >
-        {props.sidebar}
+        {hasSidebar ? props.sidebar : null}
       </div>
 
       <div
@@ -32,7 +44,6 @@ export const Row = (props: RowProps): JSX.Element => {
           "TlTimeline-rowContent",
           props.classes?.content ?? styles.rowContentBorder
         )}
-        data-tl-row-height={props.rowContentHeightPixels}
       >
         {props.children}
       </div>

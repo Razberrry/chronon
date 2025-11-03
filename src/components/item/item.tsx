@@ -10,7 +10,7 @@ import type { TimelineItemClasses } from "../../types/TimelineClasses";
 export interface ItemProps {
   id: string;
   span: Span;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   classes?: TimelineItemClasses;
 }
 
