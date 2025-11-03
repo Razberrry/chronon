@@ -10,7 +10,7 @@ const getRandomInRange = (min: number, max: number) =>
   Math.random() * (max - min) + min;
 
 const DEFAULT_MIN_DURATION = hoursToMilliseconds(10);
-const DEFAULT_MAX_DURATION = hoursToMilliseconds(168);
+const DEFAULT_MAX_DURATION = hoursToMilliseconds(100);
 
 export const generateRows = (count: number, options?: GenerateRowsOptions) =>
   Array.from({ length: count }, (_, index): RowDefinition => {
