@@ -19,12 +19,14 @@ export const SimpleItem: React.FC<ItemProps> = ({
   classes,
   style,
 }) => {
-  const { insetStartPixels, widthPixels } = useSimpleItem({
+  const { insetStartPixels, insetEndPixels, widthPixels } = useSimpleItem({
     span,
   });
 
   const itemStyle = {
     "--tl-item-width": `${widthPixels}px`,
+    "--tl-item-inset-start": `${insetStartPixels}px`,
+    "--tl-item-inset-end": `${insetEndPixels}px`,
   } as React.CSSProperties;
 
   const combinedStyle = style ? { ...itemStyle, ...style } : itemStyle;

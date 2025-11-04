@@ -23,6 +23,7 @@ export const Item: React.FC<ItemProps> = ({
 }) => {
   const {
     insetStartPixels,
+    insetEndPixels,
     widthPixels,
     paddingStartPixels,
     paddingEndPixels,
@@ -30,6 +31,8 @@ export const Item: React.FC<ItemProps> = ({
 
   const itemStyle = {
     "--tl-item-width": `${widthPixels}px`,
+    "--tl-item-inset-start": `${insetStartPixels}px`,
+    "--tl-item-inset-end": `${insetEndPixels}px`,
     "--tl-item-pad-start": `${paddingStartPixels}px`,
     "--tl-item-pad-end": `${paddingEndPixels}px`,
   } as React.CSSProperties;

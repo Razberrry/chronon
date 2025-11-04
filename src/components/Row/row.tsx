@@ -15,8 +15,19 @@ export interface RowProps extends RowDefinition {
 }
 
 export const Row = (props: RowProps): JSX.Element => {
-  const { setSidebarRef, setViewportRef, sidebarWidth } = useTimelineContext();
+  const {
+    setSidebarRef,
+    setViewportRef,
+    sidebarWidth,
+  } = useTimelineContext();
   const hasSidebar = props.sidebar !== undefined && props.sidebar !== null;
+
+  const contentStyle =
+    props.subrowHeight !== undefined
+      ? ({
+          "--tl-subrow-height": `${props.subrowHeight}px`,
+        } as React.CSSProperties)
+      : undefined;
 
   return (
     <div className={clsx("TlTimeline-rowWrapper", props.classes?.wrapper)}>
@@ -45,6 +56,7 @@ export const Row = (props: RowProps): JSX.Element => {
           "TlTimeline-rowContent",
           props.classes?.content ?? styles.rowContentBorder
         )}
+        style={contentStyle}
       >
         {props.children}
       </div>

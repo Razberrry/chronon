@@ -10,7 +10,6 @@ import {
 import React, { useState } from "react";
 import {
   RangeToolbar,
-  TimelineContext,
   TimelineContextProvider,
   generateItems,
   generateRows,
@@ -23,7 +22,7 @@ const DEFAULT_RANGE_HOUR: Range = {
   start: subMinutes(new Date(), 30).getTime(),
   end: addMinutes(new Date(), 30).getTime(),
 };
-const ROWS = generateRows(3);
+const ROWS = generateRows(2);
 const ITEMS = generateItems(
   1000,
   {
@@ -38,7 +37,10 @@ function App() {
 
   const [rows] = useState(ROWS);
   const [items, setItems] = useState(ITEMS);
-  const timelineAttributes = useTimeline({ range, onRangeChanged: setRange });
+  const timelineAttributes = useTimeline({
+    range,
+    onRangeChanged: setRange,
+  });
 
   return (
     <TimelineContextProvider {...timelineAttributes}>

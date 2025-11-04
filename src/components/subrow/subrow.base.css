@@ -1,6 +1,5 @@
 .TlTimeline-subrow {
   position: relative;
-  height: fit-content;
-  display: flex;
-  flex-direction: row;
+  height: var(--tl-subrow-height, auto);
+  min-height: var(--tl-subrow-height, 2.5rem);
 }

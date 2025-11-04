@@ -40,7 +40,7 @@ export const TimelineExample = ({ rows, items }: TimelineProps) => {
       <TimeAxis timeAxisMarkers={HOUR_AXIS_MARKERS} />
       <TimeAxis timeAxisMarkers={TIME_AXIS_MARKERS} />
       {rows.map((row) => (
-        <Row id={row.id} key={row.id} sidebar={<Sidebar row={row} />}>
+        <Row {...row} key={row.id} sidebar={<Sidebar row={row} />}>
           {groupedSubrows[row.id]?.map((subrow, index) => (
             <Subrow key={`${row.id}-${index}`}>
               {subrow.map((item) => (
