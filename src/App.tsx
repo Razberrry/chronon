@@ -25,10 +25,10 @@ const DEFAULT_RANGE_HOUR: Range = {
 };
 const ROWS = generateRows(3);
 const ITEMS = generateItems(
-  1,
+  1000,
   {
     start: parseISO("2025-11-01").getTime(),
-    end: parseISO("2025-11-05").getTime(),
+    end: parseISO("2025-12-05").getTime(),
   },
   ROWS
 );

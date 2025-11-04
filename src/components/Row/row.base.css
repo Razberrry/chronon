@@ -1,5 +1,6 @@
 .TlTimeline-rowWrapper {
   display: inline-flex;
+  scrollbar-gutter: stable;
 }
 
 .TlTimeline-rowSidebar {
@@ -17,4 +18,5 @@
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
 }

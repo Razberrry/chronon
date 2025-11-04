@@ -14,8 +14,8 @@ export { Row } from "./components/Row/row";
 export type { RowProps } from "./components/Row/row";
 export { Sidebar } from "./components/sidebar/Sidebar";
 export type { SidebarProps } from "./components/sidebar/Sidebar";
-export { Subrow } from "./components/subrow/subrow";
-export type { SubrowProps } from "./components/subrow/subrow";
+export { Subrow } from "./components/subrow/Subrow";
+export type { SubrowProps } from "./components/subrow/Subrow";
 export { Timeline } from "./components/timeline/timeline";
 
 export { TimeCursor } from "./components/timeCursor/timeCursor";

@@ -9,7 +9,7 @@ import {
 import { Item } from "./components/item/item";
 import { Row } from "./components/Row/row";
 import { Sidebar } from "./components/sidebar/Sidebar";
-import { Subrow } from "./components/subrow/subrow";
+import { Subrow } from "./components/subrow/Subrow";
 import { useTimelineBehavior } from "./hooks/useTimelineBehavior";
 import { buildVisibleRowSubrows, groupItemsByRowSorted } from "./utils";
 import type { ItemDefinition, RowDefinition } from "./types";
@@ -44,9 +44,9 @@ export const TimelineExample = ({ rows, items }: TimelineProps) => {
           {groupedSubrows[row.id]?.map((subrow, index) => (
             <Subrow key={`${row.id}-${index}`}>
               {subrow.map((item) => (
-                <SimpleItem id={item.id} key={item.id} span={item.span}>
+                <Item id={item.id} key={item.id} span={item.span}>
                   גזרת שדרה {item.id}
-                </SimpleItem>
+                </Item>
               ))}
             </Subrow>
           ))}
