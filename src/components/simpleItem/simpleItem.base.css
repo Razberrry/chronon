@@ -1,0 +1,9 @@
+.TlTimeline-simple-item {
+  position: relative;
+  inset-block-start: 0;
+  height: fit-content;
+  touch-action: none;
+  width: var(--tl-item-width, auto);
+  inset-inline-start: var(--tl-item-inset-start, auto);
+  inset-inline-end: var(--tl-item-inset-end, auto);
+}

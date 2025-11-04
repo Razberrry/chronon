@@ -6,6 +6,10 @@ export { Item } from "./components/item/item";
 export type { ItemProps } from "./components/item/item";
 export { useItem } from "./components/item/useItem";
 
+export { SimpleItem } from "./components/simpleItem/simpleItem";
+export type { ItemProps as SimpleItemProps } from "./components/simpleItem/simpleItem";
+export { useSimpleItem as useItemWrapper } from "./components/simpleItem/useSimpleItem";
+
 export { Row } from "./components/Row/row";
 export type { RowProps } from "./components/Row/row";
 export { Sidebar } from "./components/sidebar/Sidebar";
@@ -24,25 +28,18 @@ export {
   TIME_AXIS_MARKERS,
   HOUR_AXIS_MARKERS,
 } from "./components/timelineAxis/timelineAxisMarkerDefinition";
-export {
-  default as SimpleTickLabel,
-} from "./components/timelineAxis/justTick/simpleTickLabel";
-export {
-  default as TickWithLineLabel,
-} from "./components/timelineAxis/tickWithLineLabel/tickWithLineLabel";
-
+export { default as SimpleTickLabel } from "./components/timelineAxis/justTick/simpleTickLabel";
+export { default as TickWithLineLabel } from "./components/timelineAxis/tickWithLineLabel/tickWithLineLabel";
 
 export { useTimeline } from "./hooks/useTimeline";
 export { useTimelineBehavior } from "./hooks/useTimelineBehavior";
 export { useTimelineAutoPanUntilInteraction } from "./hooks/useTimelineAutoPanUntilInteraction";
 export { useTimelineMousePanAndZoom } from "./hooks/useTimelineMousePanAndZoom";
 export { useElementRef } from "./hooks/useElementRef";
-export {useTimelineContext} from './context/timelineContext' 
+export { useTimelineContext } from "./context/timelineContext";
 export * from "./hooks/zoomUtils";
 
-export {
-  TimelineContextProvider,
-} from "./context/timelineContext";
+export { TimelineContextProvider } from "./context/timelineContext";
 
 export * from "./types";
 export * from "./types/TimelineClasses";
@@ -59,4 +56,3 @@ export {
   buildVisibleRowSubrows,
   sortItemsByStart,
 } from "./utils";
-  

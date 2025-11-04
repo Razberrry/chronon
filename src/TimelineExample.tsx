@@ -15,6 +15,7 @@ import { buildVisibleRowSubrows, groupItemsByRowSorted } from "./utils";
 import type { ItemDefinition, RowDefinition } from "./types";
 import { useTimelineContext } from "./context/timelineContext";
 import { Timeline } from "./components/timeline/timeline";
+import { SimpleItem } from "./components/simpleItem/simpleItem";
 
 export interface TimelineProps {
   rows: RowDefinition[];
@@ -43,9 +44,9 @@ export const TimelineExample = ({ rows, items }: TimelineProps) => {
           {groupedSubrows[row.id]?.map((subrow, index) => (
             <Subrow key={`${row.id}-${index}`}>
               {subrow.map((item) => (
-                <Item id={item.id} key={item.id} span={item.span}>
+                <SimpleItem id={item.id} key={item.id} span={item.span}>
                   גזרת שדרה {item.id}
-                </Item>
+                </SimpleItem>
               ))}
             </Subrow>
           ))}
