@@ -12,12 +12,17 @@ export interface ItemProps {
   span: Span;
   children?: React.ReactNode;
   classes?: TimelineItemClasses;
+  style?: React.CSSProperties;
 }
 
-export const Item: React.FC<ItemProps> = ({ span, children, classes }) => {
+export const Item: React.FC<ItemProps> = ({
+  span,
+  children,
+  classes,
+  style,
+}) => {
   const {
     insetStartPixels,
-    insetEndPixels,
     widthPixels,
     paddingStartPixels,
     paddingEndPixels,
@@ -25,14 +30,14 @@ export const Item: React.FC<ItemProps> = ({ span, children, classes }) => {
 
   const itemStyle = {
     "--tl-item-width": `${widthPixels}px`,
-    "--tl-item-inset-start": `${insetStartPixels}px`,
-    "--tl-item-inset-end": `${insetEndPixels}px`,
     "--tl-item-pad-start": `${paddingStartPixels}px`,
     "--tl-item-pad-end": `${paddingEndPixels}px`,
   } as React.CSSProperties;
 
+  const combinedStyle = style ? { ...itemStyle, ...style } : itemStyle;
+
   return (
-    <div className={clsx("TlTimeline-item", classes?.item)} style={itemStyle}>
+    <div className={clsx("TlTimeline-item", classes?.item)} style={combinedStyle}>
       <div className={clsx("TlTimeline-itemContent", classes?.content)}>
         <div
           className={clsx(classes?.innerContainer ?? styles.itemInnerContainer)}

@@ -10,27 +10,29 @@ export interface ItemProps {
   span: Span;
   children?: React.ReactNode;
   classes?: TimelineItemClasses;
+  style?: React.CSSProperties;
 }
 
 export const SimpleItem: React.FC<ItemProps> = ({
   span,
   children,
   classes,
+  style,
 }) => {
-  const { insetStartPixels, insetEndPixels, widthPixels } = useSimpleItem({
+  const { insetStartPixels, widthPixels } = useSimpleItem({
     span,
   });
 
   const itemStyle = {
     "--tl-item-width": `${widthPixels}px`,
-    "--tl-item-inset-start": `${insetStartPixels}px`,
-    "--tl-item-inset-end": `${insetEndPixels}px`,
   } as React.CSSProperties;
+
+  const combinedStyle = style ? { ...itemStyle, ...style } : itemStyle;
 
   return (
     <div
       className={clsx("TlTimeline-simple-item", classes?.item)}
-      style={itemStyle}
+      style={combinedStyle}
     >
       {children}
     </div>

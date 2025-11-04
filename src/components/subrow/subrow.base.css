@@ -1,4 +1,6 @@
 .TlTimeline-subrow {
   position: relative;
   height: fit-content;
+  display: flex;
+  flex-direction: row;
 }
