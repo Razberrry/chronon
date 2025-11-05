@@ -50,11 +50,11 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({
           classes?.timeAxis
         )}
       >
-        {markers.map((marker, i) => (
+        {markers.map((marker) => (
           <AxisLabel
             side={side}
             marker={marker}
-            key={`${marker.sideDelta}-${i}`}
+            key={marker.date.getTime()}
           />
         ))}
       </div>

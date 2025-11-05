@@ -11,11 +11,10 @@ import { Row } from "./components/Row/row";
 import { Sidebar } from "./components/sidebar/Sidebar";
 import { Subrow } from "./components/subrow/Subrow";
 import { useTimelineBehavior } from "./hooks/useTimelineBehavior";
-import { buildVisibleRowSubrows, groupItemsByRowSorted } from "./utils";
+import { groupItemsToSubrows } from "./utils";
 import type { ItemDefinition, RowDefinition } from "./types";
 import { useTimelineContext } from "./context/timelineContext";
 import { Timeline } from "./components/timeline/timeline";
-import { SimpleItem } from "./components/simpleItem/simpleItem";
 
 export interface TimelineProps {
   rows: RowDefinition[];
@@ -26,12 +25,41 @@ export const TimelineExample = ({ rows, items }: TimelineProps) => {
   const { range } = useTimelineContext();
   useTimelineBehavior();
 
-  const sortedItemsByRow = useMemo(() => groupItemsByRowSorted(items), [items]);
+  const subrowsByRow = useMemo(() => groupItemsToSubrows(items), [items]);
 
-  const groupedSubrows = useMemo(
-    () => buildVisibleRowSubrows(sortedItemsByRow, range),
-    [sortedItemsByRow, range]
-  );
+  const visibleSubrows = useMemo(() => {
+    const rangeStart = range.start;
+    const rangeEnd = range.end;
+
+    const result: Record<
+      string,
+      Array<{ laneIndex: number; items: ItemDefinition[] }>
+    > = {};
+
+    for (const [rowId, lanes] of Object.entries(subrowsByRow)) {
+      const visibleLanes: Array<{
+        laneIndex: number;
+        items: ItemDefinition[];
+      }> = [];
+
+      lanes.forEach((lane, laneIndex) => {
+        const itemsInRange = lane.filter(
+          (item) => item.span.start < rangeEnd && item.span.end > rangeStart
+        );
+
+        if (itemsInRange.length) {
+          visibleLanes.push({ laneIndex, items: itemsInRange });
+        }
+      });
+
+      if (visibleLanes.length) {
+        result[rowId] = visibleLanes;
+      }
+    }
+
+    return result;
+  }, [subrowsByRow, range.start, range.end]);
+
   const now = new Date();
 
   return (
@@ -41,9 +69,9 @@ export const TimelineExample = ({ rows, items }: TimelineProps) => {
       <TimeAxis timeAxisMarkers={TIME_AXIS_MARKERS} />
       {rows.map((row) => (
         <Row {...row} key={row.id} sidebar={<Sidebar row={row} />}>
-          {groupedSubrows[row.id]?.map((subrow, index) => (
-            <Subrow key={`${row.id}-${index}`}>
-              {subrow.map((item) => (
+          {visibleSubrows[row.id]?.map(({ items: subrowItems, laneIndex }) => (
+            <Subrow key={`${row.id}-lane-${laneIndex}`}>
+              {subrowItems.map((item) => (
                 <Item id={item.id} key={item.id} span={item.span}>
                   גזרת שדרה {item.id}
                 </Item>

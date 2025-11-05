@@ -30,7 +30,7 @@ export const useTimelinePan = ({
         }
 
         const pointerValue =
-          event.clientX !== undefined
+          event.deltaY !== 0 && event.clientX !== undefined
             ? getSpanFromScreenXForRange(event.clientX, prevRange)
             : undefined;
 
