@@ -55,4 +55,5 @@ export {
   buildVisibleSubrowsForRow,
   buildVisibleRowSubrows,
   sortItemsByStart,
+  generateFixedLengthItems,
 } from "./utils";

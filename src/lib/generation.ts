@@ -61,3 +61,30 @@ export const generateItems = (
       span,
     };
   });
+
+export const generateFixedSpan = (range: Range, duration: number): Span => {
+  const start = getRandomInRange(range.start, range.end - duration);
+  const end = start + duration;
+  return { start, end };
+};
+
+export const generateFixedLengthItems = (
+  count: number,
+  range: Range,
+  rows: RowDefinition[],
+  options?: GenerateItemsOptions
+): ItemDefinition[] => {
+  const duration = hoursToMilliseconds(5);
+
+  return Array.from({ length: count }, (): ItemDefinition => {
+    const randomRow = rows[Math.floor(Math.random() * rows.length)];
+    const span = generateFixedSpan(range, duration);
+    const id = `item-${nanoid()}`;
+
+    return {
+      id,
+      rowId: randomRow.id,
+      span,
+    };
+  });
+};
