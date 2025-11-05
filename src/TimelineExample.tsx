@@ -67,8 +67,13 @@ export const TimelineExample = ({ rows, items }: TimelineProps) => {
       <TimeCursor at={now} />
       <TimeAxis timeAxisMarkers={HOUR_AXIS_MARKERS} />
       <TimeAxis timeAxisMarkers={TIME_AXIS_MARKERS} />
-      {rows.map((row) => (
-        <Row {...row} key={row.id} sidebar={<Sidebar row={row} />}>
+      {rows.map((row, index) => (
+        <Row
+          {...row}
+          key={row.id}
+          sidebar={<Sidebar row={row} />}
+          ignoreRefs={index !== 0}
+        >
           {visibleSubrows[row.id]?.map(({ items: subrowItems, laneIndex }) => (
             <Subrow key={`${row.id}-lane-${laneIndex}`}>
               {subrowItems.map((item) => (

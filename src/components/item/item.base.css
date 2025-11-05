@@ -4,7 +4,7 @@
   touch-action: none;
   inline-size: var(--tl-item-width, auto);
   inset-inline-start: var(--tl-item-inset-start, 0px);
-  height: fit-content;
+  height: 100%;
 }
 
 .TlTimeline-itemContent {
@@ -12,4 +12,5 @@
   overflow: hidden;
   padding-inline-start: var(--tl-item-pad-start, 0px);
   padding-inline-end: var(--tl-item-pad-end, 0px);
+  height: 100%;
 }
