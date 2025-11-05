@@ -36,6 +36,7 @@ export { useTimelineBehavior } from "./hooks/useTimelineBehavior";
 export { useTimelineAutoPanUntilInteraction } from "./hooks/useTimelineAutoPanUntilInteraction";
 export { useTimelineMousePanAndZoom } from "./hooks/useTimelineMousePanAndZoom";
 export { useElementRef } from "./hooks/useElementRef";
+export { useVisibleTimelineItems } from "./hooks/useVisibleTimelineItems";
 export { useTimelineContext } from "./context/timelineContext";
 export * from "./hooks/zoomUtils";
 
@@ -50,11 +51,10 @@ export {
   generateRandomSpan,
   groupItemsToRows,
   groupItemsToSubrows,
-  groupSortedItemsToSubrows,
   groupItemsByRowSorted,
-  buildVisibleSubrowsForRow,
-  buildVisibleRowSubrows,
   sortItemsByStart,
   generateFixedLengthItems,
   generateDeterministicItems,
+  mapItemsToFullDaySpans,
+  filterItemsBySpan,
 } from "./utils";

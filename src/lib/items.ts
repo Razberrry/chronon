@@ -2,6 +2,25 @@ import { endOfDay, startOfDay } from "date-fns";
 
 import type { ItemDefinition, Span } from "../types";
 
+const spansOverlap = (source: Span, target: Span) =>
+  source.start < target.end && source.end > target.start;
+
+const isFiniteSpan = (span?: Span): span is Span =>
+  !!span &&
+  Number.isFinite(span.start) &&
+  Number.isFinite(span.end) &&
+  span.end > span.start;
+
+export const filterItemsBySpan = <
+  T extends ItemDefinition = ItemDefinition
+>(
+  items: readonly T[],
+  span?: Span
+): readonly T[] => {
+  if (!isFiniteSpan(span)) return items;
+  return items.filter((item) => spansOverlap(item.span, span));
+};
+
 export const expandSpanToFullDays = (span: Span): Span => {
   const { start, end } = span;
 
@@ -20,9 +39,10 @@ export const expandSpanToFullDays = (span: Span): Span => {
 };
 
 export const mapItemsToFullDaySpans = (
-  items: readonly ItemDefinition[]
+  items: readonly ItemDefinition[],
+  span?: Span
 ): ItemDefinition[] =>
-  items.map(
+  filterItemsBySpan(items, span).map(
     (item): ItemDefinition => ({
       ...item,
       span: expandSpanToFullDays(item.span),

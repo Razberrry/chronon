@@ -1,4 +1,5 @@
 import type { ItemDefinition, Span } from "../types";
+import { filterItemsBySpan } from "./items";
 
 export const sortItemsByStart = <T extends ItemDefinition = ItemDefinition>(
   items: readonly T[]
@@ -83,31 +84,10 @@ const addToSubrows = <T extends ItemDefinition>(
   siftUp(heap, heap.length - 1);
 };
 
-const findFirstIntersectingItemIndex = <T extends ItemDefinition>(
-  sortedItems: readonly T[],
-  visibleRangeStart: number
-) => {
-  let low = 0;
-  let high = sortedItems.length - 1;
-  let result = sortedItems.length;
-
-  while (low <= high) {
-    const mid = (low + high) >> 1;
-    if (sortedItems[mid].span.end > visibleRangeStart) {
-      result = mid;
-      high = mid - 1;
-    } else {
-      low = mid + 1;
-    }
-  }
-
-  return result;
-};
-
 const isOutsideSpan = <T extends ItemDefinition>(item: T, span?: Span) =>
   !!span && (item.span.start >= span.end || item.span.end <= span.start);
 
-export const groupSortedItemsToSubrows = <
+const groupSortedItemsToSubrows = <
   T extends ItemDefinition = ItemDefinition
 >(
   items: readonly T[],
@@ -138,67 +118,24 @@ export const groupSortedItemsToSubrows = <
   return result;
 };
 
-export const buildVisibleSubrowsForRow = <
+export const groupItemsToSubrows = <
   T extends ItemDefinition = ItemDefinition
 >(
-  rowItems: readonly T[],
+  items: readonly T[],
   span?: Span
 ) => {
-  const orderedItems = ensureSortedByStart(rowItems);
-  if (!orderedItems.length) return [];
-
-  const startIndex =
-    span && typeof span.start === "number"
-      ? findFirstIntersectingItemIndex(orderedItems, span.start)
-      : 0;
-
-  const subrows: T[][] = [];
-  const heap: HeapNode[] = [];
-
-  for (let index = startIndex; index < orderedItems.length; index++) {
-    const item = orderedItems[index];
-    if (span) {
-      if (item.span.start >= span.end) break;
-      if (item.span.end <= span.start) continue;
-    }
-
-    addToSubrows(subrows, heap, item);
-  }
-
-  return subrows;
+  const relevantItems = filterItemsBySpan(items, span);
+  if (!relevantItems.length) return {};
+  return groupSortedItemsToSubrows(relevantItems, span);
 };
-
-export const buildVisibleRowSubrows = <
-  T extends ItemDefinition = ItemDefinition
->(
-  itemsByRow: Record<string, readonly T[]>,
-  span?: Span
-) => {
-  const result: Record<string, T[][]> = {};
-
-  for (const [rowId, rowItems] of Object.entries(itemsByRow)) {
-    const subrows = buildVisibleSubrowsForRow(rowItems, span);
-    if (subrows.length) {
-      result[rowId] = subrows;
-    }
-  }
-
-  return result;
-};
-
-export const groupItemsToSubrows = <T extends ItemDefinition = ItemDefinition>(
-  items: T[],
-  span?: Span
-) => groupSortedItemsToSubrows(items, span);
 
 export const groupItemsToRows = <T extends ItemDefinition = ItemDefinition>(
-  items: T[],
+  items: readonly T[],
   span?: Span
 ) => {
   const grouped: Record<string, T[]> = Object.create(null);
 
-  for (const item of items) {
-    if (isOutsideSpan(item, span)) continue;
+  for (const item of filterItemsBySpan(items, span)) {
     (grouped[item.rowId] ??= []).push(item);
   }
 
@@ -208,7 +145,7 @@ export const groupItemsToRows = <T extends ItemDefinition = ItemDefinition>(
 export const groupItemsByRowSorted = <
   T extends ItemDefinition = ItemDefinition
 >(
-  items: T[]
+  items: readonly T[]
 ) => {
   const itemsByRow = groupItemsToRows(items);
 
