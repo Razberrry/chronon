@@ -56,4 +56,5 @@ export {
   buildVisibleRowSubrows,
   sortItemsByStart,
   generateFixedLengthItems,
+  generateDeterministicItems,
 } from "./utils";

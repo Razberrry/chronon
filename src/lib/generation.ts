@@ -88,3 +88,38 @@ export const generateFixedLengthItems = (
     };
   });
 };
+
+export interface GenerateDeterministicItemsOptions {
+  durationInHours?: number;
+  spacingInHours?: number;
+}
+
+export const generateDeterministicItems = (
+  count: number,
+  range: Range,
+  rows: RowDefinition[],
+  options?: GenerateDeterministicItemsOptions
+): ItemDefinition[] => {
+  const duration = hoursToMilliseconds(options?.durationInHours ?? 5);
+  const spacing = hoursToMilliseconds(options?.spacingInHours ?? 0);
+
+  const items: ItemDefinition[] = [];
+
+  for (let index = 0; index < count; index++) {
+    const row = rows[index % rows.length];
+    const start = range.start;
+    const end = start + duration;
+
+    // If it exceeds range, clamp it
+    if (end > range.end) break;
+
+    const id = `item-${index}`;
+    items.push({
+      id,
+      rowId: row.id,
+      span: { start, end },
+    });
+  }
+
+  return items;
+};
