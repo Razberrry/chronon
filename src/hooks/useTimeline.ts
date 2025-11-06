@@ -12,7 +12,7 @@ import {
 
 export const useTimeline = ({
   range,
-  onRangeChanged,
+  setRange,
   zoomLimits: zoomLimitsConfig,
 }: UseTimelineProps): TimelineContext => {
   const {
@@ -68,7 +68,7 @@ export const useTimeline = ({
     directionSign,
     pixelsToSpan,
     getSpanFromScreenXForRange,
-    onRangeChanged,
+    setRange,
     zoomLimits,
   });
 
@@ -88,7 +88,7 @@ export const useTimeline = ({
     getSpanFromScreenX,
     getDeltaXFromScreenX,
     onPanEnd,
-    onRangeChanged,
+    setRange,
     zoomLimits,
   };
 };

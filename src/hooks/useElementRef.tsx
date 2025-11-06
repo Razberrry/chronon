@@ -4,19 +4,43 @@ type TextDirection = "ltr" | "rtl";
 
 export const useElementRef = () => {
   const elementRef = useRef<HTMLElement | null>(null);
+  const observedElementRef = useRef<HTMLElement | null>(null);
   const observerRef = useRef<ResizeObserver | null>(null);
 
   const lastWidthRef = useRef(0);
-  const [widthInPixels, setWidthInPixels] = useState(undefined);
+  const [widthInPixels, setWidthInPixels] = useState<number | undefined>(
+    undefined
+  );
   const [textDirection, setTextDirection] = useState<TextDirection>("ltr");
 
   const setRef = useCallback((element: HTMLElement | null) => {
-    // Cleanup previous observer (covers swaps and unmount)
+    const currentElement = observedElementRef.current;
+
+    if (element === currentElement) {
+      return;
+    }
+
+    if (!element) {
+      if (currentElement) {
+        observerRef.current?.disconnect();
+        observerRef.current = null;
+        observedElementRef.current = null;
+        elementRef.current = null;
+        lastWidthRef.current = 0;
+        setWidthInPixels(undefined);
+      }
+      return;
+    }
+
+    if (currentElement && currentElement !== element) {
+      return;
+    }
+
     observerRef.current?.disconnect();
     observerRef.current = null;
 
     elementRef.current = element;
-    if (!element) return;
+    observedElementRef.current = element;
 
     const initialWidth = element.getBoundingClientRect().width;
     lastWidthRef.current = initialWidth;

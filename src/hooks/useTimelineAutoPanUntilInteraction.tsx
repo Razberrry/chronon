@@ -7,7 +7,7 @@ const AUTOPAN_INTERVAL_MILLISECONDS = 1000;
 
 
 export const useTimelineAutoPanUntilInteraction = (): void => {
-  const { timelineRef, onRangeChanged } = useTimelineContext();
+  const { timelineRef, setRange } = useTimelineContext();
 
   const hasUserInteractedRef = useRef(false);
   const autopanTimerIdRef = useRef<number | null>(null);
@@ -33,7 +33,7 @@ export const useTimelineAutoPanUntilInteraction = (): void => {
       if (!isDocumentVisible()) return;
 
       autopanTimerIdRef.current = window.setInterval(() => {
-        onRangeChanged((previousRange) => {
+        setRange((previousRange) => {
           const newRange = {
             start: previousRange.start + AUTOPAN_INTERVAL_MILLISECONDS,
             end: previousRange.end + AUTOPAN_INTERVAL_MILLISECONDS,
@@ -79,5 +79,5 @@ export const useTimelineAutoPanUntilInteraction = (): void => {
         autopanTimerIdRef.current = null;
       }
     };
-  }, [timelineRef, onRangeChanged]);
+  }, [timelineRef, setRange]);
 };

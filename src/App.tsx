@@ -24,7 +24,7 @@ const DEFAULT_RANGE_HOUR: Range = {
 };
 const ROWS = generateRows(2);
 const ITEMS = generateItems(
-  1000,
+  500,
   {
     start: parseISO("2025-11-01").getTime(),
     end: parseISO("2025-12-05").getTime(),
@@ -39,7 +39,7 @@ function App() {
   const [items, setItems] = useState(ITEMS);
   const timelineAttributes = useTimeline({
     range,
-    onRangeChanged: setRange,
+    setRange,
   });
 
   return (

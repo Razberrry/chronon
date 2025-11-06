@@ -38,14 +38,13 @@ export const useVisibleTimelineItems = ({
   );
 
   const itemsToGroup = useMemo(
-    () =>
-      isWeekly ? mapItemsToFullDaySpans(visibleItems, range) : visibleItems,
-    [visibleItems, isWeekly, range.start, range.end]
+    () => (isWeekly ? mapItemsToFullDaySpans(visibleItems) : visibleItems),
+    [visibleItems, isWeekly]
   );
 
   const subrowsByRow = useMemo(
-    () => groupItemsToSubrows(itemsToGroup, range),
-    [itemsToGroup, range.start, range.end]
+    () => groupItemsToSubrows(itemsToGroup),
+    [itemsToGroup]
   );
 
   const rowIdWithMostVisibleLanes = useMemo(() => {

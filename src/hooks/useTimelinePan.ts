@@ -6,12 +6,12 @@ export const useTimelinePan = ({
   directionSign,
   pixelsToSpan,
   getSpanFromScreenXForRange,
-  onRangeChanged,
+  setRange,
   zoomLimits,
 }: TimelinePanOptions): OnPanEnd =>
   useCallback<OnPanEnd>(
     (event) => {
-      onRangeChanged((prevRange) => {
+      setRange((prevRange) => {
         const applyDirection = (delta: number) =>
           pixelsToSpan(delta, prevRange) * directionSign;
 
@@ -85,7 +85,7 @@ export const useTimelinePan = ({
       directionSign,
       pixelsToSpan,
       getSpanFromScreenXForRange,
-      onRangeChanged,
+      setRange,
       zoomLimits,
     ]
   );

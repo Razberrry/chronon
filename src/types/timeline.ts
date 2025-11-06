@@ -1,4 +1,8 @@
-import type { MutableRefObject } from "react";
+import type {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+} from "react";
 
 import { Range } from ".";
 
@@ -17,7 +21,7 @@ export type GetSpanFromScreenXForRange = (
 export type GetDeltaXFromScreenX = (screenX: number) => number;
 
 export type OnPanEnd = (event: PanEndEvent) => void;
-export type OnRangeChanged = (updateFunction: (prev: Range) => Range) => void;
+export type SetRange = Dispatch<SetStateAction<Range>>;
 
 export type PixelsToSpan = (pixels: number, range?: Range) => number;
 export type SpanToPixels = (span: number, range?: Range) => number;
@@ -54,7 +58,7 @@ export interface TimelinePanOptions {
   directionSign: number;
   pixelsToSpan: PixelsToSpan;
   getSpanFromScreenXForRange: GetSpanFromScreenXForRange;
-  onRangeChanged: OnRangeChanged;
+  setRange: SetRange;
   zoomLimits: ZoomLimits;
 }
 
@@ -74,12 +78,12 @@ export interface TimelineContext {
   getSpanFromScreenX: GetSpanFromScreenX;
   getDeltaXFromScreenX: GetDeltaXFromScreenX;
   onPanEnd: OnPanEnd;
-  onRangeChanged: OnRangeChanged;
+  setRange: SetRange;
   zoomLimits: ZoomLimits;
 }
 
 export interface UseTimelineProps {
   range: Range;
-  onRangeChanged: OnRangeChanged;
+  setRange: SetRange;
   zoomLimits?: ZoomLimitsConfig;
 }
