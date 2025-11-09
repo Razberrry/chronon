@@ -14,7 +14,15 @@
 
 .TlTimeline-rowContent {
   position: relative;
+  display: flex;
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.TlTimeline-rowContentInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
