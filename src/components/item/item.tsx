@@ -49,7 +49,6 @@ export const Item: React.FC<ItemProps> = ({
           className={clsx(classes?.innerContainer ?? styles.itemInnerContainer)}
         >
           {children}
-          {paddingEndPixels}
         </div>
       </div>
     </div>

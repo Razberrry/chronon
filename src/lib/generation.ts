@@ -2,9 +2,6 @@ import { RowDefinition, Span, Range, ItemDefinition } from "../types/index";
 
 import { nanoid } from "nanoid";
 import { hoursToMilliseconds } from "date-fns";
-export interface GenerateRowsOptions {
-  disabled?: boolean;
-}
 
 const getRandomInRange = (min: number, max: number) =>
   Math.random() * (max - min) + min;
@@ -12,7 +9,7 @@ const getRandomInRange = (min: number, max: number) =>
 const DEFAULT_MIN_DURATION = hoursToMilliseconds(10);
 const DEFAULT_MAX_DURATION = hoursToMilliseconds(100);
 
-export const generateRows = (count: number, options?: GenerateRowsOptions) =>
+export const generateRows = (count: number) =>
   Array.from({ length: count }, (_, index): RowDefinition => {
     let id = `row-${index}`;
 
@@ -20,8 +17,6 @@ export const generateRows = (count: number, options?: GenerateRowsOptions) =>
   });
 
 export interface GenerateItemsOptions {
-  disabled?: boolean;
-  background?: boolean;
   minDuration?: number;
   maxDuration?: number;
 }

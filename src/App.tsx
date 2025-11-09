@@ -1,10 +1,12 @@
 import "./index.css";
 import {
+  addHours,
   addMinutes,
   endOfDay,
   millisecondsToMinutes,
   parseISO,
   startOfDay,
+  subHours,
   subMinutes,
 } from "date-fns";
 import React, { useState } from "react";
@@ -19,8 +21,8 @@ import type { Range } from ".";
 import { TimelineExample } from "./TimelineExample";
 
 const DEFAULT_RANGE_HOUR: Range = {
-  start: subMinutes(new Date(), 30).getTime(),
-  end: addMinutes(new Date(), 30).getTime(),
+  start: subHours(new Date(), 5).getTime(),
+  end: addHours(new Date(), 5).getTime(),
 };
 const ROWS = generateRows(2);
 const ITEMS = generateItems(
