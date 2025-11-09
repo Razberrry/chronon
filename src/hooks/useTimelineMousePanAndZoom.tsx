@@ -19,9 +19,12 @@ export const buildPanEndEvent = (
 });
 
 export const useTimelineMousePanAndZoom = (): void => {
-  const { timelineRef, range, onPanEnd, direction, zoomLimits } = useTimelineContext();
+  const { timelineRef, range, onPanEnd, direction, zoomLimits } =
+    useTimelineContext();
   const onPanEndRef = useRef(onPanEnd);
   const rangeRef = useRef({ start: range.start, end: range.end });
+  const pendingPanEndRef = useRef<PanEndEvent | null>(null);
+  const frameRequestIdRef = useRef<number | null>(null);
 
   useLayoutEffect(() => {
     onPanEndRef.current = onPanEnd;
@@ -38,6 +41,43 @@ export const useTimelineMousePanAndZoom = (): void => {
     let isDragging = false;
     let lastKnownClientX = 0;
     let activePointerId: number | null = null;
+
+    const flushPendingPanEvent = () => {
+      if (frameRequestIdRef.current !== null) {
+        window.cancelAnimationFrame(frameRequestIdRef.current);
+        frameRequestIdRef.current = null;
+      }
+      const pendingEvent = pendingPanEndRef.current;
+      if (!pendingEvent) return;
+      pendingPanEndRef.current = null;
+      onPanEndRef.current(pendingEvent);
+    };
+
+    const queuePanEnd = (
+      sourceEvent: { clientX: number; clientY: number },
+      deltaX: number,
+      deltaY: number
+    ) => {
+      const pending = pendingPanEndRef.current;
+      if (pending) {
+        pending.deltaX += deltaX;
+        pending.deltaY += deltaY;
+        pending.clientX = sourceEvent.clientX;
+        pending.clientY = sourceEvent.clientY;
+      } else {
+        pendingPanEndRef.current = buildPanEndEvent(sourceEvent, deltaX, deltaY);
+      }
+
+      if (frameRequestIdRef.current !== null) return;
+
+      frameRequestIdRef.current = window.requestAnimationFrame(() => {
+        frameRequestIdRef.current = null;
+        const nextEvent = pendingPanEndRef.current;
+        if (!nextEvent) return;
+        pendingPanEndRef.current = null;
+        onPanEndRef.current(nextEvent);
+      });
+    };
 
     // pointer down when drag starts
     const handlePointerDown = (event: PointerEvent): void => {
@@ -58,7 +98,7 @@ export const useTimelineMousePanAndZoom = (): void => {
       if (activePointerId !== null && event.pointerId !== activePointerId) return;
       const horizontalClientMovement = event.clientX - lastKnownClientX;
       lastKnownClientX = event.clientX;
-      onPanEndRef.current(buildPanEndEvent(event, -horizontalClientMovement, 0));
+      queuePanEnd(event, -horizontalClientMovement, 0);
       event.preventDefault();
     };
 
@@ -66,6 +106,7 @@ export const useTimelineMousePanAndZoom = (): void => {
     const handlePointerEnd = (): void => {
       if (!isDragging) return;
       isDragging = false;
+      flushPendingPanEvent();
       if (activePointerId !== null) {
         timelineElement.releasePointerCapture?.(activePointerId);
       }
@@ -82,7 +123,7 @@ export const useTimelineMousePanAndZoom = (): void => {
       const { start, end } = rangeRef.current;
       const currentRangeSizeMilliseconds = end - start;
       if (isHitZoomLimitation(event, currentRangeSizeMilliseconds, direction, zoomLimits )) return;
-      onPanEndRef.current(buildPanEndEvent(event, 0, -event.deltaY * SCROLL_SENSITIVITY));
+      queuePanEnd(event, 0, -event.deltaY * SCROLL_SENSITIVITY);
     };
 
     timelineElement.addEventListener("pointerdown", handlePointerDown, { passive: false });
@@ -99,6 +140,7 @@ export const useTimelineMousePanAndZoom = (): void => {
       timelineElement.removeEventListener("wheel", handleWheel);
       timelineElement.style.cursor = "";
       timelineElement.style.userSelect = "";
+      flushPendingPanEvent();
     };
   }, [timelineRef, direction, zoomLimits]);
 };

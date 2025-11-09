@@ -40,6 +40,7 @@ export const TimelineExample = ({ rows, items }: TimelineProps) => {
           key={row.id}
           sidebar={<Sidebar row={row} />}
           ignoreRefs={row.id === rowIdWithMostVisibleLanes}
+          subrowHeight={60}
         >
           {subrowsByRow[row.id]?.map((subrowItems, laneIndex) => (
             <Subrow key={`${row.id}-lane-${laneIndex}`}>

@@ -40,12 +40,16 @@ export const Item: React.FC<ItemProps> = ({
   const combinedStyle = style ? { ...itemStyle, ...style } : itemStyle;
 
   return (
-    <div className={clsx("TlTimeline-item", classes?.item)} style={combinedStyle}>
+    <div
+      className={clsx("TlTimeline-item", classes?.item)}
+      style={combinedStyle}
+    >
       <div className={clsx("TlTimeline-itemContent", classes?.content)}>
         <div
           className={clsx(classes?.innerContainer ?? styles.itemInnerContainer)}
         >
           {children}
+          {paddingEndPixels}
         </div>
       </div>
     </div>

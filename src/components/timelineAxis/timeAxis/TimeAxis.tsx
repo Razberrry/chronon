@@ -27,6 +27,9 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({
     () => computeMarkers(timeAxisMarkers, range.start, range.end, spanToPixels),
     [timeAxisMarkers, range.start, range.end, spanToPixels]
   );
+  const stopTimelinePointer = (event: React.SyntheticEvent) => {
+    event.stopPropagation();
+  };
 
   return (
     <div className={clsx("TlTimeline-timeAxisWrapper", styles.timeAxisWrapper)}>
@@ -40,6 +43,10 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({
             "--tl-time-axis-startElement-width": `${sidebarWidth}px`,
           } as React.CSSProperties
         }
+        onPointerDown={stopTimelinePointer}
+        onPointerUp={stopTimelinePointer}
+        onPointerMove={stopTimelinePointer}
+        onWheel={stopTimelinePointer}
       >
         {startElement}
       </div>
@@ -51,11 +58,7 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({
         )}
       >
         {markers.map((marker) => (
-          <AxisLabel
-            side={side}
-            marker={marker}
-            key={marker.date.getTime()}
-          />
+          <AxisLabel side={side} marker={marker} key={marker.date.getTime()} />
         ))}
       </div>
     </div>
