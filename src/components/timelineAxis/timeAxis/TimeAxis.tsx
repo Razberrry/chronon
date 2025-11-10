@@ -43,10 +43,10 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({
             "--tl-time-axis-startElement-width": `${sidebarWidth}px`,
           } as React.CSSProperties
         }
-        onPointerDown={stopTimelinePointer}
-        onPointerUp={stopTimelinePointer}
-        onPointerMove={stopTimelinePointer}
-        onWheel={stopTimelinePointer}
+        onPointerDown={(e) => {
+          e.stopPropagation();
+          e.nativeEvent.stopImmediatePropagation();
+        }}
       >
         {startElement}
       </div>
