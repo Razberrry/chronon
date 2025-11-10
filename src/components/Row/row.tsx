@@ -1,42 +1,62 @@
 import React from "react";
 import clsx from "clsx";
+import { Virtuoso } from "react-virtuoso";
 
 import "./row.base.css";
 import styles from "./row.module.css";
-import type { TimelineRowClasses } from "../../types/TimelineClasses";
+
 import { useTimelineContext } from "../../context/timelineContext";
-import { RowDefinition } from "../../types/row";
+import type { RowDefinition } from "../../types/row";
+import type { TimelineRowClasses } from "../../types/TimelineClasses";
 
 export interface RowProps extends RowDefinition {
   children: React.ReactNode;
   sidebar?: React.ReactNode;
   classes?: TimelineRowClasses;
   ignoreRefs?: boolean;
+  subrowHeight: number;
+  virtualizeSubrows?: boolean;
+  virtualSubrowOverscan?: number; // rows
 }
 
-export const Row = (props: RowProps): JSX.Element => {
-  const {
-    setSidebarRef,
-    setViewportRef,
-    sidebarWidth,
-  } = useTimelineContext();
-  const hasSidebar = props.sidebar !== undefined && props.sidebar !== null;
+export const Row: React.FC<RowProps> = ({
+  id,
+  children,
+  sidebar,
+  classes,
+  ignoreRefs = false,
+  subrowHeight,
+  virtualizeSubrows = false,
+  virtualSubrowOverscan = 6,
+}) => {
+  const { direction, setSidebarRef, setViewportRef, sidebarWidth } =
+    useTimelineContext();
 
-  const contentStyle =
-    props.subrowHeight !== undefined
-      ? ({
-          "--tl-subrow-height": `${props.subrowHeight}px`,
-        } as React.CSSProperties)
-      : undefined;
+  const hasSidebar = !!sidebar;
+
+  const contentStyle: React.CSSProperties | undefined = subrowHeight
+    ? ({
+        "--tl-subrow-height": `${subrowHeight}px`,
+      } as React.CSSProperties)
+    : undefined;
+
+  const subrows = React.Children.toArray(children);
+
+  const overscanPixels = subrowHeight * virtualSubrowOverscan;
+
+  const scrollContainerRef = React.useRef<HTMLDivElement | null>(null);
 
   return (
-    <div className={clsx("TlTimeline-rowWrapper", props.classes?.wrapper)}>
+    <div
+      className={clsx("TlTimeline-rowWrapper", classes?.wrapper)}
+      data-row-id={id}
+    >
       <div
-        ref={props?.ignoreRefs ? undefined : setSidebarRef}
+        ref={ignoreRefs ? undefined : setSidebarRef}
         className={clsx(
           "TlTimeline-rowSidebar",
           !hasSidebar && "TlTimeline-rowSidebarSpacer",
-          props.classes?.sidebar
+          classes?.sidebar
         )}
         style={
           !hasSidebar
@@ -45,20 +65,40 @@ export const Row = (props: RowProps): JSX.Element => {
               } as React.CSSProperties)
             : undefined
         }
-        aria-hidden={hasSidebar ? undefined : true}
       >
-        {hasSidebar ? props.sidebar : null}
+        {hasSidebar ? sidebar : null}
       </div>
 
       <div
-        ref={props?.ignoreRefs ? undefined : setViewportRef}
+        ref={scrollContainerRef}
         className={clsx(
           "TlTimeline-rowContent",
-          props.classes?.content ?? styles.rowContentBorder
+          classes?.content ?? styles.rowContentBorder
         )}
-        style={contentStyle}
       >
-        {props.children}
+        <div
+          ref={ignoreRefs ? undefined : setViewportRef}
+          className="TlTimeline-rowContentInner"
+          style={contentStyle}
+          dir={direction}
+        >
+          {virtualizeSubrows ? (
+            <Virtuoso
+              totalCount={subrows.length}
+              customScrollParent={scrollContainerRef.current ?? undefined}
+              increaseViewportBy={{
+                top: overscanPixels,
+                bottom: overscanPixels,
+              }}
+              defaultItemHeight={subrowHeight}
+              itemContent={(index) => (
+                <div data-index={index}>{subrows[index]}</div>
+              )}
+            />
+          ) : (
+            children
+          )}
+        </div>
       </div>
     </div>
   );

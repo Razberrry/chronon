@@ -45,11 +45,7 @@ export const Item: React.FC<ItemProps> = ({
       style={combinedStyle}
     >
       <div className={clsx("TlTimeline-itemContent", classes?.content)}>
-        <div
-          className={clsx(classes?.innerContainer ?? styles.itemInnerContainer)}
-        >
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   );
