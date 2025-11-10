@@ -5,6 +5,7 @@ import { PanEndEvent } from "../types";
 import { useTimelineContext } from "../context/timelineContext";
 
 const SCROLL_SENSITIVITY = 1;
+const DRAG_THRESHOLD_PX = 3;
 
 
 export const buildPanEndEvent = (
@@ -38,9 +39,23 @@ export const useTimelineMousePanAndZoom = (): void => {
     const timelineElement = timelineRef.current;
     if (!timelineElement) return;
 
-    let isDragging = false;
+    let isPointerActive = false;
+    let dragStarted = false;
     let lastKnownClientX = 0;
     let activePointerId: number | null = null;
+    let pointerDownClientX = 0;
+    let hasPointerCapture = false;
+    let shouldSuppressNextClick = false;
+
+    const enableDragStyles = (): void => {
+      timelineElement.style.cursor = "grabbing";
+      timelineElement.style.userSelect = "none";
+    };
+
+    const disableDragStyles = (): void => {
+      timelineElement.style.cursor = "";
+      timelineElement.style.userSelect = "";
+    };
 
     const flushPendingPanEvent = () => {
       if (frameRequestIdRef.current !== null) {
@@ -79,40 +94,73 @@ export const useTimelineMousePanAndZoom = (): void => {
       });
     };
 
+    const beginDragging = () => {
+      if (dragStarted || activePointerId === null) return;
+      dragStarted = true;
+      if (!hasPointerCapture) {
+        timelineElement.setPointerCapture?.(activePointerId);
+        hasPointerCapture = true;
+      }
+      enableDragStyles();
+    };
+
     // pointer down when drag starts
     const handlePointerDown = (event: PointerEvent): void => {
       if (event.button !== 0) return;
-      timelineElement.setPointerCapture?.(event.pointerId);
+      shouldSuppressNextClick = false;
       activePointerId = event.pointerId;
-      isDragging = true;
+      isPointerActive = true;
+      dragStarted = false;
+      hasPointerCapture = false;
       lastKnownClientX = event.clientX;
-      timelineElement.style.cursor = "grabbing";
-      timelineElement.style.userSelect = "none";
-      event.preventDefault();
+      pointerDownClientX = event.clientX;
     };
 
 
     // pointer moves when dragging , move left/right
     const handlePointerMove = (event: PointerEvent): void => {
-      if (!isDragging) return;
+      if (!isPointerActive) return;
       if (activePointerId !== null && event.pointerId !== activePointerId) return;
-      const horizontalClientMovement = event.clientX - lastKnownClientX;
-      lastKnownClientX = event.clientX;
+      const nextClientX = event.clientX;
+      const horizontalClientMovement = nextClientX - lastKnownClientX;
+
+      if (!dragStarted) {
+        const movementFromOrigin = nextClientX - pointerDownClientX;
+        if (Math.abs(movementFromOrigin) < DRAG_THRESHOLD_PX) {
+          lastKnownClientX = nextClientX;
+          return;
+        }
+        beginDragging();
+      }
+
+      lastKnownClientX = nextClientX;
       queuePanEnd(event, -horizontalClientMovement, 0);
       event.preventDefault();
     };
 
     // when finish dragging
     const handlePointerEnd = (): void => {
-      if (!isDragging) return;
-      isDragging = false;
+      if (!isPointerActive) return;
+      const wasDragging = dragStarted;
+      isPointerActive = false;
+      dragStarted = false;
       flushPendingPanEvent();
-      if (activePointerId !== null) {
+      if (hasPointerCapture && activePointerId !== null) {
         timelineElement.releasePointerCapture?.(activePointerId);
       }
+      hasPointerCapture = false;
       activePointerId = null;
-      timelineElement.style.cursor = "";
-      timelineElement.style.userSelect = "";
+      disableDragStyles();
+      if (wasDragging) {
+        shouldSuppressNextClick = true;
+      }
+    };
+
+    const handleClickCapture = (event: MouseEvent): void => {
+      if (!shouldSuppressNextClick) return;
+      shouldSuppressNextClick = false;
+      event.stopPropagation();
+      event.preventDefault();
     };
 
     // when zooming in/out
@@ -131,6 +179,7 @@ export const useTimelineMousePanAndZoom = (): void => {
     timelineElement.addEventListener("pointerup", handlePointerEnd, { passive: false });
     timelineElement.addEventListener("pointercancel", handlePointerEnd, { passive: false });
     timelineElement.addEventListener("wheel", handleWheel, { passive: false });
+    timelineElement.addEventListener("click", handleClickCapture, true);
 
     return () => {
       timelineElement.removeEventListener("pointerdown", handlePointerDown);
@@ -138,6 +187,7 @@ export const useTimelineMousePanAndZoom = (): void => {
       timelineElement.removeEventListener("pointerup", handlePointerEnd);
       timelineElement.removeEventListener("pointercancel", handlePointerEnd);
       timelineElement.removeEventListener("wheel", handleWheel);
+      timelineElement.removeEventListener("click", handleClickCapture, true);
       timelineElement.style.cursor = "";
       timelineElement.style.userSelect = "";
       flushPendingPanEvent();

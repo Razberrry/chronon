@@ -27,9 +27,6 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({
     () => computeMarkers(timeAxisMarkers, range.start, range.end, spanToPixels),
     [timeAxisMarkers, range.start, range.end, spanToPixels]
   );
-  const stopTimelinePointer = (event: React.SyntheticEvent) => {
-    event.stopPropagation();
-  };
 
   return (
     <div className={clsx("TlTimeline-timeAxisWrapper", styles.timeAxisWrapper)}>
@@ -43,10 +40,6 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({
             "--tl-time-axis-startElement-width": `${sidebarWidth}px`,
           } as React.CSSProperties
         }
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          e.nativeEvent.stopImmediatePropagation();
-        }}
       >
         {startElement}
       </div>
