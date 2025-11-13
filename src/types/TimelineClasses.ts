@@ -29,5 +29,8 @@ export type TimelineCursorClasses = {
 };
 
 export type TimelineAxisClasses = {
+  wrapper?: string;
+  startElement?: string;
   timeAxis?: string;
+  axisLabel?: string;
 };

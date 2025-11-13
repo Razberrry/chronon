@@ -1,5 +1,6 @@
 .TlTimeline-timeAxisWrapper {
   display: flex;
+  flex: 1 1 auto;
 }
 
 .TlTimeline-timeAxisStartElement {
@@ -10,4 +11,5 @@
 .TlTimeline-timeAxis {
   position: relative;
   flex: 1 1 auto;
+  height: fit-content;
 }

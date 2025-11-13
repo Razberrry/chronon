@@ -1,7 +1,7 @@
 import React from "react";
 
 import { TimeCursor } from "./components/timeCursor/timeCursor";
-import { TimeAxis } from "./components/timelineAxis/timeAxis/TimeAxis";
+import { TimeAxis } from "./components/timelineAxis/timeAxis/timeAxis";
 import {
   HOUR_AXIS_MARKERS,
   TIME_AXIS_MARKERS,

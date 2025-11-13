@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import clsx from "clsx";
 
 import "./timeAxis.base.css";
-import styles from "./TimeAxis.module.css";
 import { Marker, MarkerDefinition } from "../timelineAxisTypes";
 import AxisLabel from "../axisLabel/AxisLabel";
 import { computeMarkers } from "../timelineAxisHelpers";
@@ -29,11 +28,11 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({
   );
 
   return (
-    <div className={clsx("TlTimeline-timeAxisWrapper", styles.timeAxisWrapper)}>
+    <div className={clsx("TlTimeline-timeAxisWrapper", classes?.wrapper)}>
       <div
         className={clsx(
           "TlTimeline-timeAxisStartElement",
-          styles.timeAxisStartElement
+          classes?.startElement
         )}
         style={
           {
@@ -43,15 +42,14 @@ export const TimeAxis: React.FC<TimeAxisProps> = ({
       >
         {startElement}
       </div>
-      <div
-        className={clsx(
-          "TlTimeline-timeAxis",
-          styles.timeAxis,
-          classes?.timeAxis
-        )}
-      >
+      <div className={clsx("TlTimeline-timeAxis", classes?.timeAxis)}>
         {markers.map((marker) => (
-          <AxisLabel side={side} marker={marker} key={marker.date.getTime()} />
+          <AxisLabel
+            side={side}
+            marker={marker}
+            key={marker.date.getTime()}
+            className={classes?.axisLabel}
+          />
         ))}
       </div>
     </div>

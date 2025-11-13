@@ -20,8 +20,8 @@ export { Timeline } from "./components/timeline/timeline";
 
 export { TimeCursor } from "./components/timeCursor/timeCursor";
 export type { TimeCursorProps } from "./components/timeCursor/timeCursor";
-export { TimeAxis } from "./components/timelineAxis/timeAxis/TimeAxis";
-export type { TimeAxisProps } from "./components/timelineAxis/timeAxis/TimeAxis";
+export { TimeAxis } from "./components/timelineAxis/timeAxis/timeAxis";
+export type { TimeAxisProps } from "./components/timelineAxis/timeAxis/timeAxis";
 export * from "./components/timelineAxis/timelineAxisTypes";
 export * from "./components/timelineAxis/timelineAxisHelpers";
 export {
