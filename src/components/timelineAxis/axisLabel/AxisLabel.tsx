@@ -9,11 +9,7 @@ type AxisLabelProps = {
   className?: string;
 };
 
-const AxisLabel: React.FC<AxisLabelProps> = ({
-  side,
-  marker,
-  className,
-}) => {
+const AxisLabel: React.FC<AxisLabelProps> = ({ side, marker, className }) => {
   const labelStyle = {
     "--tl-axis-label-side-delta": `${marker.sideDelta}px`,
   } as React.CSSProperties;

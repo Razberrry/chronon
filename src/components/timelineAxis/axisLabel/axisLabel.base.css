@@ -1,6 +1,7 @@
 .TlTimeline-axisLabel {
   position: absolute;
   top: 0;
+  height: 100%;
 }
 
 .TlTimeline-axisLabel--left {
