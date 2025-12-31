@@ -6,6 +6,7 @@ import cssInjectedByJs from "vite-plugin-css-injected-by-js"; // <- the adult in
 export default defineConfig({
   plugins: [react(), cssInjectedByJs()],
   build: {
+    copyPublicDir: false,
     lib: {
       entry: "src/index.ts",
       name: "chronon-timeline",
@@ -13,7 +14,7 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", "react-virtuoso"],
     },
   },
 });

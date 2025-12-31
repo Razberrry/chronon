@@ -43,9 +43,6 @@ export const Item: React.FC<ItemProps> = ({
     <div
       className={clsx("TlTimeline-item", classes?.item)}
       style={combinedStyle}
-      onClick={() => {
-        console.log("lol");
-      }}
     >
       <div className={clsx("TlTimeline-itemContent", classes?.content)}>
         {children}

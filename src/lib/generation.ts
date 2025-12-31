@@ -69,7 +69,8 @@ export const generateFixedLengthItems = (
   rows: RowDefinition[],
   options?: GenerateItemsOptions
 ): ItemDefinition[] => {
-  const duration = hoursToMilliseconds(5);
+  const duration =
+    options?.minDuration ?? options?.maxDuration ?? hoursToMilliseconds(5);
 
   return Array.from({ length: count }, (): ItemDefinition => {
     const randomRow = rows[Math.floor(Math.random() * rows.length)];
@@ -97,12 +98,13 @@ export const generateDeterministicItems = (
 ): ItemDefinition[] => {
   const duration = hoursToMilliseconds(options?.durationInHours ?? 5);
   const spacing = hoursToMilliseconds(options?.spacingInHours ?? 0);
+  const step = duration + spacing;
 
   const items: ItemDefinition[] = [];
 
   for (let index = 0; index < count; index++) {
     const row = rows[index % rows.length];
-    const start = range.start;
+    const start = range.start + step * index;
     const end = start + duration;
 
     // If it exceeds range, clamp it

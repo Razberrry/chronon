@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import clsx from "clsx";
 
 import "./timeCursor.base.css";
@@ -15,6 +15,9 @@ export const TimeCursor = ({ at, classes }: TimeCursorProps) => {
 	const timeCursorRef = useRef<HTMLDivElement>(null);
 	const { range, direction, sidebarWidth, spanToPixels } = useTimelineContext();
 
+	if (!at) {
+		return null;
+	}
 
 	const isVisible = at.getTime() > range.start && at.getTime() < range.end;
 
@@ -37,10 +40,10 @@ export const TimeCursor = ({ at, classes }: TimeCursorProps) => {
 		spanToPixels,
 	]);
 
-	return isVisible && at ? (
-  <div
-    ref={timeCursorRef}
-    className={clsx("TlTimeline-cursor", classes?.cursor)}
-  />
-) : null
+	return isVisible ? (
+		<div
+			ref={timeCursorRef}
+			className={clsx("TlTimeline-cursor", classes?.cursor)}
+		/>
+	) : null
 };

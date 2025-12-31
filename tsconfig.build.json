@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "declarationDir": "dist",
+    "outDir": "dist"
+  },
+  "include": ["src/index.ts", "src/**/*.d.ts"],
+  "exclude": ["src/App.tsx", "src/TimelineExample.tsx", "src/main.tsx"]
+}
