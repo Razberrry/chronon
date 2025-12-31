@@ -1,28 +1,27 @@
 import React from "react";
 import clsx from "clsx";
+import { Virtuoso } from "react-virtuoso";
 
 import "./row.base.css";
 import styles from "./row.module.css";
 
 import { useTimelineContext } from "../../context/timelineContext";
-import type { RowDefinition } from "../../types/row";
-import type { TimelineRowClasses } from "../../types/TimelineClasses";
+import type { RowProps } from "./row";
 
-export interface RowProps extends RowDefinition {
-  children: React.ReactNode;
-  sidebar?: React.ReactNode;
-  classes?: TimelineRowClasses;
-  ignoreRefs?: boolean;
-  subrowHeight: number;
+export interface VirtualizedRowProps extends RowProps {
+  virtualizeSubrows?: boolean;
+  virtualSubrowOverscan?: number; // rows
 }
 
-export const Row: React.FC<RowProps> = ({
+export const VirtualizedRow: React.FC<VirtualizedRowProps> = ({
   id,
   children,
   sidebar,
   classes,
   ignoreRefs = false,
   subrowHeight,
+  virtualizeSubrows = false,
+  virtualSubrowOverscan = 6,
 }) => {
   const { direction, setSidebarRef, setViewportRef, sidebarWidth } =
     useTimelineContext();
@@ -34,6 +33,12 @@ export const Row: React.FC<RowProps> = ({
         "--tl-subrow-height": `${subrowHeight}px`,
       } as React.CSSProperties)
     : undefined;
+
+  const subrows = React.Children.toArray(children);
+
+  const overscanPixels = subrowHeight * virtualSubrowOverscan;
+
+  const scrollContainerRef = React.useRef<HTMLDivElement | null>(null);
 
   return (
     <div
@@ -59,6 +64,7 @@ export const Row: React.FC<RowProps> = ({
       </div>
 
       <div
+        ref={scrollContainerRef}
         className={clsx(
           "TlTimeline-rowContent",
           classes?.content ?? styles.rowContentBorder
@@ -70,7 +76,22 @@ export const Row: React.FC<RowProps> = ({
           style={contentStyle}
           dir={direction}
         >
-          {children}
+          {virtualizeSubrows ? (
+            <Virtuoso
+              totalCount={subrows.length}
+              customScrollParent={scrollContainerRef.current ?? undefined}
+              increaseViewportBy={{
+                top: overscanPixels,
+                bottom: overscanPixels,
+              }}
+              defaultItemHeight={subrowHeight}
+              itemContent={(index) => (
+                <div data-index={index}>{subrows[index]}</div>
+              )}
+            />
+          ) : (
+            children
+          )}
         </div>
       </div>
     </div>

@@ -1,17 +1,7 @@
 import "./index.css";
+import { addHours, parseISO, subHours } from "date-fns";
+import { useState } from "react";
 import {
-  addHours,
-  addMinutes,
-  endOfDay,
-  millisecondsToMinutes,
-  parseISO,
-  startOfDay,
-  subHours,
-  subMinutes,
-} from "date-fns";
-import React, { useState } from "react";
-import {
-  RangeToolbar,
   TimelineContextProvider,
   generateItems,
   generateRows,
@@ -19,6 +9,7 @@ import {
 } from ".";
 import type { Range } from ".";
 import { TimelineExample } from "./TimelineExample";
+import React from "react";
 
 const DEFAULT_RANGE_HOUR: Range = {
   start: subHours(new Date(), 5).getTime(),
@@ -46,7 +37,6 @@ function App() {
 
   return (
     <TimelineContextProvider {...timelineAttributes}>
-      <RangeToolbar setRange={setRange} />
       <TimelineExample items={items} rows={rows} />
     </TimelineContextProvider>
   );

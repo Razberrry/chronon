@@ -1,7 +1,3 @@
-export { RangeToolbar } from "./components/rangeToolBar/rangeToolbar";
-export type { RangeToolbarProps } from "./components/rangeToolBar/rangeToolbar";
-export * from "./components/rangeToolBar/rangetoolbarFunctions";
-
 export { Item } from "./components/item/item";
 export type { ItemProps } from "./components/item/item";
 export { useItem } from "./components/item/useItem";
@@ -12,6 +8,8 @@ export { useSimpleItem as useItemWrapper } from "./components/simpleItem/useSimp
 
 export { Row } from "./components/Row/row";
 export type { RowProps } from "./components/Row/row";
+export { VirtualizedRow } from "./components/Row/virtualizedRow";
+export type { VirtualizedRowProps } from "./components/Row/virtualizedRow";
 export { Sidebar } from "./components/sidebar/Sidebar";
 export type { SidebarProps } from "./components/sidebar/Sidebar";
 export { Subrow } from "./components/subrow/Subrow";
