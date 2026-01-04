@@ -7,7 +7,6 @@ import { useTimelineContext } from "../context/timelineContext";
 const SCROLL_SENSITIVITY = 1;
 const DRAG_THRESHOLD_PX = 3;
 
-
 export const buildPanEndEvent = (
   sourceEvent: { clientX: number; clientY: number },
   deltaX: number,
@@ -46,6 +45,7 @@ export const useTimelineMousePanAndZoom = (): void => {
     let pointerDownClientX = 0;
     let hasPointerCapture = false;
     let shouldSuppressNextClick = false;
+    let hasGlobalPointerListeners = false;
 
     const enableDragStyles = (): void => {
       timelineElement.style.cursor = "grabbing";
@@ -94,14 +94,96 @@ export const useTimelineMousePanAndZoom = (): void => {
       });
     };
 
+    const detachGlobalPointerListeners = (): void => {
+      if (!hasGlobalPointerListeners) return;
+      hasGlobalPointerListeners = false;
+      window.removeEventListener("pointerup", handleWindowPointerUp, true);
+      window.removeEventListener(
+        "pointercancel",
+        handleWindowPointerCancel,
+        true
+      );
+      window.removeEventListener("pointermove", handleWindowPointerMove, true);
+      window.removeEventListener("blur", handleWindowBlur);
+    };
+
+    const attachGlobalPointerListeners = (): void => {
+      if (hasGlobalPointerListeners) return;
+      hasGlobalPointerListeners = true;
+      window.addEventListener("pointerup", handleWindowPointerUp, true);
+      window.addEventListener(
+        "pointercancel",
+        handleWindowPointerCancel,
+        true
+      );
+      window.addEventListener("pointermove", handleWindowPointerMove, true);
+      window.addEventListener("blur", handleWindowBlur);
+    };
+
     const beginDragging = () => {
       if (dragStarted || activePointerId === null) return;
       dragStarted = true;
       if (!hasPointerCapture) {
-        timelineElement.setPointerCapture?.(activePointerId);
-        hasPointerCapture = true;
+        try {
+          timelineElement.setPointerCapture?.(activePointerId);
+          hasPointerCapture = true;
+        } catch {
+          hasPointerCapture = false;
+        }
       }
       enableDragStyles();
+    };
+
+    const handlePointerEnd = (): void => {
+      if (!isPointerActive) return;
+      const wasDragging = dragStarted;
+      isPointerActive = false;
+      dragStarted = false;
+      flushPendingPanEvent();
+      detachGlobalPointerListeners();
+      if (hasPointerCapture && activePointerId !== null) {
+        try {
+          timelineElement.releasePointerCapture?.(activePointerId);
+        } catch {
+          // ignore
+        }
+      }
+      hasPointerCapture = false;
+      activePointerId = null;
+      disableDragStyles();
+      if (wasDragging) {
+        shouldSuppressNextClick = true;
+      }
+    };
+
+    const handleLostPointerCapture = (event: PointerEvent): void => {
+      if (!isPointerActive) return;
+      if (activePointerId !== null && event.pointerId !== activePointerId) return;
+      handlePointerEnd();
+    };
+
+    const handleWindowPointerUp = (event: PointerEvent): void => {
+      if (!isPointerActive) return;
+      if (activePointerId !== null && event.pointerId !== activePointerId) return;
+      handlePointerEnd();
+    };
+
+    const handleWindowPointerCancel = (event: PointerEvent): void => {
+      if (!isPointerActive) return;
+      if (activePointerId !== null && event.pointerId !== activePointerId) return;
+      handlePointerEnd();
+    };
+
+    const handleWindowPointerMove = (event: PointerEvent): void => {
+      if (!isPointerActive) return;
+      if (activePointerId !== null && event.pointerId !== activePointerId) return;
+      if (event.pointerType === "mouse" && (event.buttons & 1) === 0) {
+        handlePointerEnd();
+      }
+    };
+
+    const handleWindowBlur = (): void => {
+      handlePointerEnd();
     };
 
     // pointer down when drag starts
@@ -114,13 +196,25 @@ export const useTimelineMousePanAndZoom = (): void => {
       hasPointerCapture = false;
       lastKnownClientX = event.clientX;
       pointerDownClientX = event.clientX;
+      attachGlobalPointerListeners();
     };
 
+    const handlePointerEnter = (event: PointerEvent): void => {
+      if (!isPointerActive) return;
+      if (activePointerId !== null && event.pointerId !== activePointerId) return;
+      if (event.pointerType === "mouse" && (event.buttons & 1) === 0) {
+        handlePointerEnd();
+      }
+    };
 
     // pointer moves when dragging , move left/right
     const handlePointerMove = (event: PointerEvent): void => {
       if (!isPointerActive) return;
       if (activePointerId !== null && event.pointerId !== activePointerId) return;
+      if (event.pointerType === "mouse" && (event.buttons & 1) === 0) {
+        handlePointerEnd();
+        return;
+      }
       const nextClientX = event.clientX;
       const horizontalClientMovement = nextClientX - lastKnownClientX;
 
@@ -136,24 +230,6 @@ export const useTimelineMousePanAndZoom = (): void => {
       lastKnownClientX = nextClientX;
       queuePanEnd(event, -horizontalClientMovement, 0);
       event.preventDefault();
-    };
-
-    // when finish dragging
-    const handlePointerEnd = (): void => {
-      if (!isPointerActive) return;
-      const wasDragging = dragStarted;
-      isPointerActive = false;
-      dragStarted = false;
-      flushPendingPanEvent();
-      if (hasPointerCapture && activePointerId !== null) {
-        timelineElement.releasePointerCapture?.(activePointerId);
-      }
-      hasPointerCapture = false;
-      activePointerId = null;
-      disableDragStyles();
-      if (wasDragging) {
-        shouldSuppressNextClick = true;
-      }
     };
 
     const handleClickCapture = (event: MouseEvent): void => {
@@ -175,21 +251,26 @@ export const useTimelineMousePanAndZoom = (): void => {
     };
 
     timelineElement.addEventListener("pointerdown", handlePointerDown, { passive: false });
+    timelineElement.addEventListener("pointerenter", handlePointerEnter);
     timelineElement.addEventListener("pointermove", handlePointerMove, { passive: false });
     timelineElement.addEventListener("pointerup", handlePointerEnd, { passive: false });
     timelineElement.addEventListener("pointercancel", handlePointerEnd, { passive: false });
+    timelineElement.addEventListener("lostpointercapture", handleLostPointerCapture);
     timelineElement.addEventListener("wheel", handleWheel, { passive: false });
     timelineElement.addEventListener("click", handleClickCapture, true);
 
     return () => {
       timelineElement.removeEventListener("pointerdown", handlePointerDown);
+      timelineElement.removeEventListener("pointerenter", handlePointerEnter);
       timelineElement.removeEventListener("pointermove", handlePointerMove);
       timelineElement.removeEventListener("pointerup", handlePointerEnd);
       timelineElement.removeEventListener("pointercancel", handlePointerEnd);
+      timelineElement.removeEventListener("lostpointercapture", handleLostPointerCapture);
       timelineElement.removeEventListener("wheel", handleWheel);
       timelineElement.removeEventListener("click", handleClickCapture, true);
       timelineElement.style.cursor = "";
       timelineElement.style.userSelect = "";
+      detachGlobalPointerListeners();
       flushPendingPanEvent();
     };
   }, [timelineRef, direction, zoomLimits]);
