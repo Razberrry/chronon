@@ -13,7 +13,7 @@ export interface RowProps extends RowDefinition {
   sidebar?: React.ReactNode;
   classes?: TimelineRowClasses;
   ignoreRefs?: boolean;
-  subrowHeight: number;
+  subrowHeight?: number;
 }
 
 export const Row: React.FC<RowProps> = ({
