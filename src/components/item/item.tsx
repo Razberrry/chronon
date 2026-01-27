@@ -8,7 +8,7 @@ import { useItem } from "./useItem";
 import type { TimelineItemClasses } from "../../types/TimelineClasses";
 
 export interface ItemProps {
-  id: string;
+  id?: string;
   span: Span;
   children?: React.ReactNode;
   classes?: TimelineItemClasses;

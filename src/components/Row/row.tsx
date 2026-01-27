@@ -8,7 +8,8 @@ import { useTimelineContext } from "../../context/timelineContext";
 import type { RowDefinition } from "../../types/row";
 import type { TimelineRowClasses } from "../../types/TimelineClasses";
 
-export interface RowProps extends RowDefinition {
+export interface RowProps extends Omit<RowDefinition, "id"> {
+  id?: RowDefinition["id"];
   children: React.ReactNode;
   sidebar?: React.ReactNode;
   classes?: TimelineRowClasses;

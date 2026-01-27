@@ -45,7 +45,7 @@ export const TimelineExample = ({ rows, items }: TimelineProps) => {
           {subrowsByRow[row.id]?.map((subrowItems, laneIndex) => (
             <Subrow key={`${row.id}-lane-${laneIndex}`}>
               {subrowItems.map((item) => (
-                <Item id={item.id} key={item.id} span={item.span}>
+                <Item key={item.id} span={item.span}>
                   גזרת שדרה {item.id}
                 </Item>
               ))}

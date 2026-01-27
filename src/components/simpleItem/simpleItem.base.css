@@ -5,4 +5,5 @@
   touch-action: none;
   inline-size: var(--tl-item-width, auto);
   inset-inline-start: var(--tl-item-inset-start, 0px);
+  height: 100%;
 }
