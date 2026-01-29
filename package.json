@@ -1,7 +1,7 @@
 {
   "name": "chronon-timeline",
   "description": "React timeline component library.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": false,
   "license": "MIT",
   "repository": {
